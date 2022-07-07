@@ -1,0 +1,42 @@
+Package: GmrcShinyBayes
+Title: Gmrc Shiny Bayes
+Version: 0.0.0.9000
+Authors@R: person('GMRC', '', email = 'ShinyGMRC@chru-strasbourg.fr', role = c('cre', 'aut'))
+Description: PKG_DESC.
+License: What license is it under?
+Imports: 
+    attempt,
+    config (>= 0.3.1),
+    DT,
+    glue,
+    golem (>= 0.3.1),
+    htmltools,
+    pkgload,
+    processx,
+    shiny (>= 1.7.1),
+    shinydashboard,
+    shinyFiles,
+    irr,
+    gdata,
+    boot,
+    xtable,
+    dplyr,
+    ggplot2,
+    ggthemes,
+    pROC,
+    dashboardthemes,
+    shinydashboardPlus,
+    utils,
+    desctable,
+    moments
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Suggests: 
+    rmarkdown,
+    knitr,
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Language: en-US
+VignetteBuilder: knitr
