@@ -38,6 +38,10 @@ mod_Accueil_ui <- function(id){
                                              qu'elles soient de nature qualitative ou quantitative.
                                              Vous utiliserez alors le logiciel de statistiques R, sans avoir à programmer informatiquement les commandes à passer.", style="text-align: justify"),
         tags$br(),
+        # tags$script(HTML('src="https://cdn.rawgit.com/Herst/d3-zoom/ac2cab0ce1f1515312ec68b4e5594d19dd473dd2/build/d3.js"; charset="utf-8"' )),
+        # tags$script(src = "www/bayes_plot.js",type="module"),
+        # tags$script(src = "script.js "),
+        tags$p(includeHTML("inst/app/www/bayes_plot.html")),
 
         tags$h4("En cas de problème :",align = "center",style = "color:#08088A; font-family: Georgia; font-size : 20px;"),
         tags$p("Si vous rencontrez des messages d'erreur ou que certaines fonctionnalités ne s'exécutent pas, ceci peut être dû à l'une des causes suivantes :", style="text-align: justify"),
