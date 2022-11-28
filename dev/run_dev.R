@@ -9,6 +9,6 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # Run the application
-GmrcShinyStats::run_app()
+GmrcShinyBayes::run_app()
 
 
