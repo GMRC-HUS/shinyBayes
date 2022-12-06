@@ -10,6 +10,8 @@
 golem::add_module(name = "chargement", with_test = FALSE) # Name of the module
 golem::add_module(name = "Accueil", with_test = FALSE) # Name of the module
 
+golem::add_module(name = "inferenceUni", with_test = T) # Name of the module
+
 golem::add_module(name = "Descriptifs", with_test = FALSE) # Name of the module
 golem::add_module(name = "Croisements", with_test = FALSE) # Name of the module
 golem::add_module(name = "Survie", with_test = FALSE) # Name of the module
