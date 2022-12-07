@@ -141,10 +141,13 @@ customTheme <- shinyDashboardThemeDIY(
 )
 
 app_ui <- function(request) {
+  
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css")
+    ),
     
     #addResourcePath("www", tempdir),
     
