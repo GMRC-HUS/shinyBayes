@@ -21,7 +21,9 @@ mod_inferenceUni_ui <- function(id){
                        c(Quantitative='quant', Qualitative='qual'),'quant'
           ),
           uiOutput(ns("apriori")),
-          checkboxInput(ns("twit"), "Two IT ?", FALSE),
+          h2("Two IT ?"),
+          shinyWidgets::materialSwitch(ns("twit"),"", FALSE, status = "success",right=T),
+          uiOutput(ns("twit_ui")),
           actionButton(ns("go"),"Go :")
         ),
         
@@ -114,21 +116,57 @@ mod_inferenceUni_server <- function(id,r){
                       min = 0, max = 100, value =1)
           ),
       
-                 div(class = "center50",
-          plotOutput(ns("priorSigma"))
+                 
+          plotOutput(width = 200, height = 100,ns("priorSigma"))
           
-          )
+          
         )
       })
+      
+     
+        output$twit_ui <- renderUI({
+          if(input$twit){
+            
+          tags$div(splitLayout(cellWidths = c("50%","50%"),
+            h3("Rejet :"),h3("Acceptation : ")),
+            splitLayout(cellWidths = c("25%","25%","25%","25%"),
+                        numericInput(ns("theta_P_min"), "Min :",   
+                                     # min = min_x-max_x, max = max_x*2, 
+                                     value = 0
+                                     
+                        ),
+                        
+                        numericInput(ns("theta_P_max"),"Max :",
+                                     value =0)
+            ,
+            
+           
+                        numericInput(ns("theta_A_min"), "Min :",   
+                                     # min = min_x-max_x, max = max_x*2, 
+                                     value = 0
+                                     
+                        ),
+                        
+                        numericInput(ns("theta_A_max"),"Max :",
+                                     value =0)
+            ))
+          
+}
+                    })
+      
       
       fitInference <- reactive({
         randomVals()
         BDD<-isolate(r$BDD[,input$variable])
+        
+       isolate({ theta_P<-ifelse_perso(input$twit,c(input$theta_P_min, input$theta_P_max), NULL  )
+        theta_A<-ifelse_perso(input$twit,c(input$theta_A_min, input$theta_A_max), NULL  )
+       })
         oneMeanEstim(BDD,
                      alpha = 0.15,mu_0 = isolate(input$mu0) ,kappa_0 = isolate(input$k0),
                      alpha_0 = isolate(input$alpha_0),
                      beta_0 = isolate(input$beta_0),seuil = 3,
-                     # theta_P = c(-10,5),theta_A = c(5,12)
+                      theta_P = theta_P,theta_A = theta_A
                      )
         })
       
@@ -147,33 +185,26 @@ mod_inferenceUni_server <- function(id,r){
       observeEvent(randomVals(),{
      
         if(tryCatch(length(fitInference())>0,error = function(cond) return(F) )){
-          
-  
-          
           output$inferenceUni <- renderUI({
             noms<-names(fitInference())
-            # tableOutput(ns(noms[1]))
-            # print(noms)
              tagList(
-             lapply(noms, function(x) list(h3(x),
+             lapply(noms, function(x) {
+               if(is.null(fitInference()[[x]])) return()
+            list(h3(x),
             renderTable(as.data.frame.list(fitInference()[[x]]))
                #  print(x)
                 )
+             }
                 )
                )
               })
-          
         }
-
       })
       
     
-      output$plotinferenceUni <- renderPlot({
-        
-        plot( fitInference())
-      })
+      output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
-      output$priorSigma<- renderPlot(width = 200, height = 100,{
+      output$priorSigma<- renderPlot({
         print(list(shape=input$alpha_0, rate=input$beta_0))
         ggplot(data=data.frame(x=c(0,1)),aes(x))+
           stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=input$beta_0))+
@@ -182,25 +213,12 @@ mod_inferenceUni_server <- function(id,r){
                                 axis.ticks.x=element_blank()
           )+ylab("")+xlab("")
       })
-      # output$descvar <- renderTable({
-      #   base    <-r$BDD
-      #   variable<-base[,colnames(base)==input$variable]
-      #   print(input$variable)
-      #   if(input$qualiquanti=="quant"){res<-data.frame(descr1(variable)$Descriptif)
-      #   colnames(res) <- c("Descriptif")}
-      #   if(input$qualiquanti=="qual") {res<-data.frame(desql(variable))
-      #   colnames(res) <- c("Effectifs", "Proportions")}
-      #   xtable(res, "essai")
-      # },hover = T,rownames=TRUE)
-      
-    
-      
-   
-      
-      
-      
-    
+  
   })
+  
+  
+ 
+  
 }
     
 ## To be copied in the UI
