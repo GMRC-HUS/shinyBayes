@@ -12,3 +12,6 @@ golem::document_and_reload()
 GmrcShinyBayes::run_app(BDD=iris)
 
 
+#min-max x 
+# apriori ecart type de la moyenne
+# Ecart type de la moyenne et pseudo echatillon

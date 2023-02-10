@@ -21,6 +21,7 @@ mod_inferenceUni_ui <- function(id){
                        c(Quantitative='quant', Qualitative='qual'),'quant'
           ),
           uiOutput(ns("apriori")),
+          
           h2("Two IT ?"),
           shinyWidgets::materialSwitch(ns("twit"),"", FALSE, status = "success",right=T),
           uiOutput(ns("twit_ui")),
@@ -95,30 +96,31 @@ mod_inferenceUni_server <- function(id,r){
         max_x <- max(x)
         fluidRow(
           h2("Apriori sur la moyenne : "),
-          sliderInput(ns("mu0"), "μ0, moyenne à priori :",   
-                      min = min_x-max_x, max = max_x*2, value = mean(x),
-                      width = "25%"),
+          splitLayout(cellWidths = c("10%","10%"),
+          numericInput(ns("mu0"), "μ0 : ",   
+                      min = min_x-max_x, max = max_x*2, value = round(mean(x))),
           br(),
-          sliderInput(ns("k0"),"κ0, taille pseudo-Echantillon",
-                      min = 0, max = length(x), value =1,
-                      width = "25%"),
+          numericInput(ns("k0"),"Pseudo-Echantillon :",
+                      min = 0, max = length(x)*4, value =1)),
           
+          
+          plotOutput(width = 200, height = 100,ns("priorMean")),
           h2("Apriori sur l'écart type : "),
           splitLayout(cellWidths = c("10%","10%"),
           numericInput(ns("alpha_0"), "Alpha :",   
                       # min = min_x-max_x, max = max_x*2, 
                       value = 1,
-                      min = 0, 
-                      max = 100,
+                      min = 1, 
+                      max = Inf,
                       ),
       
           numericInput(ns("beta_0"),"Beta :",
-                      min = 0, max = 100, value =1)
+                      min = 1, max = Inf, value =1)
           ),
       
                  
-          plotOutput(width = 200, height = 100,ns("priorSigma"))
-          
+          plotOutput(width = 200, height = 100,ns("priorSigma")),
+          actionButton(ns("ellicitation"), "Aide ellicitation")
           
         )
       })
@@ -201,13 +203,58 @@ mod_inferenceUni_server <- function(id,r){
         }
       })
       
-    
+      
+      observeEvent(input$ellicitation, {
+        showModal(modalDialog(
+          plotOutput(width = 200, height = 100,ns("ellicitation")),
+                              
+          numericInput(ns("sigma_0"), "mean % : ",   
+                       min = 0, max = 100, value = 50),
+          sliderInput(ns("n_sigma_0"), "mean % : ",   
+                       min = 0, max = 2000, value = 3),
+          
+          
+          
+          
+        ))
+      })
+      
+      
+      observeEvent(input$sigma_0, {
+      updateNumericInput(session, "alpha_0", value = input$sigma_0)
+      })
+      
+      output$ellicitation<- renderPlot({
+        print(list(shape=input$alpha_0, rate=input$beta_0))
+        ggplot(data=data.frame(x=c(0,1)),aes(x))+
+          stat_function(fun=dgamma,n=101, args=list(shape=input$sigma_0, rate=input$n_sigma_0+input$sigma_0))+
+          theme_light()+  theme(axis.text.y=element_blank(),
+                                axis.ticks.y=element_blank(),
+                                axis.ticks.x=element_blank()
+          )+ylab("")+xlab("")
+      })
+      
+      
       output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
       output$priorSigma<- renderPlot({
         print(list(shape=input$alpha_0, rate=input$beta_0))
         ggplot(data=data.frame(x=c(0,1)),aes(x))+
           stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=input$beta_0))+
+          theme_light()+  theme(axis.text.y=element_blank(),
+                                axis.ticks.y=element_blank(),
+                                axis.ticks.x=element_blank()
+          )+ylab("")+xlab("")
+      })
+      
+      output$priorMean<- renderPlot({
+        x<- r$BDD[,input$variable]
+        x <- x[!is.na(x)]
+        min_x<- min(x)
+        max_x <- max(x)
+        print(list(shape=input$alpha_0, rate=input$beta_0))
+        ggplot(data=data.frame(x=c(min_x-max_x,2*max_x)),aes(x))+
+          stat_function(fun=dnorm,n=101, args = list(mean = input$mu0, sd = 1/input$k0))+
           theme_light()+  theme(axis.text.y=element_blank(),
                                 axis.ticks.y=element_blank(),
                                 axis.ticks.x=element_blank()
