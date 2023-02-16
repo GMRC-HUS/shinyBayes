@@ -166,12 +166,13 @@ app_ui <- function(request) {
                            dashboardHeader(title = "Base de données"),
                                        dashboardSidebar(
                                          sidebarMenu(
+                                           menuItem("Inférence univarié", tabName = "infUni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
+                                           ),
                                           #shinythemes::themeSelector(),
                                            menuItem("Accueil", tabName = "accueil", icon = icon("fa-light fa-star",verify_fa = FALSE)),
                                            menuItem("Base de données", tabName = "base", icon = icon("fa-light fa-database",verify_fa = FALSE)),
                                            menuItem("Descriptif", tabName = "descriptif", icon = icon("fa-light fa-percent",verify_fa = FALSE)),
-                                           menuItem("Inférence univarié", tabName = "infUni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
-                                                    ),
+
                                            menuItem("Croisements/Inférence", tabName = "croisements", icon = icon("fa-light fa-dice",verify_fa = FALSE)),
                                            menuItem("Analyse de survie", tabName = "survie", icon = icon("fa-light fa-skull-crossbones",verify_fa = FALSE)),
                                            menuItem("Tests diagnostiques", tabName = "tests", icon = icon("fa-light fa-vial",verify_fa = FALSE)),

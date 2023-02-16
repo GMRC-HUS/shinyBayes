@@ -203,31 +203,23 @@ mod_inferenceUni_server <- function(id,r){
         }
       })
       
+   
       
-      observeEvent(input$ellicitation, {
-        showModal(modalDialog(
-          plotOutput(width = 200, height = 100,ns("ellicitation")),
-                              
-          numericInput(ns("sigma_0"), "mean % : ",   
-                       min = 0, max = 100, value = 50),
-          sliderInput(ns("n_sigma_0"), "mean % : ",   
-                       min = 0, max = 2000, value = 3),
-          
-          
-          
-          
-        ))
+      observeEvent(input$ellicitation,ignoreInit = T, {
+        mod_sd_prec_to_alph_beta_server("id",input$alpha_0,input$beta_0)
+        print(input)
       })
-      
       
       observeEvent(input$sigma_0, {
-      updateNumericInput(session, "alpha_0", value = input$sigma_0)
+        
+        updateNumericInput(session, "alpha_0", value = input$sigma_0)
       })
+      output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
-      output$ellicitation<- renderPlot({
+      output$priorSigma<- renderPlot({
         print(list(shape=input$alpha_0, rate=input$beta_0))
         ggplot(data=data.frame(x=c(0,1)),aes(x))+
-          stat_function(fun=dgamma,n=101, args=list(shape=input$sigma_0, rate=input$n_sigma_0+input$sigma_0))+
+          stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=input$beta_0))+
           theme_light()+  theme(axis.text.y=element_blank(),
                                 axis.ticks.y=element_blank(),
                                 axis.ticks.x=element_blank()
@@ -235,11 +227,13 @@ mod_inferenceUni_server <- function(id,r){
       })
       
       
+      
+      
       output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
       output$priorSigma<- renderPlot({
         print(list(shape=input$alpha_0, rate=input$beta_0))
-        ggplot(data=data.frame(x=c(0,1)),aes(x))+
+        ggplot(data=data.frame(x=c(0,input$alpha_0*4)),aes(x))+
           stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=input$beta_0))+
           theme_light()+  theme(axis.text.y=element_blank(),
                                 axis.ticks.y=element_blank(),

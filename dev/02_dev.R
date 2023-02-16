@@ -58,7 +58,7 @@ golem::browser_button()
 
 golem::add_js_file( "script" )
 golem::add_js_handler( "handlers" )
-golem::add_css_file( "custom" )
+# golem::add_css_file( "custom" )
 
 # 3. Documentation
 
@@ -75,3 +75,9 @@ usethis::use_appveyor()
 # You're now set! 
 # go to dev/03_deploy.R
 rstudioapi::navigateToFile("dev/03_deploy.R")
+
+
+golem::browser_button()
+golem::add_css_file("mise_en_forme")
+usethis::use_package("shinyWidgets")
+golem::add_fct("sd_prec_to_alpha_beta")
