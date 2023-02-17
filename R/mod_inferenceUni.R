@@ -179,10 +179,10 @@ mod_inferenceUni_server <- function(id,r){
         isolate(input$variable)
         })
   randomVals<- eventReactive(input$go,{
-    
+
     alea=runif(n = 1)
   print(alea)
-  alea  
+  alea
   })
       observeEvent(randomVals(),{
      
@@ -214,20 +214,28 @@ mod_inferenceUni_server <- function(id,r){
         # print(input)
       })
       retour    <-  reactiveValues(
-        sigma_0 = NULL,
+        level3_select = NULL,
         n_sigma_0 = NULL
       )
       
-      ret<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
+      retour<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
+      
+      # ret<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
       observeEvent(input$beta_0, {
-      ret<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
+        print(retour)
+        retour<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
+        print(retour)
       })
+      
+      
       # print(output)
-      observeEvent(ret$level3_select(),ignoreInit = T, {
+      observeEvent(retour$level3_select,ignoreInit = T, {
        
-        updateNumericInput(session, "alpha_0", value = isolate(ret$level3_select()))
+        updateNumericInput(session, "alpha_0", value = retour$level3_select)
      
       })
+      
+      
       output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
       output$priorSigma<- renderPlot({
