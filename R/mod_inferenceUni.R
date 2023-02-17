@@ -206,13 +206,27 @@ mod_inferenceUni_server <- function(id,r){
    
       
       observeEvent(input$ellicitation,ignoreInit = T, {
-        mod_sd_prec_to_alph_beta_server("id",input$alpha_0,input$beta_0)
-        print(input)
-      })
-      
-      observeEvent(input$sigma_0, {
         
-        updateNumericInput(session, "alpha_0", value = input$sigma_0)
+        mod_sd_prec_to_alph_beta_ui(ns("alpha_beta"))
+        
+        
+       
+        # print(input)
+      })
+      retour    <-  reactiveValues(
+        sigma_0 = NULL,
+        n_sigma_0 = NULL
+      )
+      
+      ret<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
+      observeEvent(input$beta_0, {
+      ret<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
+      })
+      # print(output)
+      observeEvent(ret$level3_select(),ignoreInit = T, {
+       
+        updateNumericInput(session, "alpha_0", value = isolate(ret$level3_select()))
+     
       })
       output$plotinferenceUni <- renderPlot(plot( fitInference()))
       

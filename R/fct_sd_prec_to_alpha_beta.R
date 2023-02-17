@@ -20,37 +20,45 @@
 
 mod_sd_prec_to_alph_beta_ui <- function(id){
   ns <- NS(id)
-  tagList(
-    actionButton(ns("ellicitation"), "Aide ellicitation")
+  showModal(
+    
+    modalDialog(uiOutput(ns("alpha_beta_ui")),
+                footer = tagList(
+                  modalButton("Cancel"),
+                  actionButton(ns("ok"), "OK")
+                ))
   )
 }
 
 #' inferenceUni Server Functions
 #'
 #' @noRd 
-mod_sd_prec_to_alph_beta_server <- function(id,alpha, beta){
+mod_sd_prec_to_alph_beta_server <- function(id,alpha, beta, retour){
   moduleServer( id, function(input, output, session){
     # alpha=nu_0
     # beta=nu_0*sigma_02
  
-    ns <- session$ns 
+   
     
  
     
      
-      showModal(modalDialog(
- 
+    output$alpha_beta_ui<- renderUI({
+      ns <- session$ns 
+      tagList(
         plotOutput(width = 200, height = 100,ns("ellicitationcurve")),
         
         numericInput(ns("sigma_0"), "A priori % : ",   
                      min = 0, max = 100, value = alpha),
         numericInput(ns("n_sigma_0"), "Taille pseudo population % : ",   
-                    min = 0, max = 2000, value = (1/(alpha/beta))),
+                    min = 0, max = 2000, value = (1/(alpha/beta)))
+        
+      )
         
         
         
         
-      ))
+      })
     
     
     
@@ -70,13 +78,18 @@ mod_sd_prec_to_alph_beta_server <- function(id,alpha, beta){
     })
     
     
-  
-    
-   return(reactiveValues(
-     sigma_0=input$sigma_0,
-     n_sigma_0=input$n_sigma_0
+
+     observeEvent(input$ok,{
+  print(session)
+       updateNumericInput(session,"alpha_0", value = input$sigma_0)
+       print(input$sigma_0)
+     } )
+     
+     return(list(
+       level3_select = reactive({input$sigma_0})
      ))
-    
+     
+      
   })
   
 
