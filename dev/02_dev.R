@@ -20,6 +20,8 @@ golem::add_module(name = "Concordance", with_test = FALSE) # Name of the module
 golem::add_module(name = "SaisieManuelle", with_test = FALSE) # Name of the module
 golem::add_module(name = "Redaction", with_test = FALSE) # Name of the module
 
+golem::add_module(name = "Multivarie", with_test = T)
+
 golem::add_fct("ifelse_perso")
 golem::add_fct( "fonctions" ) 
 golem::add_fct( "code_sans_dep" ) 
@@ -42,8 +44,9 @@ usethis::use_package( "shinydashboardPlus")
 usethis::use_package("utils" )
 usethis::use_package("desctable" )
 usethis::use_package("moments" )
-
-
+usethis::use_package("sortable" )
+usethis::use_package("broom.mixed" )
+usethis::use_package("rstanarm" )
 
 
 ## 2.3 Add tests
