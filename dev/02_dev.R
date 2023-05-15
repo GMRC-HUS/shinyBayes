@@ -66,7 +66,7 @@ golem::add_js_handler( "handlers" )
 # 3. Documentation
 
 ## 3.1 Vignette
-usethis::use_vignette("gmrc")
+usethis::use_vignette("GmrcShinyBayes")
 devtools::build_vignettes()
 
 ## 3.2 Code coverage
