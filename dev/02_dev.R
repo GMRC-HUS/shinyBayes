@@ -84,3 +84,5 @@ golem::browser_button()
 golem::add_css_file("mise_en_forme")
 usethis::use_package("shinyWidgets")
 golem::add_fct("sd_prec_to_alpha_beta")
+
+usethis::use_pkgdown_github_pages()
