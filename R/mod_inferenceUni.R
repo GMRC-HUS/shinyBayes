@@ -7,13 +7,18 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
+#' @importFrom ggdist dstudent_t  
+#' 
 #' @import gmrc.bayes  
+
+
 
 mod_inferenceUni_ui <- function(id){
   ns <- NS(id)
   tagList(
-    fluidPage(    
-      titlePanel("Inférence univarié"),
+    fluidPage(
+
+      titlePanel(fluidRow("Inférence univarié",text_aide("Texte Aide sur Inférence univarié "))),
       sidebarLayout( 
         sidebarPanel(width=4,                       
           uiOutput(ns("propositions")),
@@ -22,7 +27,9 @@ mod_inferenceUni_ui <- function(id){
           ),
           uiOutput(ns("apriori")),
           
-          h2("Two IT ?"),
+          h2("Two IT ?",text_aide("Texte Aide sur le two it ")),
+          
+
           shinyWidgets::materialSwitch(ns("twit"),"", FALSE, status = "success",right=T),
           uiOutput(ns("twit_ui")),
           actionButton(ns("go"),"Go :")
@@ -95,18 +102,18 @@ mod_inferenceUni_server <- function(id,r){
         min_x<- min(x)
         max_x <- max(x)
         fluidRow(
-          h2("Apriori sur la moyenne : "),
-          splitLayout(cellWidths = c("10%","10%"),
+          h2("Apriori sur la moyenne : ",text_aide("Texte Aide sur Apriori sur la moyenne ")),
+          splitLayout(cellWidths = size_box,
           numericInput(ns("mu0"), "μ0 : ",   
                       min = min_x-max_x, max = max_x*2, value = round(mean(x))),
-          br(),
+          
           numericInput(ns("k0"),"Pseudo-Echantillon :",
                       min = 0, max = length(x)*4, value =1)),
           
           
           plotOutput(width = 200, height = 100,ns("priorMean")),
-          h2("Apriori sur l'écart type : "),
-          splitLayout(cellWidths = c("10%","10%"),
+          h2("Apriori sur l'écart type : ",text_aide("Texte Aide sur Apriori écart type ")),
+          splitLayout(cellWidths = size_box,
           numericInput(ns("alpha_0"), "Alpha :",   
                       # min = min_x-max_x, max = max_x*2, 
                       value = 1,
@@ -119,8 +126,8 @@ mod_inferenceUni_server <- function(id,r){
           ),
       
                  
-          plotOutput(width = 200, height = 100,ns("priorSigma")),
-          actionButton(ns("ellicitation"), "Aide ellicitation")
+          plotOutput(width = 200, height = 100,ns("priorSigma")),br(),
+          actionButton(ns("ellicitation"), "Aide ellicitation"),text_aide("Texte Aide surellicitation ")
           
         )
       })

@@ -146,7 +146,11 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css")
+      tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css"),
+      
+        tags$style(HTML(css)),
+        tags$script(HTML(js))
+      
     ),
     
     #addResourcePath("www", tempdir),

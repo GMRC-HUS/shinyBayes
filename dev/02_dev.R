@@ -24,6 +24,7 @@ golem::add_module(name = "Multivarie", with_test = T)
 
 golem::add_fct("ifelse_perso")
 golem::add_fct( "fonctions" ) 
+golem::add_utils( "fonctions" )
 golem::add_fct( "code_sans_dep" ) 
 ## 2.2 Add dependencies
 
@@ -47,7 +48,10 @@ usethis::use_package("moments" )
 usethis::use_package("sortable" )
 usethis::use_package("broom.mixed" )
 usethis::use_package("rstanarm" )
+usethis::use_package("bslib" )
+usethis::use_package("ggdist" )
 
+attachment::att_from_rscripts()
 
 ## 2.3 Add tests
 

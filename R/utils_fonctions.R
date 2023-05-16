@@ -1,12 +1,13 @@
 #' fonctions 
 #'
-#' @description A fct function
+#' @description A utils function
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The return value, if any, from executing the utility.
 #'
 #' @noRd
 
 
+size_box <- "150px"
 
 css <- '
 .tooltip {
@@ -153,11 +154,11 @@ tests_autoGMRC<-function (var, grp){
   grp <- grp %>% factor
   if (nlevels(grp) < 2) 
     ~no.test
-  else if (var %>% is.factor) 
-    if ( tryCatch(stats::chisq.test(var , grp)$p.value>=0 , warning = function(e) F, error = function(e) F))
+  else if (var %>% is.factor){ 
+    if ( tryCatch(stats::chisq.test(var , grp)$p.value>=0 , warning = function(e) F, error = function(e) F)){
       ~ chisq.test
-  else ~fisher.test
-  else {
+  }else ~fisher.test
+  }else {
     all_normal <- all(var %>% tapply(grp, desctable::is.normal))
     if (nlevels(grp) == 2) 
       if (all_normal) 
@@ -166,12 +167,13 @@ tests_autoGMRC<-function (var, grp){
           ~t.testVarEgal
     else ~. %>% t.test(var.equal = F)
     else ~wilcox.test
-    else if (all_normal) 
+    else if(all_normal){ 
       if (tryCatch(stats::bartlett.test(var ~ grp)$p.value > 
-                   0.1, warning = function(e) F, error = function(e) F)) 
+                   0.1, warning = function(e) F, error = function(e) F)){
         ~. %>% oneway.test(var.equal = T)
-    else ~. %>% oneway.test(var.equal = F)
-    else ~kruskal.test
+    }else ~. %>% oneway.test(var.equal = F)
+    }else ~kruskal.test
+    
   }
 }
 
