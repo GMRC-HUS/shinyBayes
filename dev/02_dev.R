@@ -73,11 +73,16 @@ golem::add_js_handler( "handlers" )
 usethis::use_vignette("GmrcShinyBayes")
 devtools::build_vignettes()
 
+
 ## 3.2 Code coverage
 ## You'll need GitHub there
 usethis::use_github()
 usethis::use_travis()
 usethis::use_appveyor()
+
+
+## 3.3 format r script
+styler::style_file("R/mod_Multivarie.R")
 
 # You're now set! 
 # go to dev/03_deploy.R

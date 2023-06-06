@@ -50,6 +50,20 @@ formule<- function(x){
   return(as.formula(paste("~", x)))
 }
 
+formule_default <-  function(y,X_quanti,X_quali){
+  
+  if(length(c(X_quanti,X_quali))>0){
+    var_interet<- paste(c(X_quanti, X_quali), collapse = " + ")
+    
+  }else{
+    
+    var_interet<- 1
+  }
+  
+  paste(isolate(y), "~",var_interet )
+}
+  
+
 barplot_croise<-function(base,var1,var2){
   BDD<- base[,c(var1,var2)]
   pourcent <-  prop.table(table(BDD),1)

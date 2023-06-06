@@ -11,6 +11,7 @@
 #' @import broom.mixed
 #' @import sortable
 #' @import rstanarm
+#' @import bayesplot
 
 mod_Multivarie_ui <- function(id) {
   ns <- NS(id)
@@ -31,18 +32,20 @@ mod_Multivarie_ui <- function(id) {
           ), text_aide("Choix type de régression multivarié"),
           uiOutput(ns("choix_y")),
           uiOutput(ns("propositions_multi")),
-          actionButton(ns("ellicitation"), "Aide ellicitation"),
+          
+          h3("Choix des priors"),
+          actionButton(ns("ellicitation"), "Ellicitation"),
+          
           text_aide("Texte Aide ellicitation multivarié "),
-          h2("Two IT ?"),
+          h3("Two IT ?"),
           shinyWidgets::materialSwitch(ns("twit"), "", FALSE, status = "success", right = T),
           uiOutput(ns("twit_ui")), text_aide("Texte Aide Two IT multivarié "),
           actionButton(ns("go"), "Go :")
         ),
         mainPanel(
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          fluidRow(textOutput(ns("model_text"))),
-          fluidRow(textOutput(ns("model_prior"))),
-          fluidRow(tableOutput(ns("res_multi")))
+          uiOutput(ns("result_multi"))
+        
         ) # fin MainPanel
       ) # fin sidebarlayout
     ) # fin fluidpage
@@ -66,15 +69,7 @@ mod_Multivarie_server <- function(id, r) {
 
 
     # Resultat table of model
-    output$res_multi <- renderTable({
-      if (is.null(model_2())) {
-        return()
-      }
-      tidyMCMC(model_2()$stanfit,
-        conf.int = TRUE, conf.level = 0.95,
-        robust = TRUE, rhat = TRUE, ess = TRUE
-      )
-    })
+    
 
 
 
@@ -104,30 +99,90 @@ mod_Multivarie_server <- function(id, r) {
     })
 
 
+    output$result_multi<- renderUI({
+      if (is.null(model_2())) {
+        return()
+      }
+      
+      type_model <-  names(which(c(
+        Linéaire = "lin",
+        Binomial = "binom",
+        Beta = "beta",
+        Poisson = "poiss"
+      )=="input$type_glm"))
+    
+      
+      fluidPage(
+        
+        h1(type_model),
+        br(),
+        fluidRow(h3(textOutput(ns("model_text")))),
+        br(),
+        h2("Prior :"),
+        fluidRow(tableOutput(ns("model_prior"))),
+        br(),
+        h2("Résulats :"),
+        fluidRow(tableOutput(ns("res_multi"))),
+        br(),
+        h2("Graphiques :"),
+        fluidRow(plotOutput(ns("graph_model"))),
+        br(),
+        actionButton(ns("convergence"), "Analyse de convergence"),
+        
+      )
+      
+    })
+    
+    
     randomVals <- eventReactive(input$go, {
       runif(n = 1)
     })
+    
+    
+    
     output$model_text <- renderText({
       randomVals()
-      paste(isolate(input$variable), "~", paste(c(isolate(input$list_quanti), isolate(input$list_quali)), collapse = " + "))
+
+      
+      formule_default(isolate(input$variable),isolate(input$list_quanti), isolate(input$list_quali))
     })
 
-
+    
+    
     model_2 <- reactiveVal(value = NULL)
 
-
+    output$res_multi <- renderTable({
+      if (is.null(model_2())) {
+        return()
+      }
+      tidyMCMC(model_2()$stanfit,
+               conf.int = TRUE, conf.level = 0.95,
+               robust = TRUE, rhat = TRUE, ess = TRUE
+      )
+    })
+    
+    output$graph_model <- renderPlot({
+      
+      if (is.null(model_2())) {
+        return()
+      }
+      
+      bayesplot::mcmc_areas(model_2() %>% as.matrix())+theme_light()
+      
+    })
     prior_lm <- reactiveValues(
       prior_intercept = NULL,
       prior_beta_scale = NULL,
       prior_beta_location = NULL
     )
 
-
+    
     # Button to lauch analysis
     observeEvent(input$go, {
       print(prior_lm$prior_beta_scale)
       print(prior_lm$prior_beta_location)
-      formule <- paste(input$variable, "~", paste(c(input$list_quanti, input$list_quali), collapse = " + "))
+      formule<- formule_default(isolate(input$variable),isolate(input$list_quanti), isolate(input$list_quali))
+      
       if (is.null(prior_lm$prior_intercept)) {
         if (!is.null(prior_lm$prior_beta_scale) & !is.null(prior_lm$prior_beta_location)) {
           model_2(stan_glm(formule,
@@ -162,10 +217,18 @@ mod_Multivarie_server <- function(id, r) {
       if (is.null(model_2())) {
         return()
       }
-      tidyMCMC(model_2()$stanfit,
-        conf.int = TRUE, conf.level = 0.95,
-        robust = TRUE, rhat = TRUE, ess = TRUE
-      )
+      
+      if(!is.null(isolate(prior_lm$prior_intercept))){
+        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+        
+        return(data.frame(Var =  c("intercept", input$list_quanti, nom_var_quali),
+                   sd = c(prior_lm$prior_intercept[1],prior_lm$prior_beta_scale), 
+                   mu = c(prior_lm$prior_intercept[2] ,prior_lm$prior_beta_location))
+                   
+        )
+      }
+     
+ 
     })
 
     # Action of Ellicitaion button
@@ -180,7 +243,6 @@ mod_Multivarie_server <- function(id, r) {
       prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
       prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
       prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
-
 
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
 
