@@ -83,7 +83,6 @@ mod_inferenceUni_server <- function(id,r){
           )
           
           }
-        print(liste_choix)
           selectInput(ns("variable"), "Variable:",   choices=
                       liste_choix)
       })
@@ -181,7 +180,6 @@ mod_inferenceUni_server <- function(id,r){
   randomVals<- eventReactive(input$go,{
 
     alea=runif(n = 1)
-  print(alea)
   alea
   })
       observeEvent(randomVals(),{
@@ -194,7 +192,6 @@ mod_inferenceUni_server <- function(id,r){
                if(is.null(fitInference()[[x]])) return()
             list(h3(x),
             renderTable(as.data.frame.list(fitInference()[[x]]))
-               #  print(x)
                 )
              }
                 )
@@ -206,42 +203,19 @@ mod_inferenceUni_server <- function(id,r){
    
       
       observeEvent(input$ellicitation,ignoreInit = T, {
-        
+        print(input$sigma_0)
         mod_sd_prec_to_alph_beta_ui(ns("alpha_beta"))
+        mod_sd_prec_to_alph_beta_server("alpha_beta",(input$alpha_0),(input$beta_0),session,
+                                        "alpha_0","beta_0")
         
-        
-       
-        # print(input)
-      })
-      retour    <-  reactiveValues(
-        level3_select = NULL,
-        n_sigma_0 = NULL
-      )
-      
-      retour<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
-      
-      # ret<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
-      observeEvent(input$beta_0, {
-        print(retour)
-        retour<-mod_sd_prec_to_alph_beta_server("alpha_beta",input$alpha_0,input$beta_0,retour)
-        print(retour)
-      })
-      
-      
-      # print(output)
-      observeEvent(retour$level3_select,ignoreInit = T, {
-       
-        updateNumericInput(session, "alpha_0", value = retour$level3_select)
-     
-      })
-      
+            })
+   
       
       output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
       output$priorSigma<- renderPlot({
-        print(list(shape=input$alpha_0, rate=input$beta_0))
         ggplot(data=data.frame(x=c(0,1)),aes(x))+
-          stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=input$beta_0))+
+          stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=1/input$beta_0))+
           theme_light()+  theme(axis.text.y=element_blank(),
                                 axis.ticks.y=element_blank(),
                                 axis.ticks.x=element_blank()
@@ -254,7 +228,6 @@ mod_inferenceUni_server <- function(id,r){
       output$plotinferenceUni <- renderPlot(plot( fitInference()))
       
       output$priorSigma<- renderPlot({
-        print(list(shape=input$alpha_0, rate=input$beta_0))
         ggplot(data=data.frame(x=c(0,input$alpha_0*4)),aes(x))+
           stat_function(fun=dgamma,n=101, args=list(shape=input$alpha_0, rate=input$beta_0))+
           theme_light()+  theme(axis.text.y=element_blank(),
@@ -268,7 +241,6 @@ mod_inferenceUni_server <- function(id,r){
         x <- x[!is.na(x)]
         min_x<- min(x)
         max_x <- max(x)
-        print(list(shape=input$alpha_0, rate=input$beta_0))
         ggplot(data=data.frame(x=c(min_x-max_x,2*max_x)),aes(x))+
           stat_function(fun=dnorm,n=101, args = list(mean = input$mu0, sd = 1/input$k0))+
           theme_light()+  theme(axis.text.y=element_blank(),
