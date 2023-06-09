@@ -146,7 +146,11 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css")
+      tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css"),
+      
+        tags$style(HTML(css)),
+        tags$script(HTML(js))
+      
     ),
     
     #addResourcePath("www", tempdir),
@@ -168,6 +172,9 @@ app_ui <- function(request) {
                                          sidebarMenu(
                                            menuItem("Inférence univarié", tabName = "infUni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
                                            ),
+                                           menuItem("Multivarié", tabName = "multivarie_Uni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
+                                           ),
+                                           
                                           #shinythemes::themeSelector(),
                                            menuItem("Accueil", tabName = "accueil", icon = icon("fa-light fa-star",verify_fa = FALSE)),
                                            menuItem("Base de données", tabName = "base", icon = icon("fa-light fa-database",verify_fa = FALSE)),
@@ -202,6 +209,9 @@ app_ui <- function(request) {
                                            ),
                                            tabItem(tabName = "infUni",
                                                    mod_inferenceUni_ui("inferenceUni_1")
+                                           ),
+                                           tabItem(tabName = "multivarie_Uni",
+                                                   mod_Multivarie_ui("multivarie_1")
                                            ),
                                            tabItem(tabName = "croisements",
                                                    mod_Croisements_ui("Croisements_1")

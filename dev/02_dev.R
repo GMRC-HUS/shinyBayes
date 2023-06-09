@@ -20,8 +20,11 @@ golem::add_module(name = "Concordance", with_test = FALSE) # Name of the module
 golem::add_module(name = "SaisieManuelle", with_test = FALSE) # Name of the module
 golem::add_module(name = "Redaction", with_test = FALSE) # Name of the module
 
+golem::add_module(name = "Multivarie", with_test = T)
+
 golem::add_fct("ifelse_perso")
 golem::add_fct( "fonctions" ) 
+golem::add_utils( "fonctions" )
 golem::add_fct( "code_sans_dep" ) 
 ## 2.2 Add dependencies
 
@@ -42,9 +45,13 @@ usethis::use_package( "shinydashboardPlus")
 usethis::use_package("utils" )
 usethis::use_package("desctable" )
 usethis::use_package("moments" )
+usethis::use_package("sortable" )
+usethis::use_package("broom.mixed" )
+usethis::use_package("rstanarm" )
+usethis::use_package("bslib" )
+usethis::use_package("ggdist" )
 
-
-
+attachment::att_from_rscripts()
 
 ## 2.3 Add tests
 
@@ -63,14 +70,19 @@ golem::add_js_handler( "handlers" )
 # 3. Documentation
 
 ## 3.1 Vignette
-usethis::use_vignette("gmrc")
+usethis::use_vignette("GmrcShinyBayes")
 devtools::build_vignettes()
+
 
 ## 3.2 Code coverage
 ## You'll need GitHub there
 usethis::use_github()
 usethis::use_travis()
 usethis::use_appveyor()
+
+
+## 3.3 format r script
+styler::style_file("R/mod_Multivarie.R")
 
 # You're now set! 
 # go to dev/03_deploy.R
@@ -81,3 +93,8 @@ golem::browser_button()
 golem::add_css_file("mise_en_forme")
 usethis::use_package("shinyWidgets")
 golem::add_fct("sd_prec_to_alpha_beta")
+
+
+usethis::use_pkgdown_github_pages()
+pkgdown::build_site()
+
