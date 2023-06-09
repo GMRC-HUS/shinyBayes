@@ -155,10 +155,12 @@ mod_Multivarie_server <- function(id, r) {
       if (is.null(model_2())) {
         return()
       }
-      tidyMCMC(model_2()$stanfit,
-               conf.int = TRUE, conf.level = 0.95,
-               robust = TRUE, rhat = TRUE, ess = TRUE
-      )
+      
+      res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select(moyenne=mean, median =`50%`, `2.5%`, `97.5%`)
+      # tidyMCMC(model_2()$stanfit,
+      #          conf.int = TRUE, conf.level = 0.95,
+      #          robust = TRUE, rhat = TRUE, ess = TRUE
+      # )%>% select(estimate,conf.low, conf.high)
     })
     
     output$graph_model <- renderPlot({
