@@ -37,7 +37,7 @@ mod_Multivarie_ui <- function(id) {
           actionButton(ns("ellicitation"), "Ellicitation"),
           
           text_aide("Texte Aide ellicitation multivarié "),
-          h3("Two IT ?"),
+          h3("Seuils/Two IT ?"),
           shinyWidgets::materialSwitch(ns("twit"), "", FALSE, status = "success", right = T),
           uiOutput(ns("twit_ui")), text_aide("Texte Aide Two IT multivarié "),
           actionButton(ns("go"), "Go :")
