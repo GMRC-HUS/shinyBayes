@@ -30,7 +30,7 @@ mod_inferenceUni_ui <- function(id){
           h2("Two IT ?",text_aide("Texte Aide sur le two it ")),
           
 
-          shinyWidgets::materialSwitch(ns("twit"),"", FALSE, status = "success",right=T),
+          shinyWidgets::materialSwitch(ns("twit"),"", value =FALSE, status = "success",right=T),
           uiOutput(ns("twit_ui")),
           actionButton(ns("go"),"Go :")
         ),
@@ -134,34 +134,13 @@ mod_inferenceUni_server <- function(id,r){
      
         output$twit_ui <- renderUI({
           if(input$twit){
+            print(isolate(seuil_twoit()))
+            #twitUi("id_i")
+            twitUi(ns("id_i"))
             
-          tags$div(splitLayout(cellWidths = c("50%","50%"),
-            h3("Rejet :"),h3("Acceptation : ")),
-            splitLayout(cellWidths = c("25%","25%","25%","25%"),
-                        numericInput(ns("theta_P_min"), "Min :",   
-                                     # min = min_x-max_x, max = max_x*2, 
-                                     value = 0
-                                     
-                        ),
-                        
-                        numericInput(ns("theta_P_max"),"Max :",
-                                     value =0)
-            ,
-            
-           
-                        numericInput(ns("theta_A_min"), "Min :",   
-                                     # min = min_x-max_x, max = max_x*2, 
-                                     value = 0
-                                     
-                        ),
-                        
-                        numericInput(ns("theta_A_max"),"Max :",
-                                     value =0)
-            ))
-          
-}
-                    })
-      
+          }})
+     
+      seuil_twoit<- twitServer("id_i")
       
       fitInference <- reactive({
         randomVals()
@@ -210,7 +189,7 @@ mod_inferenceUni_server <- function(id,r){
    
       
       observeEvent(input$ellicitation,ignoreInit = T, {
-        print(input$sigma_0)
+ 
         mod_sd_prec_to_alph_beta_ui(ns("alpha_beta"))
         mod_sd_prec_to_alph_beta_server("alpha_beta",(input$alpha_0),(input$beta_0),session,
                                         "alpha_0","beta_0")

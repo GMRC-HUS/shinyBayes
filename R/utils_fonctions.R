@@ -38,6 +38,85 @@ $(function () {
   $('[data-toggle=tooltip]').tooltip()
 })
 "
+
+twitUi <- function(id) {
+  # `NS(id)` returns a namespace function, which was save as `ns` and will
+  # invoke later.
+  ns <- NS(id)
+  tags$div(
+  shinyWidgets::materialSwitch(ns("twit_funct"),"Two It", FALSE, status = "success",right=T),
+  uiOutput(ns("twit_ui")),
+  shinyWidgets::materialSwitch(ns("seuil"),"Seuil", FALSE, status = "success",right=T),
+  uiOutput(ns("seuil_ui"))
+  
+  )
+
+
+}
+
+
+
+
+
+
+# Module server function
+twitServer <- function(id) {
+  moduleServer(
+    id,
+    
+    
+    ## Below is the module function
+    function(input, output, session) {
+      ns <- session$ns
+      output$twit_ui <- renderUI({
+        if(input$twit_funct){
+          print(T)
+          tags$div(
+            splitLayout(cellWidths = c("50%", "50%"),
+                        h3("Rejet :"), h3("Acceptation : ")),
+            splitLayout(
+              cellWidths = c("25%", "25%", "25%", "25%"),
+              numericInput(ns("theta_P_min"), "Min :",
+                           # min = min_x-max_x, max = max_x*2,
+                           value = 0),
+              numericInput(ns("theta_P_max"), "Max :",
+                           value = 0)
+              ,
+              numericInput(ns("theta_A_min"), "Min :",
+                           # min = min_x-max_x, max = max_x*2,
+                           value = 0),
+              numericInput(ns("theta_A_max"), "Max :",
+                           value = 0)
+            )
+          )
+        }
+      })
+      output$seuil_ui <- renderUI({
+        if(input$seuil){
+          tags$div(
+            
+            
+            numericInput(ns("valeur_seuil"), "Valeur du seuil :",
+                         # min = min_x-max_x, max = max_x*2,
+                         value = 0)
+            
+          )
+        }
+      })
+      
+      return(reactive({list( input$theta_P_min, 
+                   "theta_P_max" = input$theta_P_max, 
+                   "theta_A_min" = input$theta_A_min,
+                   "theta_A_max" = input$theta_A_max,
+                   "valeur_seuil" = input$valeur_seuil
+      )}))
+      
+    }
+      )    
+}
+
+  
+
 text_aide <- function(text){
   return(span(
     `data-toggle` = "tooltip", `data-placement` = "right",

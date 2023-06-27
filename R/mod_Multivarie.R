@@ -12,6 +12,7 @@
 #' @import sortable
 #' @import rstanarm
 #' @import bayesplot
+#' @import shinyWidgets
 
 mod_Multivarie_ui <- function(id) {
   ns <- NS(id)
@@ -22,28 +23,31 @@ mod_Multivarie_ui <- function(id) {
         sidebarPanel(
           width = 4,
           radioButtons(
-            ns("type_glm"), "Type de regression",
+            ns("type_glm"), HTML(paste(h2("Type de regression"),text_aide("Choix type de régression multivarié"))),
             c(
               Linéaire = "lin",
               Binomial = "binom",
               Beta = "beta",
               Poisson = "poiss"
             ), "lin"
-          ), text_aide("Choix type de régression multivarié"),
+          ), 
           uiOutput(ns("choix_y")),
           uiOutput(ns("propositions_multi")),
+          uiOutput(ns("refactorisation")),
           
           h3("Choix des priors"),
           actionButton(ns("ellicitation"), "Ellicitation"),
           
           text_aide("Texte Aide ellicitation multivarié "),
-          h3("Seuils/Two IT ?"),
-          shinyWidgets::materialSwitch(ns("twit"), "", FALSE, status = "success", right = T),
-          uiOutput(ns("twit_ui")), text_aide("Texte Aide Two IT multivarié "),
+          h3("Seuils/Two IT ?"),text_aide("Texte Aide Two IT multivarié "),
+          shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
+          uiOutput(ns("twit_ui")),
+          
           actionButton(ns("go"), "Go :")
         ),
         mainPanel(
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
+          
           uiOutput(ns("result_multi"))
         
         ) # fin MainPanel
@@ -60,13 +64,24 @@ mod_Multivarie_server <- function(id, r) {
     ns <- session$ns
 
     output$choix_y <- renderUI({
-      selectInput(ns("variable"), "Variable d'interêt :",
+      selectInput(ns("variable"), h2("Variable d'interêt :"),
         choices =
           r$noms
       )
     })
 
 
+    
+    # Choix seuil two_it
+    output$twit_ui <- renderUI({
+      if(input$twit){
+        print(isolate(seuil_twoit()))
+        #twitUi("id_i")
+        twitUi(ns("id_i"))
+        
+      }})
+    
+    seuil_twoit<- twitServer("id_i")
 
     # Resultat table of model
     
@@ -77,7 +92,7 @@ mod_Multivarie_server <- function(id, r) {
       liste_choix <- r$noms
       liste_choix <- liste_choix[-which(liste_choix == input$variable)]
       bucket_list(
-        header = "Choix des variables pour le modèle",
+        header = HTML("<h3>Variable explicatives :</h3>"),
         group_name = "bucket_list_group",
         orientation = "vertical",
         add_rank_list(
@@ -86,17 +101,22 @@ mod_Multivarie_server <- function(id, r) {
           input_id = ns("choix_base")
         ),
         add_rank_list(
-          text = "Variables quantitatives",
+          text = HTML("<strong>Variables quantitatives</strong>"),
           labels = NULL,
-          input_id = ns("list_quanti")
+          input_id = ns("list_quanti"),
+          options = sortable_options(
+            filter  = "Species",
+            preventOnFilter=  T
+          )
         ),
         add_rank_list(
-          text = "Variables qualitatives",
+          text =  HTML("<strong>Variables qualitatives</strong>"),
           labels = NULL,
           input_id = ns("list_quali")
         )
       )
     })
+
 
 
     output$result_multi<- renderUI({
@@ -121,6 +141,8 @@ mod_Multivarie_server <- function(id, r) {
         h2("Prior :"),
         fluidRow(tableOutput(ns("model_prior"))),
         br(),
+        uiOutput(ns("diag")),
+        br(),
         h2("Résulats :"),
         fluidRow(tableOutput(ns("res_multi"))),
         br(),
@@ -132,7 +154,60 @@ mod_Multivarie_server <- function(id, r) {
       )
       
     })
+    output$refactorisation<- renderUI({
+      if (length(input$list_quali)==0) {
+        return()
+      }else{
+        
+       
+        actionButton(ns("refact_button"), "Sélection des modalités de référence")
+      }
+      
+    })
     
+   
+    observeEvent(input$refact_button, {
+
+      nom_var_quali <-isolate(input$list_quali)
+    
+      showModal(
+        modalDialog(title = "Séléction des références",
+          tagList(lapply(1:length(nom_var_quali), function(i) {
+            x <-  nom_var_quali[i]
+            r$BDD[,x]<- as.factor(r$BDD[,x])
+            var<- r$BDD[,x]
+            var<- as.factor(var)
+            noms_levels <- levels(var)
+            
+            
+          list(
+            radioButtons(inputId =ns(paste( "fact_", x, sep = "")), label= x ,choices =noms_levels,selected = noms_levels[1] )
+             
+            )
+          })),
+          footer = tagList(
+            actionButton(ns("ok_fact"), "OK")
+
+          )
+        )
+      )
+      
+  
+      
+  
+     
+    })
+    
+    observeEvent(input$ok_fact, {
+      nom_var_quali <-isolate(input$list_quali)
+      for (x in nom_var_quali) {
+        
+        
+        r$BDD[,x]<-  relevel(r$BDD[,x], ref =   input[[paste( "fact_", x, sep = "")]])
+        
+      }
+      removeModal()
+    })
     
     randomVals <- eventReactive(input$go, {
       runif(n = 1)
@@ -173,45 +248,60 @@ mod_Multivarie_server <- function(id, r) {
       
     })
     prior_lm <- reactiveValues(
+      
       prior_intercept = NULL,
       prior_beta_scale = NULL,
       prior_beta_location = NULL
     )
 
+    observeEvent(list(input$list_quanti, input$list_quali), {
+      # reset the list
+      
+      prior_lm$prior_intercept = NULL
+      prior_lm$prior_beta_scale = NULL
+      prior_lm$prior_beta_location = NULL
+    })
     
     # Button to lauch analysis
     observeEvent(input$go, {
-      print(prior_lm$prior_beta_scale)
-      print(prior_lm$prior_beta_location)
-      formule<- formule_default(isolate(input$variable),isolate(input$list_quanti), isolate(input$list_quali))
-      
+      list_quanti = isolate(input$list_quanti)
+      list_quali = isolate(input$list_quali)
+      y = isolate(input$variable)
+data =  r$BDD%>%select(y,list_quanti,list_quali)
+
+if(length(list_quanti)>0) data = data%>%mutate_at(list_quanti,  ~as.numeric(as.character(.)))
+
+if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
+      formule<- formule_default(y,list_quanti,list_quali)
+print("ok1")
       if (is.null(prior_lm$prior_intercept)) {
         if (!is.null(prior_lm$prior_beta_scale) & !is.null(prior_lm$prior_beta_location)) {
           model_2(stan_glm(formule,
             family = gaussian(link = "identity"),
-            data = r$BDD, refresh = 0,
+            data = data, refresh = 0,
             prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)
           ))
         } else {
           model_2(stan_glm(formule,
             family = gaussian(link = "identity"),
-            data = r$BDD, refresh = 0
+            data =data, refresh = 0
           ))
         }
       } else if (!is.null(prior_lm$prior_beta_scale) & !is.null(prior_lm$prior_beta_location)) {
         model_2(stan_glm(formule,
           family = gaussian(link = "identity"),
-          data = r$BDD, refresh = 0,
+          data = data, refresh = 0,
           prior_intercept = normal(prior_lm$prior_intercept[1], prior_lm$prior_intercept[2]),
           prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)
         ))
       } else {
         model_2(stan_glm(formule,
           family = gaussian(link = "identity"),
-          data = r$BDD, refresh = 0,
+          data =data, refresh = 0,
           prior_intercept = normal(location = prior_lm$prior_intercept[1], scale = prior_lm$prior_intercept[2])
         ))
       }
+print("ok2")
     })
 
     # Afficher les prior
@@ -228,11 +318,54 @@ mod_Multivarie_server <- function(id, r) {
                    mu = c(prior_lm$prior_intercept[2] ,prior_lm$prior_beta_location))
                    
         )
+      }else{
+        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+        
+        return(data.frame(Var =  c("intercept", input$list_quanti, nom_var_quali),
+                          sd = "default",
+                          mu = "default")
+
+        )
+        
       }
      
  
     })
 
+    
+    # Afficher les diags de convergence : 
+    output$diag <-  renderUI({
+      if (is.null(model_2())) {
+        return()
+      }
+      
+      rhats <-  rhat(model_2())
+     check =  sum(rhats>1.05)==0
+     if(check){
+      
+      actionBttn(
+        inputId = ns("convergence"),
+        label = "Convergence", 
+        style = "gradient",
+        color = "success",
+        icon = icon("check")
+      )
+      
+     }else{
+       
+       actionBttn(
+         inputId = ns("convergence"),
+         label = "Convergence", 
+         style = "gradient",
+         color = "warning",
+         icon = icon("exclamation")
+       )
+     }
+      
+      
+    })
+    
+    
     # Action of Ellicitaion button
     observeEvent(input$ellicitation, ignoreInit = T, {
       # paste(isolate(input$variable),"~",paste(c(isolate(input$list_quanti), isolate(input$list_quali)), collapse = " + "))
@@ -248,6 +381,10 @@ mod_Multivarie_server <- function(id, r) {
 
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
 
+      
+      
+      
+      
       showModal(
         modalDialog(
           tagList(lapply(1:length(c("intercept", input$list_quanti, nom_var_quali)), function(i) {
@@ -286,30 +423,48 @@ mod_Multivarie_server <- function(id, r) {
         })
       })
 
-      observeEvent(input$defaut, {
-        for (x in c("intercept", input$list_quanti, nom_var_quali)) {
-          updateNumericInput(session, paste(x, "_mu_0", sep = ""), value = ifelse(x == "intercept", default_prior_intercept_def[1], default_prior_beta_location_def))
 
-          updateNumericInput(session, paste(x, "_sigma_0", sep = ""), value = ifelse(x == "intercept", default_prior_intercept_def[2], default_prior_beta_scale_def))
-        }
-      })
-
-      observeEvent(input$ok, {
-        prior_mu <- unlist(lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {
-          input[[paste(i, "_mu_0", sep = "")]]
-        }))
-        prior_sd <- unlist(lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {
-          input[[paste(i, "_sigma_0", sep = "")]]
-        }))
-
-        removeModal()
-        prior_lm$prior_intercept <- c(prior_mu[1], prior_sd[1])
-        prior_lm$prior_beta_scale <- prior_sd[-1]
-        prior_lm$prior_beta_location <- prior_mu[-1]
-      })
     })
+    
+    observeEvent(input$defaut, {
+      default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
+      default_prior_beta_scale_def <- 2.5
+      default_prior_beta_location_def <- 0
+      
+      prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
+      prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
+      prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
+      
+      nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+      
+      for (x in c("intercept", input$list_quanti, nom_var_quali)) {
+        updateNumericInput(session, paste(x, "_mu_0", sep = ""), value = ifelse(x == "intercept", default_prior_intercept_def[1], default_prior_beta_location_def))
+        
+        updateNumericInput(session, paste(x, "_sigma_0", sep = ""), value = ifelse(x == "intercept", default_prior_intercept_def[2], default_prior_beta_scale_def))
+      }
+    })
+    
+    observeEvent(input$ok, {
+      nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+      
+      prior_mu <- unlist(lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {
+        input[[paste(i, "_mu_0", sep = "")]]
+      }))
+      prior_sd <- unlist(lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {
+        input[[paste(i, "_sigma_0", sep = "")]]
+      }))
+      
+      removeModal()
+      prior_lm$prior_intercept <- c(prior_mu[1], prior_sd[1])
+      prior_lm$prior_beta_scale <- prior_sd[-1]
+      prior_lm$prior_beta_location <- prior_mu[-1]
+    })
+    
+    
   })
 }
+
+
 
 ## To be copied in the UI
 # mod_Multivarie_ui("Multivarie_1")

@@ -49,7 +49,7 @@ if(is.null(golem::get_golem_options("BDD"))){
  # mod_Concordance_server("Concordance_1",r)
   mod_Accueil_server("Accueil_1")
   mod_Descriptifs_server("Descriptifs_1",r)
-  mod_inferenceUni_server("inferenceUni_1",r)
+   mod_inferenceUni_server("inferenceUni_1",r)
   mod_Multivarie_server("multivarie_1",r)
   #mod_SaisieManuelle_server("SaisieManuelle_1")
   

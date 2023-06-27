@@ -170,9 +170,10 @@ app_ui <- function(request) {
                            dashboardHeader(title = "Base de données"),
                                        dashboardSidebar(
                                          sidebarMenu(
-                                           menuItem("Inférence univarié", tabName = "infUni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
-                                           ),
+                                           
                                            menuItem("Multivarié", tabName = "multivarie_Uni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
+                                           ),
+                                           menuItem("Inférence univarié", tabName = "infUni"#, icon = icon("fa-light fa-percent",verify_fa = FALSE)
                                            ),
                                            
                                           #shinythemes::themeSelector(),
