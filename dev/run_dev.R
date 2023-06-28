@@ -9,7 +9,7 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # Run the application
-shiba::run_app(BDD=iris,options = "launch.browser")
+ShiBA::run_app(BDD=iris,options = "launch.browser")
 
 
 #min-max x 

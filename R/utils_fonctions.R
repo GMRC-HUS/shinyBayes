@@ -177,6 +177,77 @@ tablePourcent<- function(base){
   
 }
 
+diag_convergence<- function(fit){
+  
+  rhats <-  bayesplot::rhat(fit)
+  check =  sum(rhats>1.05)==0
+  return(check)
+  
+}
+verif_conv <- function(fit,shiny = F, nb_repeat = 3){
+  
+  for(i in 1:nb_repeat) {
+    print(i)
+    checks <- diag_convergence(fit)
+    if (checks) {
+      return(fit)
+    }
+    fit <-
+      update(
+        fit,
+        iter = (fit$stanfit@sim$iter * 2),
+        keep_every = fit$stanfit@sim$thin * 2,
+        seed = 42
+      )
+    print(fit$stanfit@sim$iter)
+    checks <- diag_convergence(fit)
+    if (checks) {
+      return(fit)
+    }
+    
+    if (shiny) {
+      shinyalert(
+        "Warning!",
+        paste0(
+          "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
+          fit$stanfit@sim$iter,
+          "\n Thining augmenté à ",
+          fit$stanfit@sim$thin,
+          "\n\n"
+        )
+        ,
+        type = "warning"
+      )
+    } else{
+      message(
+        paste0(
+          "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
+          fit$stanfit@sim$iter,
+          "\n\n Thining augmenté à ",
+          fit$stanfit@sim$thin,
+          "\n\n"
+        )
+      )
+    }
+    
+    
+    
+    
+    
+  }
+  if (shiny) {
+    shinyalert("Warning!",
+               paste0("Problème de convergence, vérifier le modèle")
+               ,
+               type = "error")
+  } else{
+    message("Problème de convergence, vérifier le modèle")
+  }
+  return(fit)
+  
+}
+
+
 pieChart<- function(base){
   data<- tablePourcent(base)
   bp<- ggplot(data=data, aes(x=0 ,y=pourcent, fill=reorder(nom, 1/pourcent)))+

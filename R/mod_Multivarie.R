@@ -13,6 +13,7 @@
 #' @import rstanarm
 #' @import bayesplot
 #' @import shinyWidgets
+#' @import shinyalert
 
 mod_Multivarie_ui <- function(id) {
   ns <- NS(id)
@@ -273,35 +274,18 @@ if(length(list_quanti)>0) data = data%>%mutate_at(list_quanti,  ~as.numeric(as.c
 
 if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       formule<- formule_default(y,list_quanti,list_quali)
-print("ok1")
-      if (is.null(prior_lm$prior_intercept)) {
-        if (!is.null(prior_lm$prior_beta_scale) & !is.null(prior_lm$prior_beta_location)) {
-          model_2(stan_glm(formule,
-            family = gaussian(link = "identity"),
-            data = data, refresh = 0,
-            prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)
-          ))
-        } else {
-          model_2(stan_glm(formule,
-            family = gaussian(link = "identity"),
-            data =data, refresh = 0
-          ))
-        }
-      } else if (!is.null(prior_lm$prior_beta_scale) & !is.null(prior_lm$prior_beta_location)) {
-        model_2(stan_glm(formule,
-          family = gaussian(link = "identity"),
-          data = data, refresh = 0,
-          prior_intercept = normal(prior_lm$prior_intercept[1], prior_lm$prior_intercept[2]),
-          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)
-        ))
-      } else {
-        model_2(stan_glm(formule,
-          family = gaussian(link = "identity"),
-          data =data, refresh = 0,
-          prior_intercept = normal(location = prior_lm$prior_intercept[1], scale = prior_lm$prior_intercept[2])
-        ))
-      }
-print("ok2")
+      
+          fit<- glm_Shiba(formule,
+                          family = gaussian(link = "identity"),
+                          data = r$BDD, refresh = 0,
+                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location),#iter = 20
+          )
+        
+      
+      
+     
+      model_2(fit)
+
     })
 
     # Afficher les prior
@@ -339,9 +323,8 @@ print("ok2")
         return()
       }
       
-      rhats <-  rhat(model_2())
-     check =  sum(rhats>1.05)==0
-     if(check){
+ 
+     if(diag_convergence(model_2())){
       
       actionBttn(
         inputId = ns("convergence"),

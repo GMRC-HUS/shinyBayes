@@ -1,5 +1,5 @@
-Package: shiba
-Title: Shiny Bayesian Analysis
+Package: ShiBA
+Title: ShiBA
 Version: 0.0.0.9000
 Authors@R: person('GMRC', '', email = 'ShinyGMRC@chru-strasbourg.fr', role = c('cre', 'aut'))
 Description: PKG_DESC.

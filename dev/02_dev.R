@@ -23,6 +23,7 @@ golem::add_module(name = "Redaction", with_test = FALSE) # Name of the module
 golem::add_module(name = "Multivarie", with_test = T)
 
 golem::add_fct("ifelse_perso")
+golem::add_fct("glm_shiba")
 golem::add_fct( "fonctions" ) 
 golem::add_utils( "fonctions" )
 golem::add_fct( "code_sans_dep" ) 

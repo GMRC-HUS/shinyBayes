@@ -10,7 +10,7 @@
 
 golem::fill_desc(
   pkg_name = "ShiBA", # The Name of the package containing the App 
-  pkg_title = "Gmrc Shiny Bayes", # The Title of the package containing the App 
+  pkg_title = "ShiBA", # The Title of the package containing the App 
   pkg_description = "PKG_DESC.", # The Description of the package containing the App 
   author_first_name = "GMRC", # Your First Name
   author_last_name = "",  # Your Last Name
