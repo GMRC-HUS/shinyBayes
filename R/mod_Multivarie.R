@@ -14,11 +14,15 @@
 #' @import bayesplot
 #' @import shinyWidgets
 #' @import shinyalert
+#' @import shinycssloaders
+#' @import kableExtra
+#' @import waiter
 
 mod_Multivarie_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    fluidPage(
+    fluidPage(   waiter::use_waiter(), 
+                 
       titlePanel("Multivarié"),
       sidebarLayout(
         sidebarPanel(
@@ -77,7 +81,7 @@ mod_Multivarie_server <- function(id, r) {
     output$twit_ui <- renderUI({
       if(input$twit){
         print(isolate(seuil_twoit()))
-        #twitUi("id_i")
+        
         twitUi(ns("id_i"))
         
       }})
@@ -120,41 +124,7 @@ mod_Multivarie_server <- function(id, r) {
 
 
 
-    output$result_multi<- renderUI({
-      if (is.null(model_2())) {
-        return()
-      }
-      
-      type_model <-  names(which(c(
-        Linéaire = "lin",
-        Binomial = "binom",
-        Beta = "beta",
-        Poisson = "poiss"
-      )=="input$type_glm"))
-    
-      
-      fluidPage(
-        
-        h1(type_model),
-        br(),
-        fluidRow(h3(textOutput(ns("model_text")))),
-        br(),
-        h2("Prior :"),
-        fluidRow(tableOutput(ns("model_prior"))),
-        br(),
-        uiOutput(ns("diag")),
-        br(),
-        h2("Résulats :"),
-        fluidRow(tableOutput(ns("res_multi"))),
-        br(),
-        h2("Graphiques :"),
-        fluidRow(plotOutput(ns("graph_model"))),
-        br(),
-        actionButton(ns("convergence"), "Analyse de convergence"),
-        
-      )
-      
-    })
+
     output$refactorisation<- renderUI({
       if (length(input$list_quali)==0) {
         return()
@@ -227,27 +197,25 @@ mod_Multivarie_server <- function(id, r) {
     
     model_2 <- reactiveVal(value = NULL)
 
-    output$res_multi <- renderTable({
+    output$res_multi <- function(){
       if (is.null(model_2())) {
         return()
       }
       
-      res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select(moyenne=mean, median =`50%`, `2.5%`, `97.5%`)
+      res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
+        
       # tidyMCMC(model_2()$stanfit,
       #          conf.int = TRUE, conf.level = 0.95,
       #          robust = TRUE, rhat = TRUE, ess = TRUE
       # )%>% select(estimate,conf.low, conf.high)
-    })
+      
+      res%>% 
+        kbl%>%
+        kable_styling(full_width = F,bootstrap_options = c( "hover"),fixed_thead = T)%>%
+        row_spec( nrow(res)-2, extra_css = "border-bottom: 1px solid")
+    }
     
-    output$graph_model <- renderPlot({
-      
-      if (is.null(model_2())) {
-        return()
-      }
-      
-      bayesplot::mcmc_areas(model_2() %>% as.matrix())+theme_light()
-      
-    })
+  
     prior_lm <- reactiveValues(
       
       prior_intercept = NULL,
@@ -262,9 +230,14 @@ mod_Multivarie_server <- function(id, r) {
       prior_lm$prior_beta_scale = NULL
       prior_lm$prior_beta_location = NULL
     })
-    
+    waiter <- waiter::Waiter$new(id="div_model")
     # Button to lauch analysis
     observeEvent(input$go, {
+       
+       waiter$show()
+      
+      #showNotification("Modèle en cours !", type = "message")
+      model_2(NULL)
       list_quanti = isolate(input$list_quanti)
       list_quali = isolate(input$list_quali)
       y = isolate(input$variable)
@@ -282,40 +255,39 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
           )
         
       
-      
-     
-      model_2(fit)
+          waiter$hide()
+     model_2(fit)
 
     })
 
-    # Afficher les prior
+    
     output$model_prior <- renderTable({
       if (is.null(model_2())) {
         return()
       }
-      
-      if(!is.null(isolate(prior_lm$prior_intercept))){
-        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+      prior_sel = isolate(prior_lm$prior_intercept)
+      if(!is.null(prior_sel)){
+        nom_var_quali <- lapply(isolate(input$list_quali), function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
         
-        return(data.frame(Var =  c("intercept", input$list_quanti, nom_var_quali),
-                   sd = c(prior_lm$prior_intercept[1],prior_lm$prior_beta_scale), 
-                   mu = c(prior_lm$prior_intercept[2] ,prior_lm$prior_beta_location))
-                   
+        return(data.frame(Var =  c("intercept", isolate(input$list_quanti), nom_var_quali),
+                          sd = c(prior_sel$prior_intercept[1],prior_sel$prior_beta_scale), 
+                          mu = c(prior_sel$prior_intercept[2] ,prior_sel$prior_beta_location))
+               
         )
       }else{
-        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+        nom_var_quali <- lapply(isolate(input$list_quali), function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
         
-        return(data.frame(Var =  c("intercept", input$list_quanti, nom_var_quali),
+        return(data.frame(Var =  c("intercept", isolate(input$list_quanti), nom_var_quali),
                           sd = "default",
                           mu = "default")
-
+               
         )
         
       }
-     
- 
+      
+      
     })
-
+    
     
     # Afficher les diags de convergence : 
     output$diag <-  renderUI({
@@ -323,30 +295,119 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
         return()
       }
       
- 
-     if(diag_convergence(model_2())){
       
-      actionBttn(
-        inputId = ns("convergence"),
-        label = "Convergence", 
-        style = "gradient",
-        color = "success",
-        icon = icon("check")
-      )
-      
-     }else{
-       
-       actionBttn(
-         inputId = ns("convergence"),
-         label = "Convergence", 
-         style = "gradient",
-         color = "warning",
-         icon = icon("exclamation")
-       )
-     }
+      if(diag_convergence(model_2())){
+        
+        actionBttn(
+          inputId = ns("convergence"),
+          label = "Analyse de convergence", 
+          style = "gradient",
+          color = "success",
+          icon = icon("check")
+        )
+        
+      }else{
+        
+        actionBttn(
+          inputId = ns("convergence"),
+          label = "Analyse de convergence", 
+          style = "gradient",
+          color = "warning",
+          icon = icon("exclamation")
+        )
+      }
       
       
     })
+    output$graph_model <- renderPlot({
+      
+      if (is.null(model_2())) {
+        return()
+      }
+      
+      bayesplot::mcmc_areas(model_2() %>% as.matrix())+theme_light()
+      
+    })
+    
+    
+    output$result_multi<- renderUI({
+      if (is.null(model_2())) {
+        print("ih")
+        return()
+      }
+      
+      type_model <-  names(which(c(
+        Linéaire = "lin",
+        Binomial = "binom",
+        Beta = "beta",
+        Poisson = "poiss"
+      )=="input$type_glm"))
+      
+      
+      fluidPage(
+     div(id="div_model",      
+        h1(type_model),
+        br(),
+        fluidRow(h3(textOutput(ns("model_text"))%>%withSpinner)),
+        br(),
+        h2("Prior :"),
+        fluidRow(align="center",tableOutput(ns("model_prior"))%>%withSpinner),
+        br(),
+        fluidRow(align="center",uiOutput(ns("diag"))%>%withSpinner),
+        br(),
+        h2("Résultats :"),
+        fluidRow(align="center",tableOutput(ns("res_multi"))%>%withSpinner),
+        br(),
+        h2("Graphiques :"),
+        fluidRow(align="center",plotOutput(width = 600, height = 400,ns("graph_model"))%>%withSpinner),
+        br(),
+        
+        
+        
+      ))
+    })
+    # Afficher les prior
+   
+    
+    # diagnostique de convergence
+    observeEvent(input$convergence,{
+      
+      nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "")) %>% unlist()
+      showModal(
+        modalDialog(
+          tagList(
+            div(align = "center",
+            lapply(c("(Intercept)", input$list_quanti, nom_var_quali,"sigma"), function(x) {
+              print(x)
+              list(
+                h2(x),
+              (plotOutput(width = "100%", height = 400, ns(paste(x, "_courbe_diag", sep = ""))))%>% withSpinner()
+             
+            
+              )
+            
+          }))),
+          footer = modalButton("",icon = icon("xmark")),
+          easyClose = T,
+          size = "l",
+        )
+      )
+    
+      
+      
+      lapply(c("(Intercept)", isolate(input$list_quanti), nom_var_quali,"sigma"), function(i) {
+        print(i)    
+        output[[paste(i, "_courbe_diag", sep = "")]] <- renderPlot({
+          plot_diag(model_2(),i)
+        })  
+      
+      }
+      )
+      
+    }
+    
+    
+    )
     
     
     # Action of Ellicitaion button
@@ -428,6 +489,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
     })
     
     observeEvent(input$ok, {
+      
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
       
       prior_mu <- unlist(lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {

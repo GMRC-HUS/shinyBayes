@@ -5,8 +5,9 @@
 #' @return The return value, if any, from executing the utility.
 #'
 #' @noRd
+#' @import gridExtra
 
-
+theme_ShiBA<- theme_light
 size_box <- "150px"
 
 css <- '
@@ -348,4 +349,16 @@ file.choose2 <- function(...) {
   }, error = function(ex) {
   })
   pathname;
+}
+
+
+plot_diag<- function(fit,var){
+  
+  chains<- mcmc_trace(fit, pars=var)+ theme_ShiBA()
+  
+  autocorrelation<-mcmc_acf_bar(fit, pars=var)+  facet_grid(Parameter~Chain)+ theme_ShiBA()
+  
+
+  grid = grid.arrange(chains,autocorrelation,nrow = 2)
+  return(grid)
 }
