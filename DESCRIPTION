@@ -34,7 +34,8 @@ Imports:
     broom.mixed,
     rstanarm,
     bslib,
-    ggdist
+    ggdist,
+    kableExtra
 Remotes: GMRC-HUS/shiba
 Encoding: UTF-8
 LazyData: true
