@@ -36,7 +36,6 @@ Imports:
     bslib,
     ggdist,
     kableExtra,
-    gmrc.bayes (>= 0.0.0.9000),
     bayesplot,
     gridExtra,
     shinyalert,

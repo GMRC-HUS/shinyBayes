@@ -223,12 +223,15 @@ mod_Multivarie_server <- function(id, r) {
       prior_beta_location = NULL
     )
 
-    observeEvent(list(input$list_quanti, input$list_quali), {
+    observeEvent(list(input$variable,input$list_quanti, input$list_quali), {
       # reset the list
-      
-      prior_lm$prior_intercept = NULL
-      prior_lm$prior_beta_scale = NULL
-      prior_lm$prior_beta_location = NULL
+
+      prior_lm$prior_intercept = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
+                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
+      prior_lm$prior_beta_scale =  sapply(c(input$list_quanti, input$list_quali),
+                                          function(x){
+                                            round(2.5/sd(r$BDD[,x], na.rm = T)*sd(r$BDD[,input$variable], na.rm = T),2)})
+      prior_lm$prior_beta_location = 0
     })
     waiter <- waiter::Waiter$new(id="div_model")
     # Button to lauch analysis
@@ -415,13 +418,18 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       # paste(isolate(input$variable),"~",paste(c(isolate(input$list_quanti), isolate(input$list_quali)), collapse = " + "))
       #
       # Default prior definition
-      default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
-      default_prior_beta_scale_def <- 2.5
-      default_prior_beta_location_def <- 0
+      # default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
+      # default_prior_beta_scale_def <- 2.5
+      # default_prior_beta_location_def <- 0
+      
 
-      prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
-      prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
-      prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
+
+      prior_intercept_def <- #ifelse_perso(is.null(
+        prior_lm$prior_intercept#), default_prior_intercept_def, prior_lm$prior_intercept)
+      prior_beta_scale_def <- #ifelse_perso(is.null(
+        prior_lm$prior_beta_scale#), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
+      prior_beta_location_def <- #ifelse_perso(is.null(
+        prior_lm$prior_beta_location#), default_prior_beta_location_def, prior_lm$prior_beta_location)
 
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
 
@@ -471,20 +479,26 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
     })
     
     observeEvent(input$defaut, {
-      default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
-      default_prior_beta_scale_def <- 2.5
-      default_prior_beta_location_def <- 0
+      # default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
+      # default_prior_beta_scale_def <- 2.5
+      # default_prior_beta_location_def <- 0
       
-      prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
-      prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
-      prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
-      
+      default_prior_intercept_def = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
+                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
+      default_prior_beta_scale_def =  sapply(c(input$list_quanti, input$list_quali),
+                                          function(x){
+                                            round(2.5/sd(r$BDD[,x], na.rm = T)*sd(r$BDD[,input$variable], na.rm = T),2)})
+      default_prior_beta_location_def = 0
+      # prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
+      # prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
+      # prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
+      # 
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
       
-      for (x in c("intercept", input$list_quanti, nom_var_quali)) {
-        updateNumericInput(session, paste(x, "_mu_0", sep = ""), value = ifelse(x == "intercept", default_prior_intercept_def[1], default_prior_beta_location_def))
+      for (x in 1:length(c("intercept", input$list_quanti, nom_var_quali))) {
+        updateNumericInput(session, paste(c("intercept", input$list_quanti, nom_var_quali)[x], "_mu_0", sep = ""), value = ifelse(x == 1, default_prior_intercept_def[1], default_prior_beta_location_def))
         
-        updateNumericInput(session, paste(x, "_sigma_0", sep = ""), value = ifelse(x == "intercept", default_prior_intercept_def[2], default_prior_beta_scale_def))
+        updateNumericInput(session, paste(c("intercept", input$list_quanti, nom_var_quali)[x], "_sigma_0", sep = ""), value = ifelse(x ==1, default_prior_intercept_def[2], default_prior_beta_scale_def[x-1]))
       }
     })
     
