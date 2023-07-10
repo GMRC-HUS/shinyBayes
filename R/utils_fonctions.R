@@ -6,6 +6,9 @@
 #'
 #' @noRd
 #' @import gridExtra
+#' @import coda
+#' @import bayesplot
+#' @importFrom plyr alply 
 
 theme_ShiBA<- theme_light
 size_box <- "150px"
@@ -178,10 +181,16 @@ tablePourcent<- function(base){
   
 }
 
-diag_convergence<- function(fit){
+diag_convergence<- function(fit, rhat = 1.05, autocorr= 0.2,lags = c(1:50)){
   
-  rhats <-  bayesplot::rhat(fit)
-  check =  sum(rhats>1.05)==0
+  s = as.array(fit)
+  mcmc<-as.mcmc.list(alply(s[, , -dim(s)[3]], 2,function(x) as.mcmc(x)))    
+  
+  AC <-  autocorr.diag(mcmc, lags = lags)
+  
+  
+  rhats <-  rhat(fit)
+  check =  is.element(T,rhats<1.05) | is.element("TRUE", AC<autocorr)
   return(check)
   
 }

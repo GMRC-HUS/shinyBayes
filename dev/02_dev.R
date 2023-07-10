@@ -158,6 +158,19 @@ usethis::use_package("broom.mixed" )
 usethis::use_package("rstanarm" )
 usethis::use_package("bslib" )
 usethis::use_package("ggdist" )
+usethis::use_package("coda" )
+usethis::use_package("bayesplot" )
+usethis::use_package("gridExtra" )
+usethis::use_package("shinyalert" )
+usethis::use_package("waiter" )
+usethis::use_package("shinycssloaders" )
+
+
+
+
+
+
+usethis::use_dev_package("gmrc.bayes")
 
 attachment::att_from_rscripts()
 

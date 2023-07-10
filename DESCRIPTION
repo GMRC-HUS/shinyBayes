@@ -35,8 +35,16 @@ Imports:
     rstanarm,
     bslib,
     ggdist,
-    kableExtra
-Remotes: GMRC-HUS/shiba
+    kableExtra,
+    gmrc.bayes (>= 0.0.0.9000),
+    bayesplot,
+    gridExtra,
+    shinyalert,
+    waiter,
+    shinycssloaders
+Remotes: 
+    GMRC-HUS/shiba,
+    GMRC-HUS/GmrcBayes
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
