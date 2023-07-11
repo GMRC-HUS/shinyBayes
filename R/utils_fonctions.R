@@ -14,6 +14,11 @@ theme_ShiBA<- theme_light
 size_box <- "150px"
 
 css <- '
+.shiny-notification {
+             position:fixed;
+             top: calc(50%);
+             left: calc(50%);
+             }
 .tooltip {
   pointer-events: none;
 }
