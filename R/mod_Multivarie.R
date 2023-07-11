@@ -28,7 +28,7 @@ mod_Multivarie_ui <- function(id) {
         sidebarPanel(
           width = 4,
           radioButtons(
-            ns("type_glm"), HTML(paste(h2("Type de regression"),text_aide("Choix type de régression multivarié"))),
+            ns("type_glm"), HTML(paste(h2("Type de regression"),text_aide("Choix type de régression multivarié !"))),
             c(
               Linéaire = "lin",
               Binomial = "binom",
@@ -337,7 +337,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
-                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location),iter = 50
+                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)#,iter = 5
           )
         
       
