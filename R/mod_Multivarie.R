@@ -340,7 +340,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
-                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location),iter = 50
+                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)#,iter = 5
           )
         
       
