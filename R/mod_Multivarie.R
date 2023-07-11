@@ -80,7 +80,7 @@ mod_Multivarie_server <- function(id, r) {
     # Choix seuil two_it
     output$twit_ui <- renderUI({
       if(input$twit){
-        print(isolate(seuil_twoit()))
+  #      print(isolate(seuil_twoit()))
         
         twitUi(ns("id_i"))
         
@@ -93,36 +93,137 @@ mod_Multivarie_server <- function(id, r) {
 
 
 
-    output$propositions_multi <- renderUI({
+  var_input<- reactiveValues(
+    choix_base = NULL,
+    var_quali = NULL, 
+    var_quanti = NULL
+  ) 
+
+    var_quali_sel <- reactiveValues(var = NULL)
+    
+    var_quanti_sel <- reactiveValues(var = NULL)
+    observeEvent(input$variable,{
       liste_choix <- r$noms
-      liste_choix <- liste_choix[-which(liste_choix == input$variable)]
-      bucket_list(
-        header = HTML("<h3>Variable explicatives :</h3>"),
-        group_name = "bucket_list_group",
-        orientation = "vertical",
-        add_rank_list(
-          text = "Noms des variables",
-          labels = liste_choix,
-          input_id = ns("choix_base")
-        ),
-        add_rank_list(
-          text = HTML("<strong>Variables quantitatives</strong>"),
-          labels = NULL,
-          input_id = ns("list_quanti"),
-          options = sortable_options(
-            filter  = "Species",
-            preventOnFilter=  T
-          )
-        ),
-        add_rank_list(
-          text =  HTML("<strong>Variables qualitatives</strong>"),
-          labels = NULL,
-          input_id = ns("list_quali")
-        )
-      )
+    liste_choix <- liste_choix[-which(liste_choix == input$variable)]
+    var_input$choix_base = liste_choix   
     })
+    
+observeEvent(input$choix_base,{
+quantis<- isolate(input$list_quanti)
+qualis<- isolate(input$list_quali)
+base_encours<- isolate(input$choix_base)
+base_avant <- isolate(var_input$choix_base)
+quali_avant<- isolate(var_input$var_quali)
+quanti_avant<- isolate(var_input$var_quanti)
+print(base_encours)
+print("@")
+print(base_avant)
+
+var_sel<- setdiff(base_avant,base_encours)
+if(length(var_sel)>0){
+
+var_quanti_T<- length(quantis) > length(quanti_avant)
+var_quali_T<- length(qualis) > length(quali_avant)
+if(var_quanti_T){
+  if( sum(!is.na(r$BDD[,var_sel ]))<4 | length(unique(r$BDD[,var_sel ]))<4 ){
+    print("\n\n char in quanti")
+    var_input$choix_base<- base_avant
+    var_input$var_quanti <- quanti_avant
+    
+  }else{
+    
+    var_input$choix_base<- base_encours
+    var_input$var_quanti <- quantis
+  }
+  
+}else{
+  if( length(unique(r$BDD[,var_sel ]))>8 ){
+    print("\n\n quanti in char")
+    var_input$choix_base<- base_avant
+    var_input$var_quali <- quali_avant
+    
+  }else{
+    
+    var_input$choix_base<- base_encours
+    var_input$var_quali <- qualis
+  }
+}
 
 
+}else{
+  var_quanti_T<- length(quantis) < length(quanti_avant)
+  var_quali_T<- length(qualis) < length(quali_avant)
+  if(var_quanti_T){
+    var_input$choix_base<- base_encours
+    var_input$var_quanti <- quantis
+  }else if(var_quali_T){
+    var_input$choix_base<- base_encours
+    var_input$var_quali <- quali_avant
+  }else{
+    
+  }
+}
+print(var_sel)
+
+
+output$propositions_multi <- renderUI({
+  
+  print("\n\n mise a jour de l'ui")
+  
+  
+  bucket_list(
+    header = HTML("<h3>Variable explicatives :</h3>"),
+    group_name = "bucket_list_group",
+    orientation = "vertical",
+    add_rank_list(
+      text = "Noms des variables",
+      labels = var_input$choix_base,
+      input_id = ns("choix_base")
+    ),
+    add_rank_list(
+      text = HTML("<strong>Variables quantitatives</strong>"),
+      labels = (var_input$var_quanti),
+      input_id = ns("list_quanti")
+    ),
+    add_rank_list(
+      text =  HTML("<strong>Variables qualitatives</strong>"),
+      labels = (var_input$var_quali),
+      input_id = ns("list_quali")
+    )
+  )
+})
+
+
+})
+
+output$propositions_multi <- renderUI({
+ 
+  print("\n\n mise a jour de l'ui")
+
+
+  bucket_list(
+    header = HTML("<h3>Variable explicatives :</h3>"),
+    group_name = "bucket_list_group",
+    orientation = "vertical",
+    add_rank_list(
+      text = "Noms des variables",
+      labels = var_input$choix_base,
+      input_id = ns("choix_base")
+    ),
+    add_rank_list(
+      text = HTML("<strong>Variables quantitatives</strong>"),
+      labels = (var_input$var_quanti),
+      input_id = ns("list_quanti")
+    ),
+    add_rank_list(
+      text =  HTML("<strong>Variables qualitatives</strong>"),
+      labels = (var_input$var_quali),
+      input_id = ns("list_quali")
+    )
+  )
+})
+# 
+# 
 
 
     output$refactorisation<- renderUI({
@@ -223,16 +324,7 @@ mod_Multivarie_server <- function(id, r) {
       prior_beta_location = NULL
     )
 
-    observeEvent(list(input$variable,input$list_quanti, input$list_quali), {
-      # reset the list
 
-      prior_lm$prior_intercept = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
-                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
-      prior_lm$prior_beta_scale =  sapply(c(input$list_quanti, input$list_quali),
-                                          function(x){
-                                            round(2.5/sd(r$BDD[,x], na.rm = T)*sd(r$BDD[,input$variable], na.rm = T),2)})
-      prior_lm$prior_beta_location = 0
-    })
     waiter <- waiter::Waiter$new(id="div_model")
     # Button to lauch analysis
     observeEvent(input$go, {
@@ -399,7 +491,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       
       
       lapply(c("(Intercept)", isolate(input$list_quanti), nom_var_quali,"sigma"), function(i) {
-        print(i)    
+         
         output[[paste(i, "_courbe_diag", sep = "")]] <- renderPlot({
           plot_diag(model_2(),i)
         })  
@@ -415,12 +507,15 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
     
     # Action of Ellicitaion button
     observeEvent(input$ellicitation, ignoreInit = T, {
-      # paste(isolate(input$variable),"~",paste(c(isolate(input$list_quanti), isolate(input$list_quali)), collapse = " + "))
-      #
-      # Default prior definition
-      # default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
-      # default_prior_beta_scale_def <- 2.5
-      # default_prior_beta_location_def <- 0
+      pior_quali_sd <- sd_quali(input$list_quali, r$BDD)
+      
+      prior_quanti_sd <-  sapply(input$list_quanti,function(x) sd(r$BDD[,x], na.rm = T))
+      
+      
+      prior_lm$prior_intercept = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
+                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
+      prior_lm$prior_beta_scale = round(2.5/c(prior_quanti_sd,pior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
+      prior_lm$prior_beta_location = 0
       
 
 

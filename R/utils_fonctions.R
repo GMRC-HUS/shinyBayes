@@ -60,7 +60,14 @@ twitUi <- function(id) {
 
 
 
-
+sd_quali<-  function(list_var, BDD){
+unlist(sapply(list_var, function(x){
+  sapply(levels(BDD[, x])[-1], function(i) sd(BDD[, x]==i, na.rm=T))
+  
+  
+})
+)
+}
 
 
 # Module server function
