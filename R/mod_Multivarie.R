@@ -127,8 +127,6 @@ if(nvx_base){
   var_input$var_quanti <- quantis
 }else if(nvx_quantis){
   var_sel<- setdiff(quantis,quanti_avant)
-  print(var_sel)
-  print(sum(!is.na(as.numeric(as.character(r$BDD[,var_sel ]))))<4 | length(unique(r$BDD[,var_sel ]))<4 )
   if( sum(is.na(as.numeric(as.character(r$BDD[,var_sel ]))))>sum(is.na(r$BDD[,var_sel ])) ){
     showNotification(HTML("<b>",var_sel, "</b> ne semble pas être une variable quantitatives.<br>Moins de 4 données numériques et moins de 4 valeurs uniques."),type = "warning")
     var_input$choix_base<- base_avant
@@ -145,7 +143,6 @@ if(nvx_base){
   if( length(unique(r$BDD[,var_sel ]))>20){
     
     showNotification(HTML("<b>",var_sel, "</b> ne semble pas être une variable qualitative.<br>Plus de 20 modalités différentes"),type = "warning")
-    print("\n\n quanti in char")
     var_input$choix_base<- base_avant
     var_input$var_quanti <- quanti_avant
     var_input$var_quali <- quali_avant

@@ -193,7 +193,7 @@ tablePourcent<- function(base){
   
 }
 
-diag_convergence<- function(fit, rhat = 1.05, autocorr= 0.2,lags = c(1:20)){
+diag_convergence<- function(fit, rhat = 1.05, autocorr= 0.2,lags = c(1:50)){
   
   s = as.array(fit)
   mcmc<-as.mcmc.list(alply(s[, , -dim(s)[3]], 2,function(x) as.mcmc(x)))    
