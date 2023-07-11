@@ -28,7 +28,7 @@ mod_Multivarie_ui <- function(id) {
         sidebarPanel(
           width = 4,
           radioButtons(
-            ns("type_glm"), HTML(paste(h2("Type de regression"),text_aide("Choix type de régression multivarié"))),
+            ns("type_glm"), HTML(paste(h2("Type de regression"),text_aide("Choix type de régression multivarié !"))),
             c(
               Linéaire = "lin",
               Binomial = "binom",
