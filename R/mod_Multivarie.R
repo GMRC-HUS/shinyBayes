@@ -129,7 +129,7 @@ if(nvx_base){
   var_sel<- setdiff(quantis,quanti_avant)
   print(var_sel)
   print(sum(!is.na(as.numeric(as.character(r$BDD[,var_sel ]))))<4 | length(unique(r$BDD[,var_sel ]))<4 )
-  if( sum(!is.na(r$BDD[,var_sel ]))<4 | length(unique(r$BDD[,var_sel ]))<4 ){
+  if( sum(is.na(as.numeric(as.character(r$BDD[,var_sel ]))))>sum(is.na(r$BDD[,var_sel ])) ){
     showNotification(HTML("<b>",var_sel, "</b> ne semble pas être une variable quantitatives.<br>Moins de 4 données numériques et moins de 4 valeurs uniques."),type = "warning")
     var_input$choix_base<- base_avant
     var_input$var_quanti <- quanti_avant
@@ -142,9 +142,9 @@ if(nvx_base){
   }
 }else if(nvx_qualis) {
   var_sel<- setdiff(qualis,quali_avant)
-  if( length(unique(r$BDD[,var_sel ]))>8 ){
+  if( length(unique(r$BDD[,var_sel ]))>20){
     
-    showNotification(HTML("<b>",var_sel, "</b> ne semble pas être une variable qualitative.<br>Plus de 8 modalités différentes"),type = "warning")
+    showNotification(HTML("<b>",var_sel, "</b> ne semble pas être une variable qualitative.<br>Plus de 20 modalités différentes"),type = "warning")
     print("\n\n quanti in char")
     var_input$choix_base<- base_avant
     var_input$var_quanti <- quanti_avant
@@ -158,56 +158,6 @@ if(nvx_base){
   }
   
 }
-
-# print(base_encours)
-# print("@")
-# print(base_avant)
-# 
-# var_sel<- setdiff(base_avant,base_encours)
-# if(length(var_sel)>0){
-# 
-# var_quanti_T<- length(quantis) > length(quanti_avant)
-# var_quali_T<- length(qualis) > length(quali_avant)
-# if(var_quanti_T){
-#   if( sum(!is.na(r$BDD[,var_sel ]))<4 | length(unique(r$BDD[,var_sel ]))<4 ){
-#     print("\n\n char in quanti")
-#     var_input$choix_base<- base_avant
-#     var_input$var_quanti <- quanti_avant
-#     
-#   }else{
-#     
-#     var_input$choix_base<- base_encours
-#     var_input$var_quanti <- quantis
-#   }
-#   
-# }else{
-#   if( length(unique(r$BDD[,var_sel ]))>8 ){
-#     print("\n\n quanti in char")
-#     var_input$choix_base<- base_avant
-#     var_input$var_quali <- quali_avant
-#     
-#   }else{
-#     
-#     var_input$choix_base<- base_encours
-#     var_input$var_quali <- qualis
-#   }
-# }
-# 
-# 
-# }else{
-#   var_quanti_T<- length(quantis) < length(quanti_avant)
-#   var_quali_T<- length(qualis) < length(quali_avant)
-#   if(var_quanti_T){
-#     var_input$choix_base<- base_encours
-#     var_input$var_quanti <- quantis
-#   }else if(var_quali_T){
-#     var_input$choix_base<- base_encours
-#     var_input$var_quali <- quali_avant
-#   }else{
-#     
-#   }
-# }
-# print(var_sel)
 
 
 output$propositions_multi <- renderUI({
@@ -390,7 +340,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
-                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location),#iter = 20
+                          prior = normal(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location),iter = 50
           )
         
       
