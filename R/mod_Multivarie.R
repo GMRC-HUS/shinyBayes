@@ -498,16 +498,16 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
     
     # Action of Ellicitaion button
     observeEvent(input$ellicitation, ignoreInit = T, {
-      pior_quali_sd <- sd_quali(input$list_quali, r$BDD)
+      prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
       
       prior_quanti_sd <-  sapply(input$list_quanti,function(x) sd(r$BDD[,x], na.rm = T))
       
-      
+      if(is.null(prior_lm$prior_intercept )){
       prior_lm$prior_intercept = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
                                    round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
-      prior_lm$prior_beta_scale = round(2.5/c(prior_quanti_sd,pior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
+      prior_lm$prior_beta_scale = round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
       prior_lm$prior_beta_location = 0
-      
+      }
 
 
       prior_intercept_def <- #ifelse_perso(is.null(
@@ -545,10 +545,13 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
           )
         )
       )
+noms<-c("intercept", input$list_quanti, nom_var_quali)
+positions<- c(prior_lm$prior_intercept[1],prior_lm$prior_beta_location)
+dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
 
-      lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {
-        output[[paste(i, "_courbe", sep = "")]] <- renderPlot({
-          ggplot(data = data.frame(x = c(-20, 20)), aes(x)) +
+      lapply(1:length(noms), function(i) {
+        output[[paste(noms[i], "_courbe", sep = "")]] <- renderPlot({
+          ggplot(data = data.frame(x = c(positions[i]-2*dispersions[i], positions[i]+2*dispersions[i])), aes(x)) +
             stat_function(fun = dnorm, args = list(mean = input[[paste(i, "_mu_0", sep = "")]], sd = input[[paste(i, "_sigma_0", sep = "")]])) +
             theme_light() +
             theme(
@@ -569,12 +572,17 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       # default_prior_beta_scale_def <- 2.5
       # default_prior_beta_location_def <- 0
       
-      default_prior_intercept_def = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
-                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
-      default_prior_beta_scale_def =  sapply(c(input$list_quanti, input$list_quali),
-                                          function(x){
-                                            round(2.5/sd(r$BDD[,x], na.rm = T)*sd(r$BDD[,input$variable], na.rm = T),2)})
-      default_prior_beta_location_def = 0
+      prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
+      
+      prior_quanti_sd <-  sapply(input$list_quanti,function(x) sd(r$BDD[,x], na.rm = T))
+      
+      
+        default_prior_intercept_def = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
+                                     round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
+        default_prior_beta_scale_def= round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
+        default_prior_beta_location_def = 0
+      
+     
       # prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
       # prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
       # prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
