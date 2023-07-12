@@ -14,11 +14,6 @@ theme_ShiBA<- theme_light
 size_box <- "150px"
 
 css <- '
-.shiny-notification {
-             position:fixed;
-             top: calc(50%);
-             left: calc(50%);
-             }
 .tooltip {
   pointer-events: none;
 }
@@ -202,7 +197,7 @@ diag_convergence<- function(fit, rhat = 1.05, autocorr= 0.2,lags = c(1:50)){
   
   
   rhats <-  rhat(fit)
-  check =  is.element(T,rhats<1.05) & is.element("TRUE", AC<autocorr)
+  check =  is.element(T,rhats<1.05) | is.element("TRUE", AC<autocorr)
   return(check)
   
 }
