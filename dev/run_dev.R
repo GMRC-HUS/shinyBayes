@@ -6,7 +6,9 @@ golem::detach_all_attached()
 # rm(list=ls(all.names = TRUE))
 
 # Document and reload your package
+#undebug(golem::document_and_reload)
 golem::document_and_reload()
+
 
 # Run the application
 ShiBA::run_app(BDD=iris,options = "launch.browser")
