@@ -329,6 +329,7 @@ observeEvent(input$choix_base,{
       
       #showNotification("Modèle en cours !", type = "message")
       model_2(NULL)
+
       list_quanti = isolate(input$list_quanti)
       list_quali = isolate(input$list_quali)
       y = isolate(input$variable)
@@ -338,7 +339,8 @@ if(length(list_quanti)>0) data = data%>%mutate_at(list_quanti,  ~as.numeric(as.c
 
 if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       formule<- formule_default(y,list_quanti,list_quali)
-      
+print(prior_lm$prior_intercept)
+print( prior_lm$prior_beta_scale)
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
@@ -346,7 +348,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
                           prior = list(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)#,iter = 5
           )
         
-      
+      print(fit)
           waiter$hide()
      model_2(fit)
 
@@ -583,16 +585,18 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
       # default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
       # default_prior_beta_scale_def <- 2.5
       # default_prior_beta_location_def <- 0
-      
+      if(!length(c(input$list_quali,list_quanti) )==0){
+     
       prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
       
       prior_quanti_sd <-  sapply(input$list_quanti,function(x) sd(r$BDD[,x], na.rm = T))
-      
+      default_prior_beta_scale_def= round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
+      default_prior_beta_location_def = 0
+      }
       if(length(prior_quanti_sd)==0) prior_quanti_sd=NULL
         default_prior_intercept_def = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
                                      round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
-        default_prior_beta_scale_def= round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
-        default_prior_beta_location_def = 0
+
       
      
       # prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
@@ -621,8 +625,14 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
       
       removeModal()
       prior_lm$prior_intercept <- c(prior_mu[1], prior_sd[1])
+
       prior_lm$prior_beta_scale <- prior_sd[-1]
       prior_lm$prior_beta_location <- prior_mu[-1]
+      if(length(prior_sd)==1){
+        prior_lm$prior_beta_scale <-NULL
+        prior_lm$prior_beta_location<-NULL
+      }
+      print( prior_lm$prior_beta_scale)
     })
     
     

@@ -10,7 +10,7 @@
 
 glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL, refresh=0, chains =4,iter= 5000, keep_every = 3,  nb_repeat= 3, shiny = T,...){
   
-  
+
   fit <- glm_prior(data, formule,prior,prior_intercept,iter=iter,chains=chains,keep_every = keep_every...)
   
   
@@ -66,14 +66,15 @@ glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL,
 
 glm_prior<- function(data, formule, family , prior_intercept= NULL ,prior=NULL,refresh=0, ...){
   
-  if (is.null(prior_intercept$scale)|is.null(prior_intercept$location)) {
+  if (is.null(prior_intercept)) {
   if (!is.null(prior$scale) & !is.null(prior$location)) {
+    prior = normal(location = prior$location, scale = prior$scale)
     fit<- stan_glm(formule,
                     family = gaussian(link = "identity"),
                     data = data, 
                     prior = prior,refresh=refresh,...)
     
-    
+   
     
   } else {
     fit<- (stan_glm(formule,
@@ -82,6 +83,8 @@ glm_prior<- function(data, formule, family , prior_intercept= NULL ,prior=NULL,r
     ))
   }
 } else if (!is.null(prior$scale) & !is.null(prior$location)) {
+  prior = normal(location = prior$location, scale = prior$scale)
+  prior_intercept= normal(location = prior_intercept[1], scale =prior_intercept[2])
   fit<-stan_glm(formule,
                  family = gaussian(link = "identity"),
                  data = data, refresh = 0,
@@ -89,9 +92,10 @@ glm_prior<- function(data, formule, family , prior_intercept= NULL ,prior=NULL,r
                  prior = prior,refresh=refresh,...
   )
 } else {
+  prior_intercept= normal(location = prior_intercept[1], scale =prior_intercept[2])
   fit<- (stan_glm(formule,
                   family = gaussian(link = "identity"),
-                  data = r$BDD, refresh = 0,
+                  data =data, refresh = 0,
                   prior_intercept = prior_intercept,refresh=refresh,...
   ))
 }
