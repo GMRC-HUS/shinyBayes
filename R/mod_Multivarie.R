@@ -337,9 +337,42 @@ output$propositions_multi <- renderUI({
       if (is.null(model_2())) {
         return()
       }
-      
+      model_1<- model_2()
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
+      seuil_twoit = seuil_twoit()
+      if(!is.null(seuil_twoit)){
+      if(seuil_twoit$ls$type=="seuil"){
+        if(seuil_twoit$ls$plusieur_seuils){
+          
+          seuils = c(0,seuil_twoit$ls$val)
+      res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
+                  function(i) length(which(as.array(model_1)[,,i]>seuils[i]))/length(as.array(model_1)[,,i]))
+      Seuil = c(NA,seuil_twoit$ls$val,NA,NA)
+      Prob =c(NA,res_s[-1],NA,NA)
+      print(Seuil)
+      print(Prob)
+      Pr=data.frame(Prob =c(NA,res_s[-1],NA,NA,NA), Seuil = c(NA,seuil_twoit$ls$val,NA,NA,NA) )
+      print(Pr)
+        }else{
+          res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
+                      function(i) length(which(as.array(model_1)[,,i]>seuil_twoit$ls$val))/length(as.array(model_1)[,,i]))
+          Seuil = c(NA,rep(seuil_twoit$ls$val,(length(model_1$stanfit@sim$fnames_oi)-3)),NA,NA,NA)
+          Prob =c(NA,res_s[-1],NA,NA,NA)
+          print(Seuil)
+          print(Prob)
+          
+          print(length(model_1$stanfit@sim$fnames_oi))
+          Pr=data.frame(Prob =Prob, Seuil = Seuil )
+        }
+     
 
+      
+
+      
+      }else{}
+        res<-cbind(res,Pr)
+        }
+      
       res%>% 
         kbl%>%
         kable_styling(full_width = F,bootstrap_options = c( "hover"),fixed_thead = T)%>%
