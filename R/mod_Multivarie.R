@@ -89,6 +89,16 @@ mod_Multivarie_server <- function(id, r) {
 
       })
     #
+    seuil_twoit<- reactiveVal(value = NULL)
+  #  
+  #   # var_input2
+  #   observeEvent(c(input$list_quali,input$list_quanti),{
+  # 
+  #   
+  #   
+  #   }
+  # )
+    
     observeEvent(input$seuil_2it,{
       output$twit_ui <- renderUI({
 
@@ -106,86 +116,16 @@ mod_Multivarie_server <- function(id, r) {
         nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
       }else{nom_var_quali<- NULL}
       
-      var = c("intercept", input$list_quanti, nom_var_quali)
-      seuil_twoit<- twitServer("id_i",var)
-      showModal(
-        modalDialog(title = "Définition des seuils ou Two It",
-                    
-             # là   
-             
-             twitUi("id_i",var ),
-             
-                    footer = tagList(
-                      actionButton(ns("ok_seuil"), "OK")
-                      
-                    )
-        )
-      )
-      
-      
-      
+      var = c( input$list_quanti, nom_var_quali)
+      twitUi(ns("id_i"))
+      seuil_twoit(twitServer("id_i",var))
+      print("d")
+      print(seuil_twoit())
       })
     
-    observeEvent(input$ok_seuil, {
+
+    
    
-        
-      print(seuil_twoit)
-      removeModal()
-    })
-    
-    output$seuil_ou_two_it_ui<- renderUI({
-      
-      if(input$choix_seuil_2it){
-        tagList(
-          h2("Choix des seuils"),
-          awesomeRadio(
-            inputId = ns("un_seul_seuil"),
-            label = "Le même seuil pour l'ensemble des covariables", 
-            choices = c("Oui", "Non"),
-            selected = "Non",
-            inline = TRUE, 
-            status = "success",
-            checkbox = TRUE
-          ),
-          uiOutput(ns("choix_seuils"))
-          
-          
-          
-          
-        )
-        
-      }else{
-        
-        
-        
-      }
-      
-    })
-    
-    
-    # output$choix_seuils<- renderUI({
-    #   if(input$un_seul_seuil=="Oui"){
-    #     return(twitServer(
-    #       
-    #     ))
-    #   }
-    #   nom_var_quali <-input$list_quali
-    #   lapply(ifelse(,1,1:length(nom_var_quali)), function(i) {
-    #     x <-  nom_var_quali[i]
-    #     r$BDD[,x]<- as.factor(r$BDD[,x])
-    #     var<- r$BDD[,x]
-    #     var<- as.factor(var)
-    #     noms_levels <- levels(var)
-    #     
-    #     
-    #     list(
-    #       radioButtons(inputId =ns(paste( "fact_", x, sep = "")), label= x ,choices =noms_levels,selected = noms_levels[1] )
-    #       
-    #     )
-    #   })
-    #   
-    # })
-    
     
     
 
@@ -201,6 +141,7 @@ mod_Multivarie_server <- function(id, r) {
     var_quali = NULL, 
     var_quanti = NULL
   ) 
+
 
     var_quali_sel <- reactiveValues(var = NULL)
     
@@ -333,7 +274,7 @@ output$propositions_multi <- renderUI({
     
    
     observeEvent(input$refact_button, {
-
+      print(seuil_twoit()$ls)
       nom_var_quali <-isolate(input$list_quali)
     
       showModal(
@@ -398,12 +339,7 @@ output$propositions_multi <- renderUI({
       }
       
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
-        
-      # tidyMCMC(model_2()$stanfit,
-      #          conf.int = TRUE, conf.level = 0.95,
-      #          robust = TRUE, rhat = TRUE, ess = TRUE
-      # )%>% select(estimate,conf.low, conf.high)
-      
+
       res%>% 
         kbl%>%
         kable_styling(full_width = F,bootstrap_options = c( "hover"),fixed_thead = T)%>%

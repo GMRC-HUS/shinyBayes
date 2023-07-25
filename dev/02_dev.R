@@ -27,8 +27,8 @@ golem::add_fct("glm_shiba")
 golem::add_fct( "fonctions" ) 
 golem::add_utils( "fonctions" )
 golem::add_fct( "code_sans_dep" ) 
-golem::add_fct( "buildSpinner" ) 
-golem::add_fct("fromSpinner")
+
+golem::add_fct("modal_seuil2It")
 
 
 
