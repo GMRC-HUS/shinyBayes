@@ -47,7 +47,7 @@ mod_Multivarie_ui <- function(id) {
           h3("Seuils/Two IT ?"),text_aide("Texte Aide Two IT multivarié "),
           shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
           uiOutput(ns("twit_ui")),
-          
+          br(),
           actionButton(ns("go"), "Go :")
         ),
         mainPanel(
@@ -79,14 +79,117 @@ mod_Multivarie_server <- function(id, r) {
     
     # Choix seuil two_it
     output$twit_ui <- renderUI({
-      if(input$twit){
-  #      print(isolate(seuil_twoit()))
-        
-        twitUi(ns("id_i"))
-        
-      }})
+          actionBttn(
+          inputId = ns("seuil_2it"),
+          label = "Définition Seuil ou Two It",
+          style = "gradient",
+          color = "success"
+
+        )
+
+      })
+    #
+    observeEvent(input$seuil_2it,{
+      output$twit_ui <- renderUI({
+
+          actionBttn(
+            inputId = ns("seuil_2it"),
+            label = "Définition Seuil ou Two It",
+            style = "gradient",
+            color = "success",
+            icon = icon("check")
+          )
+
+    })
+      
+      if(length(input$list_quali)>0){
+        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+      }else{nom_var_quali<- NULL}
+      
+      var = c("intercept", input$list_quanti, nom_var_quali)
+      seuil_twoit<- twitServer("id_i",var)
+      showModal(
+        modalDialog(title = "Définition des seuils ou Two It",
+                    
+             # là   
+             
+             twitUi("id_i",var ),
+             
+                    footer = tagList(
+                      actionButton(ns("ok_seuil"), "OK")
+                      
+                    )
+        )
+      )
+      
+      
+      
+      })
     
-    seuil_twoit<- twitServer("id_i")
+    observeEvent(input$ok_seuil, {
+   
+        
+      print(seuil_twoit)
+      removeModal()
+    })
+    
+    output$seuil_ou_two_it_ui<- renderUI({
+      
+      if(input$choix_seuil_2it){
+        tagList(
+          h2("Choix des seuils"),
+          awesomeRadio(
+            inputId = ns("un_seul_seuil"),
+            label = "Le même seuil pour l'ensemble des covariables", 
+            choices = c("Oui", "Non"),
+            selected = "Non",
+            inline = TRUE, 
+            status = "success",
+            checkbox = TRUE
+          ),
+          uiOutput(ns("choix_seuils"))
+          
+          
+          
+          
+        )
+        
+      }else{
+        
+        
+        
+      }
+      
+    })
+    
+    
+    # output$choix_seuils<- renderUI({
+    #   if(input$un_seul_seuil=="Oui"){
+    #     return(twitServer(
+    #       
+    #     ))
+    #   }
+    #   nom_var_quali <-input$list_quali
+    #   lapply(ifelse(,1,1:length(nom_var_quali)), function(i) {
+    #     x <-  nom_var_quali[i]
+    #     r$BDD[,x]<- as.factor(r$BDD[,x])
+    #     var<- r$BDD[,x]
+    #     var<- as.factor(var)
+    #     noms_levels <- levels(var)
+    #     
+    #     
+    #     list(
+    #       radioButtons(inputId =ns(paste( "fact_", x, sep = "")), label= x ,choices =noms_levels,selected = noms_levels[1] )
+    #       
+    #     )
+    #   })
+    #   
+    # })
+    
+    
+    
+
+     
 
     # Resultat table of model
     
@@ -159,7 +262,7 @@ if(nvx_base){
 
 output$propositions_multi <- renderUI({
   
-  print("\n\n mise a jour de l'ui")
+  
   
   
   bucket_list(
@@ -189,7 +292,7 @@ output$propositions_multi <- renderUI({
 
 output$propositions_multi <- renderUI({
  
-  print("\n\n mise a jour de l'ui")
+
 
 
   bucket_list(
@@ -339,8 +442,7 @@ if(length(list_quanti)>0) data = data%>%mutate_at(list_quanti,  ~as.numeric(as.c
 
 if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       formule<- formule_default(y,list_quanti,list_quali)
-print(prior_lm$prior_intercept)
-print( prior_lm$prior_beta_scale)
+
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
@@ -348,7 +450,7 @@ print( prior_lm$prior_beta_scale)
                           prior = list(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)#,iter = 5
           )
         
-      print(fit)
+     
           waiter$hide()
      model_2(fit)
 
@@ -359,13 +461,13 @@ print( prior_lm$prior_beta_scale)
       if (is.null(model_2())) {
         return()
       }
-      prior_sel = isolate(prior_lm$prior_intercept)
+      prior_sel = model_2()$prior.info
       if(!is.null(prior_sel)){
         nom_var_quali <- lapply(isolate(input$list_quali), function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
         
         return(data.frame(Var =  c("intercept", isolate(input$list_quanti), nom_var_quali),
-                          sd = c(prior_sel$prior_intercept[1],prior_sel$prior_beta_scale), 
-                          mu = c(prior_sel$prior_intercept[2] ,prior_sel$prior_beta_location))
+                          sd = c(prior_sel$prior_intercept$scale,prior_sel$prior$scale), 
+                          mu = c(prior_sel$prior_intercept$location ,prior_sel$prior$location))
                
         )
       }else{
@@ -419,17 +521,20 @@ print( prior_lm$prior_beta_scale)
         return()
       }
       
-      bayesplot::mcmc_areas(model_2() %>% as.matrix())+theme_light()
+      bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
       
     })
     
     
     output$result_multi<- renderUI({
+      
+      
       if (is.null(model_2())) {
-        print("ih")
+   
         return()
       }
       
+      var_model <- colnames(model_2()$covmat)
       type_model <-  names(which(c(
         Linéaire = "lin",
         Binomial = "binom",
@@ -453,7 +558,24 @@ print( prior_lm$prior_beta_scale)
         fluidRow(align="center",tableOutput(ns("res_multi"))%>%withSpinner),
         br(),
         h2("Graphiques :"),
-        fluidRow(align="center",plotOutput(width = 600, height = 400,ns("graph_model"))%>%withSpinner),
+        fluidRow(align="center",
+                 dropdownButton(
+                   tags$h3("List of Input"),
+                   
+                   awesomeCheckboxGroup(
+                     inputId = ns("Variable_graph"),
+                     label = "Checkboxes", 
+                     choices = var_model,
+                     selected = var_model
+                   ),
+                   
+                   
+                   circle = TRUE,
+                   status = "danger", 
+                   icon = icon("gear"), width = "300px",
+                   tooltip = tooltipOptions(title = "Click to see inputs !")
+                 ),
+                 plotOutput(width = 600, height = 400,ns("graph_model"))%>%withSpinner),
         br(),
         
         
@@ -472,7 +594,7 @@ print( prior_lm$prior_beta_scale)
           tagList(
             div(align = "center",
             lapply(c("(Intercept)", input$list_quanti, nom_var_quali,"sigma"), function(x) {
-              print(x)
+            
               list(
                 h2(x),
               (plotOutput(width = "100%", height = 400, ns(paste(x, "_courbe_diag", sep = ""))))%>% withSpinner()
@@ -632,7 +754,7 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
         prior_lm$prior_beta_scale <-NULL
         prior_lm$prior_beta_location<-NULL
       }
-      print( prior_lm$prior_beta_scale)
+     
     })
     
     

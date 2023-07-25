@@ -9,9 +9,9 @@
 
 
 glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL, refresh=0, chains =4,iter= 5000, keep_every = 3,  nb_repeat= 3, shiny = T,...){
-  
-
-  fit <- glm_prior(data, formule,prior,prior_intercept,iter=iter,chains=chains,keep_every = keep_every...)
+  print("glm_Shiba")
+ print(prior)
+  fit <- glm_prior(data, formule,prior=prior,prior_intercept,iter=iter,chains=chains,keep_every = keep_every...)
   
   
   for(i in 1:nb_repeat) {
@@ -20,7 +20,7 @@ glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL,
     if (checks) {
       return(fit)
     }
-    fit <- glm_prior(data, formule,prior,prior_intercept,iter=iter*(i+1),keep_every=keep_every*(i+1),...)
+    fit <- glm_prior(data, formule,prior=prior,prior_intercept,iter=iter*(i+1),keep_every=keep_every*(i+1),...)
  message <-  paste0(
    "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
    iter*(i+1),
@@ -65,7 +65,8 @@ glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL,
 
 
 glm_prior<- function(data, formule, family , prior_intercept= NULL ,prior=NULL,refresh=0, ...){
-  
+  print("glm_prior")
+  print(prior)
   if (is.null(prior_intercept)) {
   if (!is.null(prior$scale) & !is.null(prior$location)) {
     prior = normal(location = prior$location, scale = prior$scale)
