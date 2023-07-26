@@ -45,9 +45,9 @@ mod_Multivarie_ui <- function(id) {
           
           text_aide("Texte Aide ellicitation multivarié "),
           h3("Seuils/Two IT ?"),text_aide("Texte Aide Two IT multivarié "),
-          shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
+          # shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
           uiOutput(ns("twit_ui")),
-          
+          br(),
           actionButton(ns("go"), "Go :")
         ),
         mainPanel(
@@ -79,14 +79,68 @@ mod_Multivarie_server <- function(id, r) {
     
     # Choix seuil two_it
     output$twit_ui <- renderUI({
-      if(input$twit){
-  #      print(isolate(seuil_twoit()))
+          actionBttn(
+          inputId = ns("seuil_2it"),
+          label = "Définition Seuil ou Two It",
+          style = "gradient",
+          color = "primary"
+
+        )
+
+      })
+    #
+    seuil_twoit<- reactiveVal(value = NULL)
+  #  
+  #   # var_input2
+    observeEvent(c(input$list_quali,input$list_quanti),{
+      output$twit_ui <- renderUI({
+        actionBttn(
+          inputId = ns("seuil_2it"),
+          label = "Définition Seuil ou Two It",
+          style = "gradient",
+          color = "primary"
+          
+        )
         
-        twitUi(ns("id_i"))
-        
-      }})
+      })
+      
+      var_quali<- isolate(input$list_quali)
+      if(length(var_quali)>0){
+        nom_var_quali <- lapply(var_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "")) %>% unlist()
+      }else{nom_var_quali<- NULL}
+      
+      var = c( isolate(input$list_quanti), nom_var_quali)
+      seuil_twoit(twitServer("id_i",var))
+
+    }
+  )
     
-    seuil_twoit<- twitServer("id_i")
+    observeEvent(input$seuil_2it,{
+      output$twit_ui <- renderUI({
+
+          actionBttn(
+            inputId = ns("seuil_2it"),
+            label = "Définition Seuil ou Two It",
+            style = "gradient",
+            color = "success",
+            icon = icon("check")
+          )
+
+    })
+    
+      twitUi(ns("id_i"))
+      # seuil_twoit(twitServer("id_i",var))
+      print("d")
+      print(seuil_twoit())
+      })
+    
+
+    
+   
+    
+    
+
+     
 
     # Resultat table of model
     
@@ -98,6 +152,7 @@ mod_Multivarie_server <- function(id, r) {
     var_quali = NULL, 
     var_quanti = NULL
   ) 
+
 
     var_quali_sel <- reactiveValues(var = NULL)
     
@@ -159,7 +214,7 @@ if(nvx_base){
 
 output$propositions_multi <- renderUI({
   
-  print("\n\n mise a jour de l'ui")
+  
   
   
   bucket_list(
@@ -189,7 +244,7 @@ output$propositions_multi <- renderUI({
 
 output$propositions_multi <- renderUI({
  
-  print("\n\n mise a jour de l'ui")
+
 
 
   bucket_list(
@@ -230,7 +285,7 @@ output$propositions_multi <- renderUI({
     
    
     observeEvent(input$refact_button, {
-
+      print(seuil_twoit()$ls)
       nom_var_quali <-isolate(input$list_quali)
     
       showModal(
@@ -293,18 +348,54 @@ output$propositions_multi <- renderUI({
       if (is.null(model_2())) {
         return()
       }
-      
+      model_1<- model_2()
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
+      seuil_twoit = seuil_twoit()
+      
+      if(!is.null(seuil_twoit) & nrow(res)>4 ){
+      if(seuil_twoit$ls$type=="seuil"){
+        if(seuil_twoit$ls$plusieur_seuils){
+          
+          seuils = c(0,seuil_twoit$ls$val)
+      res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
+                  function(i) length(which(as.array(model_1)[,,i]>seuils[i]))/length(as.array(model_1)[,,i]))
+      Seuil = c(NA,seuil_twoit$ls$val,NA,NA)
+      Prob =c(NA,res_s[-1],NA,NA)
+      print(Seuil)
+      print(Prob)
+      Pr=data.frame(Prob =c(NA,res_s[-1],NA,NA,NA), Seuil = c(NA,seuil_twoit$ls$val,NA,NA,NA) )
+      print(Pr)
+        }else{
+          res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
+                      function(i) length(which(as.array(model_1)[,,i]>seuil_twoit$ls$val))/length(as.array(model_1)[,,i]))
+          Seuil = c(NA,rep(seuil_twoit$ls$val,(length(model_1$stanfit@sim$fnames_oi)-3)),NA,NA,NA)
+          Prob =c(NA,res_s[-1],NA,NA,NA)
+          print(Seuil)
+          print(Prob)
+          
+          print(length(model_1$stanfit@sim$fnames_oi))
+          Pr=data.frame(Prob =Prob, Seuil = Seuil )
+        }
+     
+      }else if(!is.null(seuil_twoit$ls$val$var)){
+        list_param = seuil_twoit$ls$val
+
+        twoIt=twoItStanGlm(model_1, list_param$var,HA_diff_l = list_param$theta_A_min,HA_diff_u = list_param$theta_A_max,
+                        HP_diff_l = list_param$theta_P_min ,HP_diff_u = list_param$theta_P_max)
         
-      # tidyMCMC(model_2()$stanfit,
-      #          conf.int = TRUE, conf.level = 0.95,
-      #          robust = TRUE, rhat = TRUE, ess = TRUE
-      # )%>% select(estimate,conf.low, conf.high)
+        Pr = data.frame(c("H|Prior","H|Données"),twoIt$values[1:2],twoIt$values[3:4])
+        names(Pr) = c(list_param$var,twoIt$names[1:2])
+        Pr [ nrow(Pr) + (nrow(res)-nrow(Pr)) , ] <- ""
+      }
+        res<-cbind(res,Pr)
+        }
       
       res%>% 
         kbl%>%
         kable_styling(full_width = F,bootstrap_options = c( "hover"),fixed_thead = T)%>%
-        row_spec( nrow(res)-2, extra_css = "border-bottom: 1px solid")
+        row_spec((nrow(res)-2), extra_css = "border-top: thick double #D8D8D8")
+        # column_spec(4, extra_css = "border-right: thick double #D8D8D8;")
+        
     }
     
   
@@ -339,8 +430,7 @@ if(length(list_quanti)>0) data = data%>%mutate_at(list_quanti,  ~as.numeric(as.c
 
 if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       formule<- formule_default(y,list_quanti,list_quali)
-print(prior_lm$prior_intercept)
-print( prior_lm$prior_beta_scale)
+
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
@@ -348,7 +438,7 @@ print( prior_lm$prior_beta_scale)
                           prior = list(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)#,iter = 5
           )
         
-      print(fit)
+     
           waiter$hide()
      model_2(fit)
 
@@ -359,13 +449,13 @@ print( prior_lm$prior_beta_scale)
       if (is.null(model_2())) {
         return()
       }
-      prior_sel = isolate(prior_lm$prior_intercept)
+      prior_sel = model_2()$prior.info
       if(!is.null(prior_sel)){
         nom_var_quali <- lapply(isolate(input$list_quali), function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
         
         return(data.frame(Var =  c("intercept", isolate(input$list_quanti), nom_var_quali),
-                          sd = c(prior_sel$prior_intercept[1],prior_sel$prior_beta_scale), 
-                          mu = c(prior_sel$prior_intercept[2] ,prior_sel$prior_beta_location))
+                          sd = c(prior_sel$prior_intercept$scale,prior_sel$prior$scale), 
+                          mu = c(prior_sel$prior_intercept$location ,prior_sel$prior$location))
                
         )
       }else{
@@ -419,17 +509,20 @@ print( prior_lm$prior_beta_scale)
         return()
       }
       
-      bayesplot::mcmc_areas(model_2() %>% as.matrix())+theme_light()
+      bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
       
     })
     
     
     output$result_multi<- renderUI({
+      
+      
       if (is.null(model_2())) {
-        print("ih")
+   
         return()
       }
       
+      var_model <- colnames(model_2()$covmat)
       type_model <-  names(which(c(
         Linéaire = "lin",
         Binomial = "binom",
@@ -453,7 +546,24 @@ print( prior_lm$prior_beta_scale)
         fluidRow(align="center",tableOutput(ns("res_multi"))%>%withSpinner),
         br(),
         h2("Graphiques :"),
-        fluidRow(align="center",plotOutput(width = 600, height = 400,ns("graph_model"))%>%withSpinner),
+        fluidRow(align="center",
+                 dropdownButton(
+                   tags$h3("List of Input"),
+                   
+                   awesomeCheckboxGroup(
+                     inputId = ns("Variable_graph"),
+                     label = "Checkboxes", 
+                     choices = var_model,
+                     selected = var_model
+                   ),
+                   
+                   
+                   circle = TRUE,
+                   status = "danger", 
+                   icon = icon("gear"), width = "300px",
+                   tooltip = tooltipOptions(title = "Click to see inputs !")
+                 ),
+                 plotOutput(width = 600, height = 400,ns("graph_model"))%>%withSpinner),
         br(),
         
         
@@ -472,7 +582,7 @@ print( prior_lm$prior_beta_scale)
           tagList(
             div(align = "center",
             lapply(c("(Intercept)", input$list_quanti, nom_var_quali,"sigma"), function(x) {
-              print(x)
+            
               list(
                 h2(x),
               (plotOutput(width = "100%", height = 400, ns(paste(x, "_courbe_diag", sep = ""))))%>% withSpinner()
@@ -543,10 +653,10 @@ print( prior_lm$prior_beta_scale)
             list(
               plotOutput(width = 200, height = 100, ns(paste(x, "_courbe", sep = ""))),
               numericInput(ns(paste(x, "_mu_0", sep = "")), "A priori mu beta: ",
-                min = -10, max = 10, value = prior_beta_location_def_i
+                 value = prior_beta_location_def_i, step=0.1
               ),
               numericInput(ns(paste(x, "_sigma_0", sep = "")), "A priori écart-type beta : ",
-                min = 0, max = 30, value = prior_beta_scale_def_i
+                 step=0.1, value = prior_beta_scale_def_i
               )
             )
           })),
@@ -582,13 +692,11 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
     })
     
     observeEvent(input$defaut, {
-      # default_prior_intercept_def <- c(mean(r$BDD[, input$variable], na.rm = T), sd(r$BDD[, input$variable], na.rm = T))
-      # default_prior_beta_scale_def <- 2.5
-      # default_prior_beta_location_def <- 0
-      if(!length(c(input$list_quali,list_quanti) )==0){
-     
+      prior_quanti_sd=c()
+      if(!length(c(input$list_quali,input$list_quali) )==0){
+
       prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
-      
+
       prior_quanti_sd <-  sapply(input$list_quanti,function(x) sd(r$BDD[,x], na.rm = T))
       default_prior_beta_scale_def= round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
       default_prior_beta_location_def = 0
@@ -597,12 +705,9 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
         default_prior_intercept_def = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
                                      round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
 
-      
+
      
-      # prior_intercept_def <- ifelse_perso(is.null(prior_lm$prior_intercept), default_prior_intercept_def, prior_lm$prior_intercept)
-      # prior_beta_scale_def <- ifelse_perso(is.null(prior_lm$prior_beta_scale), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
-      # prior_beta_location_def <- ifelse_perso(is.null(prior_lm$prior_beta_location), default_prior_beta_location_def, prior_lm$prior_beta_location)
-      # 
+
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
       
       for (x in 1:length(c("intercept", input$list_quanti, nom_var_quali))) {
@@ -632,7 +737,7 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
         prior_lm$prior_beta_scale <-NULL
         prior_lm$prior_beta_location<-NULL
       }
-      print( prior_lm$prior_beta_scale)
+     
     })
     
     
