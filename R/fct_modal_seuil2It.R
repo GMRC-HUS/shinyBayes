@@ -54,6 +54,8 @@ twitServer <- function(id,list_var) {
       ns <- session$ns
       observeEvent(input$choix_seuil_2it,{
         output$seuil_ou_two_it_ui<- renderUI({
+          
+          if(length(list_var)==0) return(h2("Pas de variables dans le modèle"))
           if(input$choix_seuil_2it){
             print("rij")
             tagList(h2("Choix des seuils"),
@@ -85,20 +87,20 @@ twitServer <- function(id,list_var) {
                     
                     
             splitLayout(cellWidths = c("50%", "50%"),
-                        h3("Rejet :"), h3("Acceptation : ")),
+                        h3("Présence d'effet :"), h3("Absence d'effet : ")),
             splitLayout(
               cellWidths = c("25%", "25%", "25%", "25%"),
               numericInput(ns("theta_P_min"), "Min :",
                            # min = min_x-max_x, max = max_x*2,
-                           value = 0),
+                           value = 0,step =0.1),
               numericInput(ns("theta_P_max"), "Max :",
-                           value = 0)
+                           value = 0,step =0.1)
               ,
               numericInput(ns("theta_A_min"), "Min :",
                            # min = min_x-max_x, max = max_x*2,
-                           value = 0),
+                           value = 0,step =0.1),
               numericInput(ns("theta_A_max"), "Max :",
-                           value = 0)
+                           value = 0,step =0.1)
             )
             )
             
@@ -116,7 +118,7 @@ twitServer <- function(id,list_var) {
             lapply(1:length(list_var), function(i) {
               
               list(
-                numericInput(inputId =ns(paste( "seuil_", list_var[i], sep = "")), label= list_var[i] , value = 0 )
+                numericInput(inputId =ns(paste( "seuil_", list_var[i], sep = "")), label= list_var[i] , value = 0 , step=0.1)
                 
               )
             }
@@ -128,7 +130,7 @@ twitServer <- function(id,list_var) {
           
           numericInput(ns("valeur_seuil"), "Valeur du seuil :",
                        # min = min_x-max_x, max = max_x*2,
-                       value = 0)
+                       value = 0,step =0.1)
           
         }
         
@@ -140,7 +142,10 @@ twitServer <- function(id,list_var) {
       myreturn <- reactiveValues()
       observeEvent(input$ok_seuil, {
         
-       
+        if(length(list_var)==0) {
+          removeModal()
+         return(NULL) 
+        }
          if(input$choix_seuil_2it){
           type = "seuil"
           if(!input$plusieur_seuils=="Non"){
@@ -153,11 +158,11 @@ twitServer <- function(id,list_var) {
         }else{
           type = "2It"
           plusieur_seuils= NA
-          val = list(var =input$var_sel,
-                     "theta_P_max"= input$theta_P_min,
-                     "theta_P_max" = input$theta_P_max, 
-                     "theta_A_min" = input$theta_A_min,
-                     "theta_A_max" = input$theta_A_max)
+          val = list(var =isolate(input$var_sel),
+                     "theta_P_max"= isolate(input$theta_P_min),
+                     "theta_P_max" = isolate(input$theta_P_max), 
+                     "theta_A_min" = isolate(input$theta_A_min),
+                     "theta_A_max" = isolate(input$theta_A_max))
         }
        
         removeModal()
