@@ -113,7 +113,7 @@ mod_Multivarie_server <- function(id, r) {
     })
       
       if(length(input$list_quali)>0){
-        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
+        nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "")) %>% unlist()
       }else{nom_var_quali<- NULL}
       
       var = c( input$list_quanti, nom_var_quali)
@@ -365,18 +365,24 @@ output$propositions_multi <- renderUI({
           Pr=data.frame(Prob =Prob, Seuil = Seuil )
         }
      
+      }else{
+        list_param = seuil_twoit$ls$val
 
-      
-
-      
-      }else{}
+        twoIt=twoItStanGlm(model_1, list_param$var,HA_diff_l = list_param$theta_A_min,HA_diff_u = list_param$theta_A_max,
+                        HP_diff_l = list_param$theta_P_min ,HP_diff_u = list_param$theta_P_max)
+        
+        Pr = data.frame(c("H|Prior","H|Données"),twoIt$values[1:2],twoIt$values[3:4])
+        names(Pr) = c(list_param$var,twoIt$names[1:2])
+        Pr [ nrow(Pr) + (nrow(res)-nrow(Pr)) , ] <- ""
+      }
         res<-cbind(res,Pr)
         }
       
       res%>% 
         kbl%>%
         kable_styling(full_width = F,bootstrap_options = c( "hover"),fixed_thead = T)%>%
-        row_spec( nrow(res)-2, extra_css = "border-bottom: 1px solid")
+        row_spec( nrow(res)-2, extra_css = "border-bottom: 1px solid")%>%
+        column_spec(4, extra_css = "border-right: 1px solid")
     }
     
   
