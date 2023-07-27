@@ -30,6 +30,7 @@ golem::add_fct( "code_sans_dep" )
 
 golem::add_fct("modal_seuil2It")
 golem::add_fct("twoIt")
+golem::add_fct("shibaGlmPlot")
 
 
 

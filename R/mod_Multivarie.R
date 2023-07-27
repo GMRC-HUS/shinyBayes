@@ -130,8 +130,7 @@ mod_Multivarie_server <- function(id, r) {
     
       twitUi(ns("id_i"))
       # seuil_twoit(twitServer("id_i",var))
-      print("d")
-      print(seuil_twoit())
+
       })
     
 
@@ -285,7 +284,7 @@ output$propositions_multi <- renderUI({
     
    
     observeEvent(input$refact_button, {
-      print(seuil_twoit()$ls)
+
       nom_var_quali <-isolate(input$list_quali)
     
       showModal(
@@ -351,8 +350,8 @@ output$propositions_multi <- renderUI({
       model_1<- model_2()
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
       seuil_twoit = seuil_twoit()
-      
-      if(!is.null(seuil_twoit) & nrow(res)>4 ){
+
+      if(!is.null(seuil_twoit$ls) & nrow(res)>4 ){
       if(seuil_twoit$ls$type=="seuil"){
         if(seuil_twoit$ls$plusieur_seuils){
           
@@ -361,19 +360,17 @@ output$propositions_multi <- renderUI({
                   function(i) length(which(as.array(model_1)[,,i]>seuils[i]))/length(as.array(model_1)[,,i]))
       Seuil = c(NA,seuil_twoit$ls$val,NA,NA)
       Prob =c(NA,res_s[-1],NA,NA)
-      print(Seuil)
-      print(Prob)
+      
+      
+      
       Pr=data.frame(Prob =c(NA,res_s[-1],NA,NA,NA), Seuil = c(NA,seuil_twoit$ls$val,NA,NA,NA) )
-      print(Pr)
+
         }else{
           res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
                       function(i) length(which(as.array(model_1)[,,i]>seuil_twoit$ls$val))/length(as.array(model_1)[,,i]))
           Seuil = c(NA,rep(seuil_twoit$ls$val,(length(model_1$stanfit@sim$fnames_oi)-3)),NA,NA,NA)
           Prob =c(NA,res_s[-1],NA,NA,NA)
-          print(Seuil)
-          print(Prob)
-          
-          print(length(model_1$stanfit@sim$fnames_oi))
+
           Pr=data.frame(Prob =Prob, Seuil = Seuil )
         }
      
@@ -509,7 +506,8 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
         return()
       }
       
-      bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
+      shibaGlmPlot(model_2(), pars = input$Variable_graph,seuilTwoIt =isolate(seuil_twoit()$ls ),prob = 0.9)
+      # bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
       
     })
     

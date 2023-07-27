@@ -57,7 +57,7 @@ twitServer <- function(id,list_var) {
           
           if(length(list_var)==0) return(h2("Pas de variables dans le modèle"))
           if(input$choix_seuil_2it){
-            print("rij")
+      
             tagList(h2("Choix des seuils"),
                            awesomeRadio(
                              inputId = ns("plusieur_seuils"),
@@ -159,7 +159,7 @@ twitServer <- function(id,list_var) {
           type = "2It"
           plusieur_seuils= NA
           val = list(var =isolate(input$var_sel),
-                     "theta_P_max"= isolate(input$theta_P_min),
+                     "theta_P_min"= isolate(input$theta_P_min),
                      "theta_P_max" = isolate(input$theta_P_max), 
                      "theta_A_min" = isolate(input$theta_A_min),
                      "theta_A_max" = isolate(input$theta_A_max))

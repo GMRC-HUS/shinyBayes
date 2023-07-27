@@ -9,13 +9,12 @@
 
 
 glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL, refresh=0, chains =4,iter= 5000, keep_every = 3,  nb_repeat= 3, shiny = T,...){
-  print("glm_Shiba")
- print(prior)
+
   fit <- glm_prior(data, formule,prior=prior,prior_intercept,iter=iter,chains=chains,keep_every = keep_every...)
   
   
   for(i in 1:nb_repeat) {
-    print(i)
+  
     checks <- diag_convergence(fit)
     if (checks) {
       return(fit)
@@ -65,8 +64,7 @@ glm_Shiba <- function(data, formule, family , prior_intercept= NULL ,prior=NULL,
 
 
 glm_prior<- function(data, formule, family , prior_intercept= NULL ,prior=NULL,refresh=0, ...){
-  print("glm_prior")
-  print(prior)
+ 
   if (is.null(prior_intercept)) {
   if (!is.null(prior$scale) & !is.null(prior$location)) {
     prior = normal(location = prior$location, scale = prior$scale)
