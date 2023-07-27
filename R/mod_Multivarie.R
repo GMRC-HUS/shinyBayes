@@ -90,6 +90,7 @@ mod_Multivarie_server <- function(id, r) {
       })
     #
     seuil_twoit<- reactiveVal(value = NULL)
+    seuil_twoit_val<- reactiveVal(value = NULL)
   #  
   #   # var_input2
     observeEvent(c(input$list_quali,input$list_quanti),{
@@ -349,33 +350,33 @@ output$propositions_multi <- renderUI({
       }
       model_1<- model_2()
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
-      seuil_twoit = seuil_twoit()
+      seuil_twoit_loc = isolate(seuil_twoit())
 
-      if(!is.null(seuil_twoit$ls) & nrow(res)>4 ){
-      if(seuil_twoit$ls$type=="seuil"){
-        if(seuil_twoit$ls$plusieur_seuils){
+      if(!is.null(seuil_twoit_loc$ls) & nrow(res)>4 ){
+      if(seuil_twoit_loc$ls$type=="seuil"){
+        if(seuil_twoit_loc$ls$plusieur_seuils){
           
-          seuils = c(0,seuil_twoit$ls$val)
+          seuils = c(0,seuil_twoit_loc$ls$val)
       res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
                   function(i) length(which(as.array(model_1)[,,i]>seuils[i]))/length(as.array(model_1)[,,i]))
-      Seuil = c(NA,seuil_twoit$ls$val,NA,NA)
+      Seuil = c(NA,seuil_twoit_loc$ls$val,NA,NA)
       Prob =c(NA,res_s[-1],NA,NA)
       
       
       
-      Pr=data.frame(Prob =c(NA,res_s[-1],NA,NA,NA), Seuil = c(NA,seuil_twoit$ls$val,NA,NA,NA) )
+      Pr=data.frame(Prob =c(NA,res_s[-1],NA,NA,NA), Seuil = c(NA,seuil_twoit_loc$ls$val,NA,NA,NA) )
 
         }else{
           res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
-                      function(i) length(which(as.array(model_1)[,,i]>seuil_twoit$ls$val))/length(as.array(model_1)[,,i]))
-          Seuil = c(NA,rep(seuil_twoit$ls$val,(length(model_1$stanfit@sim$fnames_oi)-3)),NA,NA,NA)
+                      function(i) length(which(as.array(model_1)[,,i]>seuil_twoit_loc$ls$val))/length(as.array(model_1)[,,i]))
+          Seuil = c(NA,rep(seuil_twoit_loc$ls$val,(length(model_1$stanfit@sim$fnames_oi)-3)),NA,NA,NA)
           Prob =c(NA,res_s[-1],NA,NA,NA)
 
           Pr=data.frame(Prob =Prob, Seuil = Seuil )
         }
      
-      }else if(!is.null(seuil_twoit$ls$val$var)){
-        list_param = seuil_twoit$ls$val
+      }else if(!is.null(seuil_twoit_loc$ls$val$var)){
+        list_param = seuil_twoit_loc$ls$val
 
         twoIt=twoItStanGlm(model_1, list_param$var,HA_diff_l = list_param$theta_A_min,HA_diff_u = list_param$theta_A_max,
                         HP_diff_l = list_param$theta_P_min ,HP_diff_u = list_param$theta_P_max)
@@ -412,7 +413,7 @@ observeEvent(input$choix_base,{
     waiter <- waiter::Waiter$new(id="div_model")
     # Button to lauch analysis
     observeEvent(input$go, {
-       
+      seuil_twoit_val(seuil_twoit())
        waiter$show()
       
       #showNotification("Modèle en cours !", type = "message")
