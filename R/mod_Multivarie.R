@@ -356,12 +356,12 @@ output$propositions_multi <- renderUI({
   
 
       }
-      
+      print(input$type_glm)
       
       model_1<- model_2()
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
       if(input$type_glm %in% c("poiss","binom")){
-        res%>%mutate_if(is.numeric,exp )
+        res<-res%>%mutate_if(is.numeric,exp )
         
         
       }
