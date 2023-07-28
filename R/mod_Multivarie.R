@@ -448,9 +448,9 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
                           prior_intercept = prior_glm$prior_intercept,
-                          prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location,
+                          prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location),
                                        type= input$type_glm)#,iter = 5
-          )
+          
         
      
           waiter$hide()
