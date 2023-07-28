@@ -348,8 +348,23 @@ output$propositions_multi <- renderUI({
       if (is.null(model_2())) {
         return()
       }
+      
+      
+      if(input$type_glm=="lin"){
+        
+      }else if(input$type_glm %in% c("poiss","binom")){
+  
+
+      }
+      
+      
       model_1<- model_2()
       res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
+      if(input$type_glm %in% c("poiss","binom")){
+        res%>%mutate_if(is.numeric,exp )
+        
+        
+      }
       seuil_twoit_loc = isolate(seuil_twoit())
 
       if(!is.null(seuil_twoit_loc$ls) & nrow(res)>4 ){
@@ -397,16 +412,16 @@ output$propositions_multi <- renderUI({
     }
     
   
-    prior_lm <- reactiveValues(
+    prior_glm <- reactiveValues(
       
       prior_intercept = NULL,
       prior_beta_scale = NULL,
       prior_beta_location = NULL
     )
 observeEvent(input$choix_base,{
-  prior_lm$prior_intercept = NULL
-  prior_lm$prior_beta_scale = NULL
-  prior_lm$prior_beta_location = NULL
+  prior_glm$prior_intercept = NULL
+  prior_glm$prior_beta_scale = NULL
+  prior_glm$prior_beta_location = NULL
   
 })
 
@@ -432,8 +447,9 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
           fit<- glm_Shiba(formule,
                           family = gaussian(link = "identity"),
                           data = r$BDD, refresh = 0,
-                          prior_intercept = prior_lm$prior_intercept,
-                          prior = list(scale = prior_lm$prior_beta_scale, location = prior_lm$prior_beta_location)#,iter = 5
+                          prior_intercept = prior_glm$prior_intercept,
+                          prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location,
+                                       type= input$type_glm)#,iter = 5
           )
         
      
@@ -527,7 +543,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
         Binomial = "binom",
         Beta = "beta",
         Poisson = "poiss"
-      )=="input$type_glm"))
+      )==input$type_glm))
       
       
       fluidPage(
@@ -617,24 +633,28 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
     observeEvent(input$ellicitation, ignoreInit = T, {
 
       
-      if(is.null(prior_lm$prior_intercept )|is.null(   prior_lm$prior_beta_scale )){
+      if(is.null(prior_glm$prior_intercept )|is.null(   prior_glm$prior_beta_scale )){
       
         prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
       
         prior_quanti_sd <-  sapply(input$list_quanti,function(x) sd(r$BDD[,x], na.rm = T))
         if(length(prior_quanti_sd)==0) prior_quanti_sd=NULL
-      prior_lm$prior_intercept = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
-                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T)),2)
-      
-       prior_lm$prior_beta_scale = round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
-      prior_lm$prior_beta_location = rep(0, length(c(prior_quanti_sd,prior_quali_sd)))
+        
+        if(input$type_glm =="lin"){
+      prior_glm$prior_intercept = c(round(mean(r$BDD[,input$variable], na.rm = T),2),
+                                   round(2.5* sd(r$BDD[,input$variable], na.rm = T),2))
+        }else if(input$type_glm %in% c("binom","poiss")){
+          prior_glm$prior_intercept = c(0,2.5)
+        }
+       prior_glm$prior_beta_scale = round(2.5/c(prior_quanti_sd,prior_quali_sd)*sd(r$BDD[,input$variable], na.rm = T),2)
+      prior_glm$prior_beta_location = rep(0, length(c(prior_quanti_sd,prior_quali_sd)))
  
       }
 
 
 
-      prior_beta_scale_def <- c(  prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)#), default_prior_beta_scale_def, prior_lm$prior_beta_scale)
-            prior_beta_location_def <- c(  prior_lm$prior_intercept[1],prior_lm$prior_beta_location)#), default_prior_beta_location_def, prior_lm$prior_beta_location)
+      prior_beta_scale_def <- c(  prior_glm$prior_intercept[2],prior_glm$prior_beta_scale)#), default_prior_beta_scale_def, prior_glm$prior_beta_scale)
+            prior_beta_location_def <- c(  prior_glm$prior_intercept[1],prior_glm$prior_beta_location)#), default_prior_beta_location_def, prior_glm$prior_beta_location)
 
       if(length(input$list_quali)>0){
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
@@ -667,8 +687,8 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       )
       
 noms<-c("intercept", input$list_quanti, nom_var_quali)
-positions<- c(prior_lm$prior_intercept[1],prior_lm$prior_beta_location)
-dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
+positions<- c(prior_glm$prior_intercept[1],prior_glm$prior_beta_location)
+dispersions<-c(prior_glm$prior_intercept[2],prior_glm$prior_beta_scale)
 
       lapply(1:length(noms), function(i) {
         output[[paste(noms[i], "_courbe", sep = "")]] <- renderPlot({
@@ -728,13 +748,13 @@ dispersions<-c(prior_lm$prior_intercept[2],prior_lm$prior_beta_scale)
       }))
       
       removeModal()
-      prior_lm$prior_intercept <- c(prior_mu[1], prior_sd[1])
+      prior_glm$prior_intercept <- c(prior_mu[1], prior_sd[1])
 
-      prior_lm$prior_beta_scale <- prior_sd[-1]
-      prior_lm$prior_beta_location <- prior_mu[-1]
+      prior_glm$prior_beta_scale <- prior_sd[-1]
+      prior_glm$prior_beta_location <- prior_mu[-1]
       if(length(prior_sd)==1){
-        prior_lm$prior_beta_scale <-NULL
-        prior_lm$prior_beta_location<-NULL
+        prior_glm$prior_beta_scale <-NULL
+        prior_glm$prior_beta_location<-NULL
       }
      
     })
