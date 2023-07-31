@@ -9,15 +9,17 @@
 
 
 shibaGlmTable<- function(fit,type_glm,seuilTwoIt=NULL,...){
+print(seuilTwoIt)
 
     res<- fit$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
-                
+    print(res)
+        
 
     if(is.null(seuilTwoIt)){
-      
-      ligne_sigma = which(rownames(res)=="sigma")
+      print("type_glm")
+      ligne_mean_PPD = which(rownames(res)=="mean_PPD")
       if(type_glm %in% c("poiss","binom")){
-        res[1:ligne_sigma-1,1:3]<-exp(res[1:ligne_sigma-1,1:3])
+        res[1:ligne_mean_PPD-1,1:3]<-exp(res[1:ligne_mean_PPD-1,1:3])
         names(res)[1]<- ifelse(type_glm=="poiss","RR","OR")
       }
         
@@ -69,7 +71,7 @@ shibaGlmTable<- function(fit,type_glm,seuilTwoIt=NULL,...){
         
         
         if(type_glm %in% c("poiss","binom")){
-          res[1:ligne_sigma-1,1:3]<-exp(res[1:ligne_sigma-1,1:3])
+          res[1:ligne_mean_PPD-1,1:3]<-exp(res[1:ligne_mean_PPD-1,1:3])
           names(res)[1]<- ifelse(type_glm=="poiss","RR","OR")
         }
         
@@ -77,7 +79,7 @@ shibaGlmTable<- function(fit,type_glm,seuilTwoIt=NULL,...){
       }else if(!is.null(seuilTwoIt$val$var)){
         if( !seuilTwoIt$val$var %in% nomsModel){
           if(type_glm %in% c("poiss","binom")){
-            res[1:ligne_sigma-1,1:3]<-exp(res[1:ligne_sigma-1,1:3])
+            res[1:ligne_mean_PPD-1,1:3]<-exp(res[1:ligne_mean_PPD-1,1:3])
             names(res)[1]<- ifelse(type_glm=="poiss","RR","OR")
           }
           
@@ -107,7 +109,7 @@ shibaGlmTable<- function(fit,type_glm,seuilTwoIt=NULL,...){
           
         
           if(type_glm %in% c("poiss","binom")){
-            res[1:ligne_sigma-1,1:3]<-exp(res[1:ligne_sigma-1,1:3])
+            res[1:ligne_mean_PPD-1,1:3]<-exp(res[1:ligne_mean_PPD-1,1:3])
             names(res)[1]<- ifelse(type_glm=="poiss","RR","OR")
           }
           

@@ -353,7 +353,7 @@ output$propositions_multi <- renderUI({
 
      res<- shibaGlmTable(model_2(),input$type_glm,seuilTwoIt =isolate(seuil_twoit()$ls  ))
       
-      
+      print(res)
       res%>% 
         kbl%>%
         kable_styling(full_width = F,bootstrap_options = c( "hover"),fixed_thead = T)%>%
@@ -396,7 +396,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
       formule<- formule_default(y,list_quanti,list_quali)
 
           fit<- glm_Shiba(formule,
-                          family = gaussian(link = "identity"),
+                         
                           data = r$BDD, refresh = 0,
                           prior_intercept = prior_glm$prior_intercept,
                           prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location),
@@ -405,6 +405,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
         
      
           waiter$hide()
+          print(fit)
      model_2(fit)
 
     })
