@@ -11,30 +11,45 @@
 
 shibaGlmPlot<- function(fit, pars,seuilTwoIt=NULL,...){
   if(!is.null(pars)){
-  p<-  mcmc_areas(fit %>% as.matrix(), pars = pars,...)+theme_light()
+  p<-  mcmc_areas(fit %>% as.matrix(), pars = pars
+                   ,...
+                  )+theme_light()
   if(is.null(seuilTwoIt)) return(p)
   
   if(!is.null(seuilTwoIt) ){
-    nomsModel<- fit$coefficients%>%names
+      nomsModel<- fit$coefficients%>%names
     
     if(seuilTwoIt$type=="seuil"){
       
+      
       if(seuilTwoIt$plusieur_seuils){
-        seuils<- c(NA,seuilTwoIt$val)
-        seuils<-seuils[sapply(pars, function(x) which(x== nomsModel))]
-        p1<- p + geom_ridgeline(aes(x=ifelse(x>seuils[parameter],x,0),height = .data$plotting_density,scale = 0.9 ), fill='#6ad02b', alpha=0.5)
+       
+        
+        seuils<- data.frame(seuils= c(NA,seuilTwoIt$val),
+                            parameter=nomsModel )
+        p$data<-p$data%>%left_join(seuils)
+ 
+          p1<- p + geom_ridgeline(aes(x=x,y=parameter,height =if_else(x>seuils, .data$plotting_density,0), scale = 0.9 ), fill='#6ad02b', alpha=0.5)
         for( i in 1 : length(pars)){
-          p1 <- p1+  geom_segment(x=seuils[length(pars)-i+1], xend=seuils[length(pars)-i+1],y=i, yend =i+1 ,linetype = "longdash")
-          
+          p1 <- p1+  geom_segment(x=(seuils%>%filter(parameter==rev(pars)[i]))$seuil,
+                                  xend = (seuils%>%filter(parameter==rev(pars)[i]))$seuil,y=i, yend =i+1 ,linetype = "longdash")
         }
         return(p1)
         
       }else{
-        seuils<- c(NA,rep(seuilTwoIt$val, length(nomsModel)-1))
-        seuils<-seuils[sapply(pars, function(x) which(x== nomsModel))]
-        p1<- p + geom_ridgeline(aes(x=ifelse(x>seuils[parameter],x,0),height = .data$plotting_density,scale = 0.9 ), fill='#6ad02b', alpha=0.5)
+   
+        seuils<- rep(seuilTwoIt$val, length(nomsModel))
+        seuils[1]<-NA
+
+        seuils<- data.frame(seuils= seuils,
+                            parameter=nomsModel )
+        p$data<-p$data%>%left_join(seuils)
+        
+        
+        p1<- p +  geom_ridgeline(aes(x=x,y=parameter,height =if_else(x>seuils, .data$plotting_density,0), scale = 0.9 ), fill='#6ad02b', alpha=0.5)
         for( i in 1 : length(pars)){
-          p1 <- p1+  geom_segment(x=seuils[length(pars)-i+1], xend=seuils[length(pars)-i+1],y=i, yend =i+1 ,linetype = "longdash")
+          p1 <- p1+  geom_segment(x=(seuils%>%filter(parameter==rev(pars)[i]))$seuil, 
+                                  xend=(seuils%>%filter(parameter==rev(pars)[i]))$seuil,y=i, yend =i+1 ,linetype = "longdash")
         }
         return(p1)
       }
@@ -45,6 +60,15 @@ shibaGlmPlot<- function(fit, pars,seuilTwoIt=NULL,...){
  
     y = length(pars)-which(list_param$var==pars)+1
     if(length(y)==0) return(p)
+    limit_plot<- layer_scales(p)$x$get_limits()
+    list_param$theta_P_max<-ifelse(between(list_param$theta_P_min,limit_plot[1],limit_plot[2])&list_param$theta_P_max>limit_plot[2],limit_plot[2]-0.01,list_param$theta_P_max )
+    list_param$theta_P_min<-ifelse(between(list_param$theta_P_max,limit_plot[1],limit_plot[2])&list_param$theta_P_min<limit_plot[1],limit_plot[1]+0.01,list_param$theta_P_min )
+    
+    
+    list_param$theta_A_max<-ifelse(between(list_param$theta_A_min,limit_plot[1],limit_plot[2])&list_param$theta_A_max>limit_plot[2],limit_plot[2]-0.01,list_param$theta_A_max )
+    list_param$theta_A_min<-ifelse(between(list_param$theta_A_max,limit_plot[1],limit_plot[2])&list_param$theta_A_min<limit_plot[1],limit_plot[1]+0.01,list_param$theta_A_min )
+    
+    
     p1 = p+annotate("rect", xmin =list_param$theta_P_min, 
              xmax = list_param$theta_P_max, ymin = y, 
              ymax = y+1, fill = "#40E0D0", alpha = 0.2) + 
@@ -63,4 +87,4 @@ shibaGlmPlot<- function(fit, pars,seuilTwoIt=NULL,...){
   return(p)
   }
 }
-
+  

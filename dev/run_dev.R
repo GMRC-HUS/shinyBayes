@@ -11,7 +11,7 @@ golem::document_and_reload()
 
 
 # Run the application
-ShiBA::run_app(BDD=mtcars,options = "launch.browser")
+ShiBA::run_app(BDD=iris,options = "launch.browser")
 
 
 #min-max x 

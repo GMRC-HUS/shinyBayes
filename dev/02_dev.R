@@ -32,7 +32,7 @@ golem::add_fct("modal_seuil2It")
 golem::add_fct("twoIt")
 golem::add_fct("shibaGlmPlot")
 
-
+usethis::use_build_ignore("r/exemple.R")
 
 getSession <- function() {
   session <- shiny::getDefaultReactiveDomain()
