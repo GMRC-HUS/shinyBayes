@@ -31,6 +31,7 @@ golem::add_fct( "code_sans_dep" )
 golem::add_fct("modal_seuil2It")
 golem::add_fct("twoIt")
 golem::add_fct("shibaGlmPlot")
+golem::add_fct("shibaGlmTable")
 
 usethis::use_build_ignore("r/exemple.R")
 

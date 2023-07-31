@@ -350,58 +350,9 @@ output$propositions_multi <- renderUI({
       }
       
       
-      if(input$type_glm=="lin"){
-        
-      }else if(input$type_glm %in% c("poiss","binom")){
-  
 
-      }
-      print(input$type_glm)
+     res<- shibaGlmTable(model_2(),input$type_glm,seuilTwoIt =isolate(seuil_twoit()$ls  ))
       
-      model_1<- model_2()
-      res<- model_2()$stan_summary%>%as.data.frame()%>%dplyr::select( Médiane =`50%`, `2.5%`, `97.5%`) 
-      if(input$type_glm %in% c("poiss","binom")){
-        res<-res%>%mutate_if(is.numeric,exp )
-        
-        
-      }
-      seuil_twoit_loc = isolate(seuil_twoit())
-
-      if(!is.null(seuil_twoit_loc$ls) & nrow(res)>4 ){
-      if(seuil_twoit_loc$ls$type=="seuil"){
-        if(seuil_twoit_loc$ls$plusieur_seuils){
-          
-          seuils = c(0,seuil_twoit_loc$ls$val)
-      res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
-                  function(i) length(which(as.array(model_1)[,,i]>seuils[i]))/length(as.array(model_1)[,,i]))
-      Seuil = c(NA,seuil_twoit_loc$ls$val,NA,NA)
-      Prob =c(NA,res_s[-1],NA,NA)
-      
-      
-      
-      Pr=data.frame(Prob =c(NA,res_s[-1],NA,NA,NA), Seuil = c(NA,seuil_twoit_loc$ls$val,NA,NA,NA) )
-
-        }else{
-          res_s<-sapply(1:(length(model_1$stanfit@sim$fnames_oi)-3),
-                      function(i) length(which(as.array(model_1)[,,i]>seuil_twoit_loc$ls$val))/length(as.array(model_1)[,,i]))
-          Seuil = c(NA,rep(seuil_twoit_loc$ls$val,(length(model_1$stanfit@sim$fnames_oi)-3)),NA,NA,NA)
-          Prob =c(NA,res_s[-1],NA,NA,NA)
-
-          Pr=data.frame(Prob =Prob, Seuil = Seuil )
-        }
-     
-      }else if(!is.null(seuil_twoit_loc$ls$val$var)){
-        list_param = seuil_twoit_loc$ls$val
-
-        twoIt=twoItStanGlm(model_1, list_param$var,HA_diff_l = list_param$theta_A_min,HA_diff_u = list_param$theta_A_max,
-                        HP_diff_l = list_param$theta_P_min ,HP_diff_u = list_param$theta_P_max)
-        
-        Pr = data.frame(c("H|Prior","H|Données"),twoIt$values[1:2],twoIt$values[3:4])
-        names(Pr) = c(list_param$var,twoIt$names[1:2])
-        Pr [ nrow(Pr) + (nrow(res)-nrow(Pr)) , ] <- ""
-      }
-        res<-cbind(res,Pr)
-        }
       
       res%>% 
         kbl%>%
