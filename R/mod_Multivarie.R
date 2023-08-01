@@ -32,7 +32,7 @@ mod_Multivarie_ui <- function(id) {
             c(
               Linéaire = "lin",
               Binomial = "binom",
-              Beta = "beta",
+              # Beta = "beta",
               Poisson = "poiss"
             ), "lin"
           ), 
@@ -93,7 +93,7 @@ mod_Multivarie_server <- function(id, r) {
     seuil_twoit_val<- reactiveVal(value = NULL)
   #  
   #   # var_input2
-    observeEvent(c(input$list_quali,input$list_quanti),{
+    observeEvent(c(input$list_quali,input$list_quanti,input$variable,input$type_glm),{
       output$twit_ui <- renderUI({
         actionBttn(
           inputId = ns("seuil_2it"),
@@ -105,18 +105,21 @@ mod_Multivarie_server <- function(id, r) {
         
       })
       
+      model_2(NULL)
+      
       var_quali<- isolate(input$list_quali)
       if(length(var_quali)>0){
         nom_var_quali <- lapply(var_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "")) %>% unlist()
       }else{nom_var_quali<- NULL}
       
       var = c( isolate(input$list_quanti), nom_var_quali)
-      seuil_twoit(twitServer("id_i",var))
+      seuil_twoit(twitServer("id_i",var,type_glm = input$type_glm))
 
     }
   )
     
     observeEvent(input$seuil_2it,{
+      model_2(NULL)
       output$twit_ui <- renderUI({
 
           actionBttn(
@@ -475,7 +478,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
         return()
       }
       
-      shibaGlmPlot(model_2(), pars = input$Variable_graph,seuilTwoIt =isolate(seuil_twoit()$ls ),prob = 0.9)
+      shibaGlmPlot(model_2(),type_glm = input$type_glm, pars = input$Variable_graph,seuilTwoIt =isolate(seuil_twoit()$ls ),prob = 0.9)
       # bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
       
     })
@@ -521,7 +524,7 @@ if(length(list_quali)>0) data = data%>%  mutate_at(list_quali, as.factor)
                      inputId = ns("Variable_graph"),
                      label = "Checkboxes", 
                      choices = var_model,
-                     selected = var_model
+                     selected = ifelse_perso(length(var_model)>1,var_model[-1],var_model)
                    ),
                    
                    

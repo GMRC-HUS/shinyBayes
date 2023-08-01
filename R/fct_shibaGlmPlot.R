@@ -9,11 +9,17 @@
 
 
 
-shibaGlmPlot<- function(fit, pars,seuilTwoIt=NULL,...){
+shibaGlmPlot<- function(fit,type_glm, pars,seuilTwoIt=NULL,...){
   if(!is.null(pars)){
-  p<-  mcmc_areas(fit %>% as.matrix(), pars = pars
+    if(type_glm %in% c("poiss","binom")){
+  p<-  mcmc_areas(fit %>% as.matrix(),transformations = "exp", pars = pars
                    ,...
                   )+theme_light()
+    }else{
+      p<-  mcmc_areas(fit %>% as.matrix(), pars = pars
+                      ,...
+      )+theme_light()
+    }
   if(is.null(seuilTwoIt)) return(p)
   
   if(!is.null(seuilTwoIt) ){
@@ -24,12 +30,24 @@ shibaGlmPlot<- function(fit, pars,seuilTwoIt=NULL,...){
       
       if(seuilTwoIt$plusieur_seuils){
        
-        
+        if(!type_glm %in% c("poiss","binom")){
         seuils<- data.frame(seuils= c(NA,seuilTwoIt$val),
                             parameter=nomsModel )
+        
+        }else{
+          seuils<- data.frame(seuils= c(NA,seuilTwoIt$val),
+                              parameter=paste0("exp(",nomsModel,")") )   
+        
+          pars =   paste0("exp(",pars,")")
+        }
+        
         p$data<-p$data%>%left_join(seuils)
- 
+        
+        
+  
           p1<- p + geom_ridgeline(aes(x=x,y=parameter,height =if_else(x>seuils, .data$plotting_density,0), scale = 0.9 ), fill='#6ad02b', alpha=0.5)
+        
+         
         for( i in 1 : length(pars)){
           p1 <- p1+  geom_segment(x=(seuils%>%filter(parameter==rev(pars)[i]))$seuil,
                                   xend = (seuils%>%filter(parameter==rev(pars)[i]))$seuil,y=i, yend =i+1 ,linetype = "longdash")
@@ -41,8 +59,15 @@ shibaGlmPlot<- function(fit, pars,seuilTwoIt=NULL,...){
         seuils<- rep(seuilTwoIt$val, length(nomsModel))
         seuils[1]<-NA
 
-        seuils<- data.frame(seuils= seuils,
-                            parameter=nomsModel )
+        if(!type_glm %in% c("poiss","binom")){
+          seuils<- data.frame(seuils= c(seuilTwoIt$val),
+                              parameter=nomsModel )
+        }else{
+          seuils<- data.frame(seuils= c(seuilTwoIt$val),
+                              parameter=paste0("exp(",nomsModel,")") )   
+          pars =   paste0("exp(",pars,")")
+          
+        }
         p$data<-p$data%>%left_join(seuils)
         
         

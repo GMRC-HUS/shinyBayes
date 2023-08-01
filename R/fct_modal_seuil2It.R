@@ -44,7 +44,7 @@ twitUi <- function(id) {
 }
 
 # Module server function
-twitServer <- function(id,list_var) {
+twitServer <- function(id,list_var,type_glm) {
   moduleServer(
     id,
     
@@ -90,17 +90,32 @@ twitServer <- function(id,list_var) {
                         h3("Présence d'effet :"), h3("Absence d'effet : ")),
             splitLayout(
               cellWidths = c("25%", "25%", "25%", "25%"),
-              numericInput(ns("theta_P_min"), "Min :",
-                           # min = min_x-max_x, max = max_x*2,
-                           value = 0,step =0.1),
-              numericInput(ns("theta_P_max"), "Max :",
-                           value = 0,step =0.1)
-              ,
-              numericInput(ns("theta_A_min"), "Min :",
-                           # min = min_x-max_x, max = max_x*2,
-                           value = 0,step =0.1),
-              numericInput(ns("theta_A_max"), "Max :",
-                           value = 0,step =0.1)
+              ifelse_perso(type_glm%in% c("poiss","binom"),  numericInput(ns("theta_P_min"), "Min :",
+                            min = 0.0000, 
+                           value = 1,step =0.1),
+                           numericInput(ns("theta_P_min"), "Min :",
+                                        
+                                        value = 0,step =0.1)),
+              
+              ifelse_perso(type_glm%in% c("poiss","binom"),  numericInput(ns("theta_P_max"), "Max :",
+                                                                          min = 0, 
+                                                                          value = 1,step =0.1),
+                           numericInput(ns("theta_P_max"), "Max :",
+                                        
+                                        value = 0,step =0.1)),
+              ifelse_perso(type_glm%in% c("poiss","binom"),  numericInput(ns("theta_A_min"), "Min :",
+                                                                          min = 0, 
+                                                                          value = 1,step =0.1),
+                           numericInput(ns("theta_A_min"), "Min :",
+                                        
+                                        value = 0,step =0.1)),
+              
+              ifelse_perso(type_glm%in% c("poiss","binom"),  numericInput(ns("theta_A_max"), "Max :",
+                                                                          min = 0, 
+                                                                          value = 1,step =0.1),
+                           numericInput(ns("theta_A_max"), "Max :",
+                                        
+                                        value = 0,step =0.1))
             )
             )
             
@@ -118,7 +133,9 @@ twitServer <- function(id,list_var) {
             lapply(1:length(list_var), function(i) {
               
               list(
-                numericInput(inputId =ns(paste( "seuil_", list_var[i], sep = "")), label= list_var[i] , value = 0 , step=0.1)
+                numericInput(inputId =ns(paste( "seuil_", list_var[i], sep = "")), label= list_var[i] , 
+                             value =   ifelse(type_glm%in% c("poiss","binom"),1,0),
+                             min = ifelse(type_glm%in% c("poiss","binom"),0.001,NA), step=0.1)
                 
               )
             }
@@ -129,8 +146,8 @@ twitServer <- function(id,list_var) {
           
           
           numericInput(ns("valeur_seuil"), "Valeur du seuil :",
-                       # min = min_x-max_x, max = max_x*2,
-                       value = 0,step =0.1)
+                       value =   ifelse(type_glm%in% c("poiss","binom"),1,0),
+                       min = ifelse(type_glm%in% c("poiss","binom"),0.001,NA),step =0.1)
           
         }
         
