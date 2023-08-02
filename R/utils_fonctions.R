@@ -75,6 +75,26 @@ formule_default <- function(y, X_quanti, X_quali) {
   paste(isolate(y), "~", var_interet)
 }
 
+df_prior<- function(fit){
+  
+  loc_var  <- prior_summary(fit)$prior$location
+  scale_var <- prior_summary(fit)$prior$adjusted_scale
+  if (is.null(scale_var)) {
+    scale_var <- prior_summary(fit)$prior$scale
+  }
+  
+  
+  loc_inter  <- prior_summary(fit)$prior_intercept$location
+  scale_inter <- prior_summary(fit)$prior_intercept$adjusted_scale
+  if (is.null(scale_inter)) {
+    scale_inter <- prior_summary(fit)$prior_intercept$scale
+  }
+  
+  return(data.frame(Var = fit$coefficients%>%names, 
+                     Position =c(loc_inter, loc_var),
+                     Dispersion = c(scale_inter,scale_var)))
+}
+
 
 barplot_croise <- function(base, var1, var2) {
   BDD <- base[, c(var1, var2)]

@@ -344,8 +344,7 @@ mod_Multivarie_server <- function(id, r) {
       waiter$show()
 
       # showNotification("Modèle en cours !", type = "message")
-      model_2(NULL)
-
+     
       list_quanti <- isolate(input$list_quanti)
       list_quali <- isolate(input$list_quali)
       y <- isolate(input$variable)
@@ -363,7 +362,8 @@ mod_Multivarie_server <- function(id, r) {
         type = input$type_glm
       ) # ,iter = 5
 
-
+      model_2(NULL)
+      
 
       waiter$hide()
       print(fit)
@@ -375,24 +375,9 @@ mod_Multivarie_server <- function(id, r) {
       if (is.null(model_2())) {
         return()
       }
-      prior_sel <- model_2()$prior.info
-      if (!is.null(prior_sel)) {
-        nom_var_quali <- lapply(isolate(input$list_quali), function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
-
-        return(data.frame(
-          Var = c("intercept", isolate(input$list_quanti), nom_var_quali),
-          sd = c(prior_sel$prior_intercept$scale, prior_sel$prior$scale),
-          mu = c(prior_sel$prior_intercept$location, prior_sel$prior$location)
-        ))
-      } else {
-        nom_var_quali <- lapply(isolate(input$list_quali), function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
-
-        return(data.frame(
-          Var = c("intercept", isolate(input$list_quanti), nom_var_quali),
-          sd = "default",
-          mu = "default"
-        ))
-      }
+      
+      df_prior(model_2())
+      
     })
 
 
