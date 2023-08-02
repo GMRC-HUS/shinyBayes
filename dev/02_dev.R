@@ -185,6 +185,7 @@ usethis::use_test( "app" )
 
 golem::browser_button()
 
+
 ## 2.5 Add external files
 
 golem::add_js_file( "script" )
@@ -221,4 +222,7 @@ golem::add_fct("sd_prec_to_alpha_beta")
 
 usethis::use_pkgdown_github_pages()
 pkgdown::build_site()
+
+
+
 
