@@ -411,7 +411,8 @@ mod_Multivarie_server <- function(id, r) {
         return()
       }
 
-      shibaGlmPlot(model_2(), type_glm = input$type_glm, pars = input$Variable_graph, seuilTwoIt = isolate(seuil_twoit()$ls), prob = 0.9)
+      shibaGlmPlot(model_2(), type_glm = input$type_glm, pars = input$Variable_graph,
+                   seuilTwoIt = isolate(seuil_twoit()$ls), prob = 0.9,hist = T)
       # bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
     })
 
