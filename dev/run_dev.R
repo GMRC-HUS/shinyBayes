@@ -14,6 +14,3 @@ golem::document_and_reload()
 ShiBA::run_app(BDD=mtcars,options = "launch.browser")
 
 
-#min-max x 
-# apriori ecart type de la moyenne
-# Ecart type de la moyenne et pseudo echatillon
