@@ -316,10 +316,10 @@ mod_Multivarie_server <- function(id, r) {
 
 
       res <- shibaGlmTable(model_2(), input$type_glm, seuilTwoIt = isolate(seuil_twoit()$ls))
-
+  
       print(res)
       res %>%
-        kbl() %>%
+        kbl(digits = 3) %>%
         kable_styling(full_width = F, bootstrap_options = c("hover"), fixed_thead = T) %>%
         row_spec((nrow(res) - 2), extra_css = "border-top: thick double #D8D8D8")
       # column_spec(4, extra_css = "border-right: thick double #D8D8D8;")
@@ -341,7 +341,12 @@ mod_Multivarie_server <- function(id, r) {
     # Button to lauch analysis
     observeEvent(input$go, {
       seuil_twoit_val(seuil_twoit())
-      waiter$show()
+      showModal(modalDialog(
+        title = "Important message",
+        fluidPage(
+        shinyjs::useShinyjs(),
+        textOutput(ns("text"))
+      )))
 
       # showNotification("Modèle en cours !", type = "message")
      
@@ -354,19 +359,22 @@ mod_Multivarie_server <- function(id, r) {
 
       if (length(list_quali) > 0) data <- data %>% mutate_at(list_quali, as.factor)
       formule <- formule_default(y, list_quanti, list_quali)
-
+      withCallingHandlers(
       fit <- glm_Shiba(formule,
-        data = r$BDD, refresh = 0,
+        data = r$BDD,
         prior_intercept = prior_glm$prior_intercept,
         prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location),
-        type = input$type_glm
-      ) # ,iter = 5
-
+        type = input$type_glm,refresh=100
+      ), # ,iter = 5
+      message = function(m) output$text <- renderPrint(m$message)
+      )
       model_2(NULL)
       
 
-      waiter$hide()
+      removeModal()
       print(fit)
+      
+      
       model_2(fit)
     })
 

@@ -8,7 +8,7 @@
 
 
 
-glm_Shiba <- function(data, formule, type, prior_intercept = NULL, prior = NULL, refresh = 0, chains = 4, iter = 5000, keep_every = 3, nb_repeat = 3, shiny = T, ...) {
+glm_Shiba <- function(data, formule, type, prior_intercept = NULL, prior = NULL, chains = 4, iter = 5000, keep_every = 3, nb_repeat = 3, shiny = T, ...) {
   fit <- glm_prior(data, formule, type = type, prior = prior, prior_intercept, iter = iter, chains = chains, keep_every = keep_every...)
 
 
@@ -56,7 +56,7 @@ glm_Shiba <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
 
 
 
-glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL, refresh = 0, ...) {
+glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL, ...) {
   if (type == "lin") {
     family <- gaussian(link = "identity")
   } else if (type == "poiss") {
@@ -72,12 +72,12 @@ glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
       fit <- stan_glm(formule,
         family = family,
         data = data,
-        prior = prior, refresh = refresh, ...
+        prior = prior, ...
       )
     } else {
       fit <- (stan_glm(formule,
         family = family,
-        data = data, refresh = refresh, ...
+        data = data,  ...
       ))
     }
   } else if (!is.null(prior$scale) & !is.null(prior$location)) {
@@ -85,16 +85,16 @@ glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
     prior_intercept <- normal(location = prior_intercept[1], scale = prior_intercept[2])
     fit <- stan_glm(formule,
       family = family,
-      data = data, refresh = 0,
+      data = data,
       prior_intercept = prior_intercept,
-      prior = prior, refresh = refresh, ...
+      prior = prior,  ...
     )
   } else {
     prior_intercept <- normal(location = prior_intercept[1], scale = prior_intercept[2])
     fit <- (stan_glm(formule,
       family = family,
-      data = data, refresh = 0,
-      prior_intercept = prior_intercept, refresh = refresh, ...
+      data = data, 
+      prior_intercept = prior_intercept, ...
     ))
   }
   return(fit)
