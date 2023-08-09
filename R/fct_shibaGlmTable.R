@@ -111,9 +111,26 @@ shibaGlmTable <- function(fit, type_glm, seuilTwoIt = NULL, ...) {
     }
 
     Pr <- data.frame(c("H|Prior", "H|Données"), twoIt$values[1:2], twoIt$values[3:4])
-    names(Pr) <- c(list_param$var, twoIt$names[1:2])
-    Pr[(nrow(Pr) + 1):(nrow(Pr) + (nrow(res) - nrow(Pr))), ] <- ""
-
+    names(Pr) <- c("Two It", twoIt$names[1:2])
+    ligne_para<- which(rownames(res) == list_param$var)
+    matrice_vide <- as.data.frame(matrix("",nrow = ligne_para-1,ncol = 3))
+    names(matrice_vide)<- names(Pr)
+    Pr<- rbind(matrice_vide, Pr)
+    
+    
+    ligne_vide <- as.data.frame(matrix("",nrow = 1,ncol = ncol(res)))
+    rownames(ligne_vide)<-""
+    names(ligne_vide) <- names(res)
+    
+    
+    
+    print(ligne_para)
+    Pr[(nrow(Pr) + 1):(nrow(Pr) + (nrow(res) - nrow(Pr)+1)), ] <- ""
+    n_ligne<- nrow(res)
+    print(Pr)
+    print(n_ligne)
+    res<- rbind(res[1:ligne_para,],ligne_vide, res[(ligne_para+1):n_ligne,])
+    print(res)
     res <- cbind(res, Pr)
     ligne_mean_PPD <- which(rownames(res) == "mean_PPD")
 
