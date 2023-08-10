@@ -262,8 +262,7 @@ app_ui <- function(request) {
 #' @noRd
 golem_add_external_resources <- function() {
   add_resource_path(
-    "www",
-    system.file("app/www", package = "GmrcShinyBayes")
+    'www', app_sys('app/www')
   )
 
 
