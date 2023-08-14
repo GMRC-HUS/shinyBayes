@@ -40,7 +40,8 @@ Imports:
     gridExtra,
     shinyalert,
     waiter,
-    shinycssloaders
+    shinycssloaders,
+    data.table
 Remotes: 
     github::GMRC-HUS/GmrcBayes
 Encoding: UTF-8

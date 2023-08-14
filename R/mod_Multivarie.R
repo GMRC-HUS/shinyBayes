@@ -36,6 +36,7 @@ mod_Multivarie_ui <- function(id) {
               Poisson = "poiss"
             ), "lin"
           ),
+          sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 0,max = 100,step = 1,animate = F,post = " %",value = 95),
           uiOutput(ns("choix_y")),
           uiOutput(ns("propositions_multi")),
           uiOutput(ns("refactorisation")),
@@ -65,7 +66,7 @@ mod_Multivarie_server <- function(id, r) {
     ns <- session$ns
 
     output$choix_y <- renderUI({
-      selectInput(ns("variable"), h2("Variable d'interêt :"),
+      selectInput(ns("variable"), h3("Variable d'interêt :"),
         choices =
           r$noms
       )
@@ -315,7 +316,7 @@ mod_Multivarie_server <- function(id, r) {
 
 
 
-      res <- shibaGlmTable(model_2(), input$type_glm, seuilTwoIt = isolate(seuil_twoit()$ls))
+      res <- shibaGlmTable(model_2(),IC = input$IC, input$type_glm, seuilTwoIt = isolate(seuil_twoit()$ls))
   
       print(res)
       res %>%
@@ -420,7 +421,7 @@ mod_Multivarie_server <- function(id, r) {
       }
 
       shibaGlmPlot(model_2(), type_glm = input$type_glm, pars = input$Variable_graph,
-                   seuilTwoIt = isolate(seuil_twoit()$ls), prob = 0.9,hist = T)
+                   seuilTwoIt = isolate(seuil_twoit()$ls), prob = input$IC,hist = T)
       # bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
     })
 

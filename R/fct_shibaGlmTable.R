@@ -3,17 +3,17 @@
 #' @description A fct function
 #'
 #' @return The return value, if any, from executing the function.
-#'
+#' @importFrom data.table rbindlist
 #' @noRd
 
 
 
-shibaGlmTable <- function(fit, type_glm, seuilTwoIt = NULL, ...) {
+shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
   print(seuilTwoIt)
+  nomsModel <- fit$coefficients %>% names()
 
-  res <- fit$stan_summary %>%
-    as.data.frame() %>%
-    dplyr::select(Médiane = `50%`, `2.5%`, `97.5%`)
+  res <- lapply(nomsModel,
+                function(i)  quantile(as.array(fit)[, , i], c(0.5,(1-0.95)/2,1-(1-0.95)/2))%>%t%>%as.data.frame()%>% mutate(var=i, .before=everything()))%>%rbindlist
   print(res)
 
   ligne_mean_PPD <- which(rownames(res) == "mean_PPD")
@@ -21,7 +21,7 @@ shibaGlmTable <- function(fit, type_glm, seuilTwoIt = NULL, ...) {
     print("type_glm")
 
     if (type_glm %in% c("poiss", "binom")) {
-      res[1:ligne_mean_PPD - 1, 1:3] <- exp(res[1:ligne_mean_PPD - 1, 1:3])
+      res[, 1:3] <- exp(res[, 1:3])
       names(res)[1] <- ifelse(type_glm == "poiss", "RR", "OR")
     }
 
@@ -31,7 +31,6 @@ shibaGlmTable <- function(fit, type_glm, seuilTwoIt = NULL, ...) {
 
 
 
-  nomsModel <- fit$coefficients %>% names()
 
   if (seuilTwoIt$type == "seuil") {
     if (type_glm %in% c("poiss", "binom")) {

@@ -168,7 +168,7 @@ usethis::use_package("shinyalert" )
 usethis::use_package("waiter" )
 usethis::use_package("shinycssloaders" )
 
-
+usethis::use_package("data.table" )
 
 
 
