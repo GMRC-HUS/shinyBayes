@@ -339,17 +339,25 @@ mod_Multivarie_server <- function(id, r) {
     })
 
     waiter <- waiter::Waiter$new(id = "div_model")
-    # Button to lauch analysis
+
+    rv <- reactiveValues(textstream = c(""),
+                         timer = reactiveTimer(1000),
+                         started = FALSE)
+    
+    
+  
+    
     observeEvent(input$go, {
+      rv$started <- TRUE
       seuil_twoit_val(seuil_twoit())
       showModal(modalDialog(
-        title = "Important message",
-        fluidPage(
-        shinyjs::useShinyjs(),
-        textOutput(ns("text"))
-      )))
+        title = "Modèle en cours",
 
-      # showNotification("Modèle en cours !", type = "message")
+        img(src="www/wait.gif", align = "center",height='300px',width='400px')
+       
+      ))
+
+ 
      
       list_quanti <- isolate(input$list_quanti)
       list_quali <- isolate(input$list_quali)
@@ -360,15 +368,17 @@ mod_Multivarie_server <- function(id, r) {
 
       if (length(list_quali) > 0) data <- data %>% mutate_at(list_quali, as.factor)
       formule <- formule_default(y, list_quanti, list_quali)
-      withCallingHandlers(
-      fit <- glm_Shiba(formule,
+     
+      
+        
+        fit <- glm_Shiba(formule,
         data = r$BDD,
         prior_intercept = prior_glm$prior_intercept,
         prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location),
-        type = input$type_glm,refresh=100
-      ), # ,iter = 5
-      message = function(m) output$text <- renderPrint(m$message)
+        type = input$type_glm
       )
+       
+        
       model_2(NULL)
       
 
@@ -377,6 +387,7 @@ mod_Multivarie_server <- function(id, r) {
       
       
       model_2(fit)
+      rv$started <- FALSE
     })
 
 
