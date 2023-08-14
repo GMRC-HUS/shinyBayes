@@ -36,7 +36,7 @@ mod_Multivarie_ui <- function(id) {
               Poisson = "poiss"
             ), "lin"
           ),
-          sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 0,max = 100,step = 1,animate = F,post = " %",value = 95),
+          sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 80,max = 100,step = 1,animate = F,post = " %",value = 95),
           uiOutput(ns("choix_y")),
           uiOutput(ns("propositions_multi")),
           uiOutput(ns("refactorisation")),
@@ -316,13 +316,13 @@ mod_Multivarie_server <- function(id, r) {
 
 
 
-      res <- shibaGlmTable(model_2(),IC = input$IC, input$type_glm, seuilTwoIt = isolate(seuil_twoit()$ls))
+      res <- shibaGlmTable(model_2(),IC = isolate(input$IC), input$type_glm, seuilTwoIt = isolate(seuil_twoit()$ls))
   
       print(res)
       res %>%
         kbl(digits = 3) %>%
         kable_styling(full_width = F, bootstrap_options = c("hover"), fixed_thead = T) %>%
-        row_spec((nrow(res) - 2), extra_css = "border-top: thick double #D8D8D8")
+        row_spec((nrow(res) - 1), extra_css = "border-top: thick double #D8D8D8")
       # column_spec(4, extra_css = "border-right: thick double #D8D8D8;")
     }
 
@@ -338,12 +338,7 @@ mod_Multivarie_server <- function(id, r) {
       prior_glm$prior_beta_location <- NULL
     })
 
-    waiter <- waiter::Waiter$new(id = "div_model")
 
-    rv <- reactiveValues(textstream = c(""),
-                         timer = reactiveTimer(1000),
-                         started = FALSE)
-    
     
   
     
@@ -432,7 +427,7 @@ mod_Multivarie_server <- function(id, r) {
       }
 
       shibaGlmPlot(model_2(), type_glm = input$type_glm, pars = input$Variable_graph,
-                   seuilTwoIt = isolate(seuil_twoit()$ls), prob = input$IC,hist = T)
+                   seuilTwoIt = isolate(seuil_twoit()$ls), prob = isolate(input$IC),hist = T)
       # bayesplot::mcmc_areas(model_2() %>% as.matrix(), pars = input$Variable_graph)+theme_light()
     })
 
@@ -556,7 +551,7 @@ mod_Multivarie_server <- function(id, r) {
 
 
 
-
+      if (input$type_glm == "lin") {
       showModal(
         modalDialog(
           tagList(lapply(1:length(c("intercept", input$list_quanti, nom_var_quali)), function(i) {
@@ -579,29 +574,88 @@ mod_Multivarie_server <- function(id, r) {
           )
         )
       )
-
-      noms <- c("intercept", input$list_quanti, nom_var_quali)
-      positions <- c(prior_glm$prior_intercept[1], prior_glm$prior_beta_location)
-      dispersions <- c(prior_glm$prior_intercept[2], prior_glm$prior_beta_scale)
-
-      lapply(1:length(noms), function(i) {
-        output[[paste(noms[i], "_courbe", sep = "")]] <- renderPlot({
-          ggplot(data = data.frame(x = c(positions[i] - 2 * dispersions[i], positions[i] + 2 * dispersions[i])), aes(x)) +
-            stat_function(fun = dnorm, args = list(mean = input[[paste(noms[i], "_mu_0", sep = "")]], sd = input[[paste(noms[i], "_sigma_0", sep = "")]])) +
-            theme_light() +
-            xlim(c(
-              input[[paste(noms[i], "_mu_0", sep = "")]] - 3 * input[[paste(noms[i], "_sigma_0", sep = "")]],
-              input[[paste(noms[i], "_mu_0", sep = "")]] + 3 * input[[paste(noms[i], "_sigma_0", sep = "")]]
-            )) +
-            theme(
-              axis.text.y = element_blank(),
-              axis.ticks.y = element_blank(),
-              axis.ticks.x = element_blank()
-            ) +
-            ylab("") +
-            xlab(noms[i])
+        
+        noms <- c("intercept", input$list_quanti, nom_var_quali)
+        positions <- c(prior_glm$prior_intercept[1], prior_glm$prior_beta_location)
+        dispersions <- c(prior_glm$prior_intercept[2], prior_glm$prior_beta_scale)
+        
+        lapply(1:length(noms), function(i) {
+          output[[paste(noms[i], "_courbe", sep = "")]] <- renderPlot({
+            ggplot(data = data.frame(x = c(positions[i] - 2 * dispersions[i], positions[i] + 2 * dispersions[i])), aes(x)) +
+              stat_function(fun = dnorm, args = list(mean = input[[paste(noms[i], "_mu_0", sep = "")]], sd = input[[paste(noms[i], "_sigma_0", sep = "")]])) +
+              theme_light() +
+              xlim(c(
+                input[[paste(noms[i], "_mu_0", sep = "")]] - 3 * input[[paste(noms[i], "_sigma_0", sep = "")]],
+                input[[paste(noms[i], "_mu_0", sep = "")]] + 3 * input[[paste(noms[i], "_sigma_0", sep = "")]]
+              )) +
+              theme(
+                axis.text.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.ticks.x = element_blank()
+              ) +
+              ylab("") +
+              xlab(noms[i])
+          })
         })
-      })
+      }else if (input$type_glm %in% c("binom", "poiss")) {
+        
+        showModal(
+          modalDialog(
+            tagList(lapply(1:length(c("intercept", input$list_quanti, nom_var_quali)), function(i) {
+              x <- c("intercept", input$list_quanti, nom_var_quali)[i]
+              prior_beta_location_def_i <- prior_beta_location_def[i]
+              prior_beta_scale_def_i <- prior_beta_scale_def[i]
+              
+              transfo_exp = norm_tomin_max_exp(prior_beta_location_def_i  , prior_beta_scale_def_i   )
+              min_exp =transfo_exp[1]
+              max_exp = transfo_exp[2]
+
+              
+
+              list(
+                plotOutput(width = 200, height = 100, ns(paste(x, "_courbe", sep = ""))),
+                numericInput(ns(paste(x, "_min_exp", sep = "")), "A priori min: ",
+                             value = min_exp, step = 0.1
+                ),
+                numericInput(ns(paste(x, "_max_exp", sep = "")), "A priori max : ",
+                             step = 0.1, value = max_exp
+                )
+              )
+            })),
+            footer = tagList(
+              actionButton(ns("ok"), "OK"),
+              actionButton(ns("defaut"), "Défaut")
+            )
+          )
+        )
+        
+        noms <- c("intercept", input$list_quanti, nom_var_quali)
+        positions <- c(prior_glm$prior_intercept[1], prior_glm$prior_beta_location)
+        dispersions <- c(prior_glm$prior_intercept[2], prior_glm$prior_beta_scale)
+        
+        lapply(1:length(noms), function(i) {
+          output[[paste(noms[i], "_courbe", sep = "")]] <- renderPlot({
+            print(input[[paste(noms[i], "_min_exp", sep = "")]])
+            trans<-(min_max_exp_to_norm(input[[paste(noms[i], "_min_exp", sep = "")]],input[[paste(noms[i], "_max_exp", sep = "")]]))
+            ggplot(data = data.frame(x = c(0,1)), aes(x)) +
+              geom_function(fun = function(x) (dnorm(log(x),mean = trans[1],
+                                                        sd = trans[2])))+
+              theme_light() +
+              xlim(c(
+               0,5
+              )) +
+              theme(
+                axis.text.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.ticks.x = element_blank()
+              ) +
+              ylab("") +
+              xlab(noms[i])
+          })
+        })  
+      }
+
+   
     })
 
     observeEvent(input$defaut, {
@@ -634,6 +688,7 @@ mod_Multivarie_server <- function(id, r) {
     observeEvent(input$ok, {
       nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
 
+      
       prior_mu <- unlist(lapply(c("intercept", input$list_quanti, nom_var_quali), function(i) {
         input[[paste(i, "_mu_0", sep = "")]]
       }))

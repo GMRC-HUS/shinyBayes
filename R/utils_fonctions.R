@@ -324,3 +324,30 @@ plot_diag <- function(fit, var) {
   grid <- grid.arrange(chains, autocorrelation, nrow = 2)
   return(grid)
 }
+
+min_max_exp_to_norm <- function(min, max, prob = 0.95){
+  
+  min_log = log(min)
+  max_log = log(max)
+  
+  moy  = (min_log+max_log)/2
+  
+  sd = abs(moy-min_log)/abs(qnorm((1-prob)))
+  
+  return(c(moy=moy, sd=sd))
+  
+}
+
+
+norm_tomin_max_exp <- function(moy, sd, prob=0.95){
+  
+
+
+
+res<-  exp(qnorm(c(1-prob, prob), mean = moy, sd=sd))
+
+  return(c(min=res[1], max=res[2]))
+  
+}
+
+

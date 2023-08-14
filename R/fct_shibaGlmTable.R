@@ -12,8 +12,8 @@ shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
   print(seuilTwoIt)
   nomsModel <- fit$coefficients %>% names()
 
-  res <- lapply(nomsModel,
-                function(i)  quantile(as.array(fit)[, , i], c(0.5,(1-0.95)/2,1-(1-0.95)/2))%>%t%>%as.data.frame()%>% mutate(var=i, .before=everything()))%>%rbindlist
+  res <- lapply(c(nomsModel,"sigma"),
+                function(i)  quantile(as.array(fit)[, , i], c(0.5,(1-IC/100)/2,1-(1-IC/100)/2))%>%t%>%as.data.frame(   check.names= F)%>% mutate(var=i, .before=everything()))%>%rbindlist
   print(res)
 
   ligne_mean_PPD <- which(rownames(res) == "mean_PPD")
