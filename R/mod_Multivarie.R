@@ -343,7 +343,7 @@ mod_Multivarie_server <- function(id, r) {
   
     
     observeEvent(input$go, {
-      rv$started <- TRUE
+     
       seuil_twoit_val(seuil_twoit())
       showModal(modalDialog(
         title = "Modèle en cours",
@@ -382,7 +382,7 @@ mod_Multivarie_server <- function(id, r) {
       
       
       model_2(fit)
-      rv$started <- FALSE
+      
     })
 
 

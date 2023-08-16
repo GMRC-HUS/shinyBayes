@@ -101,6 +101,7 @@ shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,...) {
           p$data <- p$data %>% left_join(seuils)
 
           if(hist){
+
             p1 <-p + geom_histogram(aes(x =value, fill = value > seuils), alpha = 0.5)
             
             p1<- p1+geom_segment(data=seuils%>%filter(parameter%in%pars), aes(x=seuils, xend = seuils,y=-Inf,yend=Inf, group = parameter))+facet_wrap(.~parameter)

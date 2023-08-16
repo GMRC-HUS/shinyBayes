@@ -332,7 +332,7 @@ min_max_exp_to_norm <- function(min, max, prob = 0.95){
   
   moy  = (min_log+max_log)/2
   
-  sd = abs(moy-min_log)/abs(qnorm((1-prob)))
+  sd = abs(moy-min_log)/abs(qnorm((1-prob)/2))
   
   return(c(moy=moy, sd=sd))
   
@@ -344,7 +344,7 @@ norm_tomin_max_exp <- function(moy, sd, prob=0.95){
 
 
 
-res<-  exp(qnorm(c(1-prob, prob), mean = moy, sd=sd))
+res<-  exp(qnorm(c((1-prob)/2, prob+(1-prob)/2), mean = moy, sd=sd))
 
   return(c(min=res[1], max=res[2]))
   

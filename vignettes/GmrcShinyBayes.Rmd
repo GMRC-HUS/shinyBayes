@@ -17,3 +17,34 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(ShiBA)
 ```
+
+
+```{r}
+# Exemple glmShiba
+
+
+fit <- ShiBA:::glm_Shiba(iris,formule =Sepal.Length ~., type="lin",refresh = 0)
+
+
+
+```
+
+```{r}
+# exemple shibaplo
+
+a<-
+ShiBA:::shibaGlmPlot(fit,"lin",pars=names(fit$coefficients),hist = T)
+
+
+a$facet$params
+
+```
+
+```{r}
+library(ggplot2)
+seuilTwoIt<- list(type = "seuil",plusieur_seuils=F,val =-1.1)
+
+ShiBA:::shibaGlmPlot(fit,"lin",pars=names(fit$coefficients),hist = T,seuilTwoIt = seuilTwoIt)+xlim(c(-1.5,0))
+```
+
+
