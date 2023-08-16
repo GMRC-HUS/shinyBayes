@@ -155,21 +155,24 @@ app_ui <- function(request) {
           dashboardHeader(title = "Base de données"),
           dashboardSidebar(
             sidebarMenu(
-              menuItem("Multivarié",
-                tabName = "multivarie_Uni" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
-              ),
-              menuItem("Inférence univarié",
-                tabName = "infUni" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
-              ),
-
+      
               # shinythemes::themeSelector(),
               menuItem("Accueil", tabName = "accueil", icon = icon("fa-light fa-star", verify_fa = FALSE)),
               menuItem("Base de données", tabName = "base", icon = icon("fa-light fa-database", verify_fa = FALSE)),
               menuItem("Descriptif", tabName = "descriptif", icon = icon("fa-light fa-percent", verify_fa = FALSE)),
-              menuItem("Croisements/Inférence", tabName = "croisements", icon = icon("fa-light fa-dice", verify_fa = FALSE)),
-              menuItem("Analyse de survie", tabName = "survie", icon = icon("fa-light fa-skull-crossbones", verify_fa = FALSE)),
-              menuItem("Tests diagnostiques", tabName = "tests", icon = icon("fa-light fa-vial", verify_fa = FALSE)),
-              menuItem("Concordance", tabName = "concordance", icon = icon("fa-light fa-equals", verify_fa = FALSE))
+              menuItem("Descriptif croisement",
+                       tabName = "croisements" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
+              ),
+              menuItem("Inférence univarié",
+                       tabName = "infUni" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
+              ),
+          menuItem("Multivarié",
+                   tabName = "multivarie_Uni" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
+          )
+              # menuItem("Croisements/Inférence", tabName = "croisements", icon = icon("fa-light fa-dice", verify_fa = FALSE)),
+              # menuItem("Analyse de survie", tabName = "survie", icon = icon("fa-light fa-skull-crossbones", verify_fa = FALSE)),
+              # menuItem("Tests diagnostiques", tabName = "tests", icon = icon("fa-light fa-vial", verify_fa = FALSE)),
+              # menuItem("Concordance", tabName = "concordance", icon = icon("fa-light fa-equals", verify_fa = FALSE))
             )
           ),
           dashboardBody(
@@ -207,33 +210,35 @@ app_ui <- function(request) {
               tabItem(
                 tabName = "croisements",
                 mod_Croisements_ui("Croisements_1")
-              ),
-              tabItem(
-                tabName = "survie",
-                mod_Survie_ui("Survie_1")
-              ),
-              tabItem(
-                tabName = "tests",
-                mod_Tests_ui("Tests_1")
-              ),
-              tabItem(
-                tabName = "concordance",
-                mod_Concordance_ui("Concordance_1")
+              )
+              # tabItem(
+              #   tabName = "survie",
+              #   mod_Survie_ui("Survie_1")
+              # ),
+              # tabItem(
+              #   tabName = "tests",
+              #   mod_Tests_ui("Tests_1")
+              # ),
+              # tabItem(
+              #   tabName = "concordance",
+              #   mod_Concordance_ui("Concordance_1")
               )
             )
           )
         )
-      ),
-      tabPanel(
-        "Saisie manuelle",
-        mod_SaisieManuelle_ui("SaisieManuelle_1")
-      ),
-      tabPanel(
-        "Rédaction",
-        mod_Redaction_ui("Redaction_1")
       )
+    
+    # ,
+    #   tabPanel(
+    #     "Saisie manuelle",
+    #     mod_SaisieManuelle_ui("SaisieManuelle_1")
+    #   ),
+    #   tabPanel(
+    #     "Rédaction",
+    #     mod_Redaction_ui("Redaction_1")
+    #   )
     )
-  )
+  
 }
 
 

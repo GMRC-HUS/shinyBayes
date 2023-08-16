@@ -39,10 +39,11 @@ app_server <- function(input, output, session, BDD = NULL) {
     ret[which(variableNum)] <- as.logical(lapply(as.data.frame(D[, which(variableNum)]), desctable::is.normal))
     r$variableNormale <- ret
   }
-  # mod_Croisements_server("Croisements_1",r)
+  mod_Croisements_server("Croisements_1",r)
   # mod_Survie_server("Survie_1",r)
   # mod_Tests_server("Tests_1",r)
   # mod_Concordance_server("Concordance_1",r)
+  mod_chargement_server("chargement_1",r)
   mod_Accueil_server("Accueil_1")
   mod_Descriptifs_server("Descriptifs_1", r)
   mod_inferenceUni_server("inferenceUni_1", r)

@@ -26,11 +26,12 @@ r$listeVariableNormale<-names(BDD)[ret]
 source("R/fct_fonctions.R")
 
 library(gmrcfun)
-ui <- shiny::fluidPage(mod_Croisements_ui(1))
-source("R/mod_Croisements.R")
+source("R/mod_Multivarie.R")
+ui <- shiny::fluidPage(ShiBA:::mod_Multivarie_ui(1))
+
 server <- function(input, output, session) {
   
-  mod_Croisements_server(1,r=r)
+  ShiBA:::mod_Multivarie_server(1,r=r)
 }
 
 
