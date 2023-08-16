@@ -351,3 +351,11 @@ res<-  exp(qnorm(c(1-prob, prob), mean = moy, sd=sd))
 }
 
 
+
+arrondi_echelle_sup <- function(x){
+  ceiling(x/10**(floor(log(x,10))))*10**floor(log(x,10))
+}
+arrondi_echelle_inf <- function(x){
+  floor(x/10**(floor(log(x,10))))*10**floor(log(x,10))
+}
+
