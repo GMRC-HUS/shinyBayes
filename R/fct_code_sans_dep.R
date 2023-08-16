@@ -694,27 +694,14 @@ descr3 <- function(Y, X, Tap = FALSE, nom = NULL, nomY = NULL, latex = 0) {
 
 
   if (Tap) {
-    res$Descriptif <- round(aze, digits = 3)
-    res$TestNormalite <- pvalnorm
-    res$Tests_de_Student <- testp
-    res$TestsNP <- testnp
-    res$Testpv <- testpv
-    res$TestsNPv <- testnpv
-    res$Triaplat <- triap
-    if (sum(res$Triaplat[, 1] != res$Triaplat[, (5 + nbnv)])) {
-      commqt <- paste("ATTENTION : Il y a des valeurs manquantes dans le tableau croise.")
-      res$CommqT <- commqt
-    }
+    res<- aze
+
     # res$CommqT<-commqt
   }
 
   if (!Tap) {
-    res$Descriptif <- round(aze, digits = 3)
-    res$TestNormalite <- pvalnorm
-    res$Tests_de_Student <- testp
-    res$TestsNP <- testnp
-    res$Testpv <- testpv
-    res$TestsNPv <- testnpv
+    res<-aze
+ 
   }
 
   if (latex == 1) {
@@ -732,6 +719,7 @@ descr3 <- function(Y, X, Tap = FALSE, nom = NULL, nomY = NULL, latex = 0) {
     cat("\n")
   }
   if (latex == 0) {
+    res<-res[1:19,]
     return(res)
   }
 }

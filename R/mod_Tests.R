@@ -48,8 +48,7 @@ mod_Tests_server <- function(id, r) {
                   fluidRow(
                     splitLayout(
                       cellWidths = c("30%", "70%"),
-                      downloadButton(ns("PDFdiag"), label = "AIDE et Détails", class = "butt"),
-                      h4("Faites attention s'il y a un filtre")
+                      downloadButton(ns("PDFdiag"), label = "AIDE et Détails", class = "butt")
                     )
                   ), # finFluidRow
 

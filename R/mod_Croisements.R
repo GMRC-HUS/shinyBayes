@@ -96,19 +96,11 @@ striping:
               sidebarLayout(
                 sidebarPanel(
                   uiOutput(ns("propositionsCROISE1")),
-                  radioButtons(
-                    ns("qualiquantiCROISE1"),
-                    "Nature de la variable",
-                    c(Quantitative = "quant", Qualitative = "qual"),
-                    "quant"
-                  ),
+                  uiOutput(ns("ui_qualiquantiCROISE1")),
+       
                   uiOutput(ns("propositionsCROISE2")),
-                  radioButtons(
-                    ns("qualiquantiCROISE2"),
-                    "Nature de la variable",
-                    c(Quantitative = "quant", Qualitative = "qual"),
-                    "quant"
-                  ),
+                  uiOutput(ns("ui_qualiquantiCROISE2")),
+ 
                   conditionalPanel(
                     condition = "input.qualiquantiCROISE1 == 'qual' && input.qualiquantiCROISE2 == 'qual'",
                     radioButtons(
@@ -123,8 +115,7 @@ striping:
                   fluidRow(
                     splitLayout(
                       cellWidths = c("30%", "70%"),
-                      downloadButton(ns("PDFcroisements"), label = "AIDE et Détails", class = "butt"),
-                      h4("Faites attention s'il y a un filtre")
+                      downloadButton(ns("PDFcroisements"), label = "AIDE et Détails", class = "butt")
                     )
                   ), # finFluidRow
 
@@ -138,16 +129,8 @@ striping:
                     tableOutput(ns("montableauCroisAUTO")), br(),
                     tableOutput(ns("montableauCroise2AUTO")),
                     tableOutput(ns("montableauCroise3AUTO")),
-                    h3("Tests d'association / Comparaison des proportions", align = "left", style = "color:#08088A"),
-                    fluidRow(
-                      splitLayout(
-                        cellWidths = c("50%", "50%"),
-                        tableOutput(ns("AUTOtableCHI2")),
-                        tableOutput(ns("AUTOtableFISHER"))
-                      )
-                    ),
-                    textOutput(ns("AUTOCHI2conditions")),
-                    h3("Rapport de cotes", align = "left", style = "color:#08088A"),
+     
+                   
                     tableOutput(ns("oddratioAUTO"))
                   ), # fin panelQualiQuali,
                   # debut conditionnal panel QuantiQuali
@@ -155,19 +138,15 @@ striping:
                     condition = "input.qualiquantiCROISE1 != input.qualiquantiCROISE2", ns = ns,
                     h3("Descriptif complet", align = "left", style = "color:#08088A"),
                     tableOutput(ns("descr3DESCRIPTIF")),
-                    h3("Tests de comparaisons:", align = "left", style = "color:#08088A"),
-                    verbatimTextOutput(ns("descr3TestNormalite")),
-                    verbatimTextOutput(ns("descr3Testpv")),
-                    verbatimTextOutput(ns("descr3TestsNPv")),
-                    verbatimTextOutput(ns("descr3Tests_de_Student")),
-                    verbatimTextOutput(ns("descr3TestsMANN")),
-                    verbatimTextOutput(ns("ChoixSortieCROISE"))
-                  ), # fin Panel Quali Quanti
+       
+                 
+                
+                       ), # fin Panel Quali Quanti
                   # debut conditionnal panel QuantiQuanti
                   conditionalPanel(
                     condition = "input.qualiquantiCROISE1 == 'quant' && input.qualiquantiCROISE2 == 'quant'", ns = ns,
                     h3("Corrélation entre deux variables quantitatives", align = "left", style = "color:#08088A"),
-                    verbatimTextOutput(ns("CorrelationCROISE"))
+                    htmlOutput(ns("CorrelationCROISE"))
                   ), # fin panelQuantiQuali,
                   plotOutput(ns("plotCROISE2"))
                 ) # fin MainPanel
@@ -206,7 +185,8 @@ striping:
 
                   # tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
                   h3("Tableau de comparaison de population"),
-                  conditionalPanel(condition = "!is.null(input$VariableCroisees)", ns = ns, tableOutput(ns("tableauCroisement")))
+                  conditionalPanel(condition = "!is.null(input$VariableCroisees)", ns = ns, tableOutput(ns("tableauCroisement"))),
+                  uiOutput(ns("legende"))
                 ) # fin MainPanel
               ) # fin sidebarlayout
             ) # fin fluidpage
@@ -247,6 +227,37 @@ striping:
         selectInput(ns("variableCROISE2"), "Variable:", choices = r$noms)
       })
 
+      output$ui_qualiquantiCROISE1 <- renderUI({
+        
+        choice <- ifelse_perso(sum(is.na(as.numeric(as.character(r$BDD[, input$variableCROISE1])))) > sum(is.na(r$BDD[, input$variableCROISE])),
+        "qual",
+        "quant")
+        if(length(unique(r$BDD[, input$variableCROISE1]))<5)   choice <-"qual"
+        radioButtons(
+          ns("qualiquantiCROISE1"),
+          "Nature de la variable",
+          c(Quantitative = "quant", Qualitative = "qual"),
+          choice
+        )
+        
+      })
+      
+      output$ui_qualiquantiCROISE2 <- renderUI({
+        
+        choice <- ifelse_perso(sum(is.na(as.numeric(as.character(r$BDD[, input$variableCROISE2])))) > sum(is.na(r$BDD[, input$variableCROISE2])),
+                               "qual",
+                               "quant")
+        
+        if(length(unique(r$BDD[, input$variableCROISE2]))<5)   choice <-"qual"
+        radioButtons(
+          ns("qualiquantiCROISE2"),
+          "Nature de la variable",
+          c(Quantitative = "quant", Qualitative = "qual"),
+          choice
+        )
+        
+        
+      })
 
 
       output$plotCROISE <- renderPlot({
@@ -254,18 +265,20 @@ striping:
         variableCROISE1 <- base[, input$variableCROISE1]
         variableCROISE2 <- base[, input$variableCROISE2]
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "quant") {
-          print(ggpoints(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2))
+          print(ggpoints(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2)+theme_ShiBA())
         }
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          boxplot(variableCROISE1 ~ variableCROISE2, xlab = input$variableCROISE2, ylab = input$variableCROISE1)
+           return(base%>%ggplot(aes(y=!!sym(input$variableCROISE1) , group =  !!sym(input$variableCROISE2)))+geom_boxplot()+theme_ShiBA())
+         
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          boxplot(variableCROISE2 ~ variableCROISE1, xlab = input$variableCROISE1, ylab = input$variableCROISE2)
+          return(base%>%ggplot(aes(y=!!sym(input$variableCROISE2) , group =  !!sym(input$variableCROISE1)))+geom_boxplot()+theme_ShiBA())
+   
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "qual") {
           # print(ggpie(as.factor(variableCROISE1),as.factor(variableCROISE2)))
-          barplotCroise <- barplot_croise(base = base, var1 = input$variableCROISE1, var2 = input$variableCROISE2)
-          print(barplotCroise)
+          barplotCroise <- barplot_croise(base = base, var1 = input$variableCROISE1, var2 = input$variableCROISE2)+theme_ShiBA()
+          return(barplotCroise)
         }
       })
       output$plotCROISE2 <- renderPlot({
@@ -273,13 +286,12 @@ striping:
         variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
         variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "quant") {
-          print(correl(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2))
-        }
+            }
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          print(ggcompar(input$variableCROISE1, input$variableCROISE2, base))
+          print(ggcompar(input$variableCROISE1, input$variableCROISE2, base)+theme_ShiBA())
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          print(ggcompar(input$variableCROISE2, input$variableCROISE1, base))
+          print(ggcompar(input$variableCROISE2, input$variableCROISE1, base)+theme_ShiBA())
         }
       })
 
@@ -368,49 +380,11 @@ striping:
       })
 
 
-      output$AUTOtableCHI2 <- shiny::renderTable(
-        {
-          base <- r$BDD
-          x <- base[, colnames(base) == input$variableCROISE1]
-          y <- base[, colnames(base) == input$variableCROISE2]
-          Mat <- table(x, y)
-          CH2 <- chisq.test(Mat, correct = FALSE)
-          resTESTS <- cbind(CH2$statistic, CH2$parameter, CH2$p.value)
-          colnames(resTESTS) <- c("CHI2 Stat", "CHI2 Degrés", "CHI2 pValue")
-          rownames(resTESTS) <- "Résultat"
-          resTESTS
-        },
-        rownames = TRUE,
-        colnames = TRUE
-      )
 
-      output$AUTOtableFISHER <- shiny::renderTable(
-        {
-          base <- r$BDD
-          x <- base[, colnames(base) == input$variableCROISE1]
-          y <- base[, colnames(base) == input$variableCROISE2]
-          Mat <- table(x, y)
-          FI2 <- fisher.test(Mat)
-          resTESTS <- t(t(FI2$p.value))
-          colnames(resTESTS) <- c("Fisher pValue")
-          rownames(resTESTS) <- "Résultat"
-          resTESTS
-        },
-        rownames = TRUE
-      )
+   
 
 
-      output$AUTOCHI2conditions <- renderText({
-        base <- r$BDD
-        x <- base[, colnames(base) == input$variableCROISE1]
-        y <- base[, colnames(base) == input$variableCROISE2]
-        Mat <- table(x, y)
-        CH2 <- chisq.test(Mat, correct = FALSE)
-        FI2 <- fisher.test(Mat)
-        ifelse(all(CH2$expected > 5), "Au vu des effectifs théoriques >5, on préfèrera ici l'utilisation du test du Chi2",
-          "Au vu des faibles effectifs théoriques, on préfèrera ici l'utilisation du test exact de Fisher"
-        )
-      })
+
 
       output$oddratioAUTO <- renderTable(
         {
@@ -425,8 +399,8 @@ striping:
             OR <- NULL
           } else {
             FI2 <- fisher.test(Mat)
-            OR <- cbind(FI2$estimate, FI2$conf.int[[1]], FI2$conf.int[[2]])
-            colnames(OR) <- c("Rapport de cotes", "Borne inf 2.5", "Borne Sup 97.5")
+            OR <- data.frame("Rapport de cotes" = FI2$estimate)
+            
             rownames(OR) <- "Résultat"
           }
           OR
@@ -449,7 +423,7 @@ striping:
           if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
             res <- descr3(variableCROISE2, variableCROISE1, nom = input$variableCROISE1, nomY = input$variableCROISE2)
           }
-          res$Descriptif
+          res
         },
         caption = "Descriptif global et par modalité",
         caption.placement = getOption("xtable.caption.placement", "bottom"),
@@ -457,249 +431,27 @@ striping:
         rownames = TRUE
       )
 
-      output$descr3TestNormalite <- renderPrint({
-        base <- r$BDD
-        variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
-        variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
-        if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          res <- descr3(variableCROISE1, variableCROISE2)
-        }
-        if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          res <- descr3(variableCROISE2, variableCROISE1)
-        }
-        print(res[2])
-      })
-      output$descr3Testpv <- renderPrint({
-        base <- r$BDD
-        variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
-        variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
-        if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          res <- descr3(variableCROISE1, variableCROISE2)
-        }
-        if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          res <- descr3(variableCROISE2, variableCROISE1)
-        }
-        print(res[3])
-      })
-      output$descr3TestsNPv <- renderPrint({
-        base <- r$BDD
-        variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
-        variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
-        if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          res <- descr3(variableCROISE1, variableCROISE2)
-        }
-        if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          res <- descr3(variableCROISE2, variableCROISE1)
-        }
-        print(res[4])
-      })
-
-      output$descr3Tests_de_Student <- renderPrint({
-        base <- r$BDD
-        variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
-        variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
-        if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          res <- descr3(variableCROISE1, variableCROISE2)
-        }
-        if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          res <- descr3(variableCROISE2, variableCROISE1)
-        }
-        print(res[5])
-      })
 
 
-      output$descr3TestsMANN <- renderPrint({
-        base <- r$BDD
-        variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
-        variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
-        if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          res <- descr3(variableCROISE1, variableCROISE2)
-        }
-        if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          res <- descr3(variableCROISE2, variableCROISE1)
-        }
-        print(res[6])
-      })
-
-
-
-      output$CorrelationCROISE <- renderPrint({
+      output$CorrelationCROISE <- renderUI({
         base <- r$BDD
         variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
         variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
         x <- variableCROISE1
         y <- variableCROISE2
         resultatCorrelation <-
-          cat(
-            "Coefficient de corrélation de Pearson\n Le coefficient de corrélation linéaire de Pearson (Rho) est estimé à",
-            round(cor.test(x, y, method = "pearson")$estimate, 3),
-            "et son intervalle de confiance à 95% est: [",
-            round(cor.test(x, y)$conf.int[1], 3), ";", round(cor.test(x, y)$conf.int[2], 3),
-            "] \n La p.valeur associée au test de nullité de ce coefficient est estimée à:",
-            round(cor.test(x, y, method = "pearson")$p.value, 4), "\n\n\n\n",
-            "Coefficient de corrélation de Spearman\n Le coefficient de corrélation non-paramétrique de Spearman est estimé à:",
-            round(cor.test(x, y, method = "s")$estimate, 3),
-            " \n La p.valeur associée au test de nullité de ce coefficient est estimée à:",
-            round(cor.test(x, y, method = "s")$p.value, 4), "\n\n",
-            "\n\n\n Il n'est pas préconisé d'utiliser un test plutôt qu'un autre. Le test de Pearson est un test de corrélation linéaire entre les deux mesures. Le test de Spearman est un test non-paramétrique, plutôt adapté à des relations non-linéaires entre les variables.
-      \n\n Le graphique ci-dessous représente l'éventuelle corrélation de ces deux variables et l'intervalle de confiance qui lui est associé."
-          )
+          paste0(
+            "Coefficient de corrélation de Pearson : ",
+            round(cor.test(x, y, method = "pearson")$estimate, 3),".<br/>",
+            
+            "Coefficient de corrélation de Spearman : ",
+            round(cor.test(x, y, method = "s")$estimate, 3),"."
+          
+                 )
+        HTML(resultatCorrelation)
       })
 
-      output$ChoixSortieCROISE <- renderPrint({
-        base <- r$BDD
-        variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
-        variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
-
-
-        ChoixTest <- function(Y, X) {
-          nom <- deparse(substitute(X))
-          if (!is.factor(X)) {
-            X <- as.factor(X)
-          }
-          nomY <- deparse(substitute(Y))
-          nbnv <- nlevels(X)
-          library(moments)
-
-          if (nlevels(X) == 2) {
-            pvaleur <- format.pval(wilcox.test(Y ~ X)$p.value, digits = 4)
-          } else {
-            if (nlevels(X) > 2) {
-              pvaleur <- format.pval(kruskal.test(Y ~ X)$p.value, digits = 4)
-            }
-          }
-
-          if (nlevels(X) == 2) {
-            testnp <- paste("Test de Mann & Whitney : p =", pvaleur)
-          } else {
-            if (nlevels(X) > 2) {
-              testnp <- paste("Test de Kruskal & Wallis : p =", pvaleur)
-            }
-          }
-
-          pvalstud <- matrix(c(NA, NA), ncol = 1)
-          rownames(pvalstud) <- c("Test de Student, variances egales   : p =", "Test de Student, variances inegales : p =")
-          colnames(pvalstud) <- c("")
-
-          if (nlevels(X) == 2) {
-            pvalstud[1] <- t.test(Y ~ X, var.equal = TRUE)$p.value
-          } else {
-            if (nlevels(X) > 2) {
-              pval <- format.pval(summary(aov(Y ~ X))[[1]][1, 5], digits = 4)
-            }
-          }
-
-          if (nlevels(X) == 2) {
-            pvalstud[2] <- t.test(Y ~ X, var.equal = FALSE)$p.value
-          } else {
-            if (nlevels(X) > 2) {
-              pval <- format.pval(summary(aov(Y ~ X))[[1]][1, 5], digits = 4)
-            }
-          }
-
-
-          if (nlevels(X) == 2) {
-            testp <- round(pvalstud, digits = 4)
-          } else {
-            if (nlevels(X) > 2) {
-              testp <- paste("Analyse de la Variance : p =", pval)
-            }
-          }
-
-          if (nlevels(X) == 2) {
-            pvartest <- format.pval(var.test(Y ~ X)$p.value, digits = 4)
-          } else {
-            if (nlevels(X) > 2) {
-              pvartestpg <- format.pval(bartlett.test(Y ~ X)$p.value, digits = 4)
-            }
-          }
-
-          if (nlevels(X) == 2) {
-            testpv <- paste(list(paste("Test parametrique d'egalite de deux variances (Fisher): p =", pvartest)))
-          } else {
-            if (nlevels(X) > 2) {
-              testpv <- paste("Test parametrique d'egalite de plus de deux variances (Bartlett) : p =", pvartestpg)
-            }
-          }
-
-          pvalnorm <- matrix(c(NA, NA), ncol = 1)
-          rownames(pvalnorm) <- c("Test de normalite de Shapiro-Wilk       : p =", "Test de normalite de Kolmogorov-Smirnov : p =")
-          colnames(pvalnorm) <- c("")
-          if (length(Y) < 5000) {
-            pvalnorm[1] <- shapiro.test(Y)$p.value
-          } else {
-            pvalnorm[1] <- NA
-          }
-          pvalnorm[2] <- ks.test(Y, "pnorm", mean(Y, na.rm = T), sd(Y, na.rm = T))$p.value
-          pvalnorm <- round(pvalnorm, digits = 4)
-
-          if (nlevels(X) == 2) {
-            pvalfl2g <- format.pval(ansari.test(Y ~ X)$p.value, digits = 4)
-          } else {
-            if (nlevels(X) > 2) {
-              pvalfl3g <- format.pval(fligner.test(Y ~ X)$p.value, digits = 4)
-            }
-          }
-
-          if (nlevels(X) == 2) {
-            testnpv <- paste(list(paste("Test non param. d'egalite de deux variances (Ansari) : p =", pvalfl2g)))
-          } else {
-            if (nlevels(X) > 2) {
-              testnpv <- paste("Test non param. d'egalite de plus de deux variances (Fligner) : p =", pvalfl3g)
-            }
-          }
-
-
-          ############# le choix	#########
-          if (length(Y) < 5000) {
-            pvalnorm[1] <- shapiro.test(Y)$p.value
-
-            if (nlevels(X) == 2) {
-              if (pvalnorm[1] > 0.05) {
-                if (pvartest > 0.05) {
-                  choix <- "D'après la distribution des données, il est préconisé pour comparer les moyennes d'utiliser un test de Student - variances égales"
-                } else {
-                  choix <- "D'après la distribution des données, il est préconisé pour comparer les moyennes d'utiliser un test deStudent - variances inégales"
-                }
-              } else {
-                if (pvalfl2g > 0.05) {
-                  choix <- "D'après la distribution des données, il est préconisé pour comparer les distributions d'utiliser le test de Mann-Whitney"
-                } else {
-                  choix <- "La distribution des données est irrégulière dans les groupes, aucun des tests ne permet ici une comparaison des groupes. Les hypothèses du test de Mann-Whitney ne sont pas vérifiées."
-                }
-              } # fin else shapiro
-            } # fin levels =2
-
-            if (nlevels(X) > 2) {
-              if (pvalnorm[1] > 0.05) {
-                if (pvartestpg > 0.05) {
-                  choix <- "D'après la distribution des données, il est préconisé pour comparer les moyennes d'utiliser l'ANOVA moyennes égales"
-                } else {
-                  choix <- "D'après la distribution des données, il est préconisé pour comparer les moyennes d'utiliser l'ANOVA moyennes inégales"
-                }
-              } else {
-                if (pvalfl3g > 0.05) {
-                  choix <- "D'après la distribution des données, il est préconisé pour comparer les distributions d'utiliser le test de Kruskal-Wallis"
-                } else {
-                  choix <- "La distribution des données est irrégulière dans les groupes, aucun des tests ne permet ici une comparaison des groupes. Les hypothèses du test de Mann-Whitney ne sont pas vérifiées"
-                }
-              } # fin else shapiroe RIEN
-            } # fin levels =2
-            return(choix)
-          } else { # fin si moins de 5000
-            res <- "Les effectifs sont très importants, il est préconisé ici d'utiliser le test de Student pour comparer les moyennes."
-          }
-        } # fin function
-
-        if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          res <- ChoixTest(variableCROISE1, variableCROISE2)
-        }
-        if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          res <- ChoixTest(variableCROISE2, variableCROISE1)
-        }
-        res
-      })
-
+    
 
       # ####################### Tableau de croisement ###########################
       #
@@ -709,8 +461,6 @@ striping:
 
 
 
-      # /home/tibo/Bureau/Shiny/BDD.csv
-      # Variable Quanti "normale"
     })
 
     observe({
@@ -769,20 +519,8 @@ striping:
     observe({
       base <- r$BDD
       if (is.null(input$VariableCroisees1) & is.null(input$VariableCroisees2) & is.null(input$VariableCroisees3)) {
-        # if(is.null(input$VariableCroisees1)){  tableauCroisement<- cbind( base%>% select(input$VariableCroisees2)%>% mutate_all(factor))
-        # } else if(is.null(input$VariableCroisees2)){  tableauCroisement<- cbind(base%>% select(input$VariableCroisees1))
       } else {
-        #
-        #   variablecommune<- input$VariableCroisees2[input$VariableCroisees2%in% input$VariableCroisees1]
-        #   if(!length(variablecommune)==0){
-        #     variablecommune2<- paste(variablecommune,"qual")
-        #     base[,variablecommune2]<- base[,variablecommune]
-        #     variabletableau2<- c(input$VariableCroisees2[!input$VariableCroisees2%in% input$VariableCroisees1],variablecommune2)
-        #   }else{
-        #     variabletableau2<-input$VariableCroisees2
-        #   }
-        #   tableauCroisement<- cbind(base%>% select(input$VariableCroisees1), base%>% select(variabletableau2)%>% mutate_all(factor))
-        # }
+
 
         # Création tableau de croisement des variables à distributions normales
         if (!is.null(input$VariableCroisees1)) {
@@ -827,8 +565,7 @@ striping:
           for (i in 1:colonne) {
             tableauCroisement2Sortie[, (1 + i)] <- paste(round(tableauCroisement2[, (i * 2)], input$nbDec), "% (", round(tableauCroisement2[, (i * 2 + 1)], input$nbDec), ")")
           }
-          # aRajouter<-substr(tableauCroisement2Sortie[1,],regexpr(":",tableauCroisement2Sortie[1,])[1],nchar(tableauCroisement2Sortie[1,]))
-          # aRajouter<- ""
+        
           tableauCroisement2Sortie[, 1] <- gsub(" Groupe", "", tableauCroisement2Sortie[, 1])
           tableauCroisement2Sortie[, 1] <- paste(gsub(".*:", "Groupe :", tableauCroisement2Sortie[, 1]), "(pourcentage(effectif))")
           tableauCroisement2Sortie[, 1] <- gsub(") .*", ")(effectif)", tableauCroisement2Sortie[, 1])
@@ -878,14 +615,9 @@ striping:
         nomColonne <- gsub(".*:", paste(input$VariableCroisement, ":"), nomColonne)
         # nomColonne<-gsub("\\base","",nomColonne)
         names(tableauCroisementSortie) <- nomColonne
+        
 
-        # tableauCroisement2<-tableauCroisement1 %>%group_by(as.factor(base[,input$VariableCroisement]))%>%
-        #   desctable ::desctable(stats = list("mean_p" = is.factor ~ percent | mean,
-        #                                      "sd" = is.factor ~ length | sd),tests =tests_autoGMRC ) %>%
-        #
-        #   as.data.frame
-        # names(tableauCroisemen2)[1]= "Variables"
-        #
+    
         colp <- dim(tableauCroisementSortie)[2] - 1
         tableauCroisementSortie[, colp] <- ifelse(tableauCroisementSortie[, colp] < 1 / 10^(input$nbDec), paste("<", as.character(1 / 10^(input$nbDec)), sep = ""), round(tableauCroisementSortie[, colp], input$nbDec))
         tableauCroisementSortie[, colp + 1] <- gsub("%>%", "", tableauCroisementSortie[, colp + 1])
@@ -895,6 +627,7 @@ striping:
           tableauCroisementSortie[, 1] <- gsub("\\(pourcentage\\(effectif\\)\\)", "§", tableauCroisementSortie[, 1])
           tableauCroisementSortie[, 1] <- gsub("\\(effectif\\)", "§", tableauCroisementSortie[, 1])
         }
+        tableauCroisementSortie<-tableauCroisementSortie[,-c(colp: dim(tableauCroisementSortie)[2])]
         r$tableCroise <- tableauCroisementSortie
       }
     })

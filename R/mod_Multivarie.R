@@ -176,7 +176,7 @@ mod_Multivarie_server <- function(id, r) {
       } else if (nvx_quantis) {
         var_sel <- setdiff(quantis, quanti_avant)
         if (sum(is.na(as.numeric(as.character(r$BDD[, var_sel])))) > sum(is.na(r$BDD[, var_sel]))) {
-          showNotification(HTML("<b>", var_sel, "</b> ne semble pas être une variable quantitatives.<br>Moins de 4 données numériques et moins de 4 valeurs uniques."), type = "warning")
+          showNotification(HTML("<b>", var_sel, "</b> ne semble pas être une variable quantitatives.<br>Au moins une donnée non numérique."), type = "warning")
           var_input$choix_base <- base_avant
           var_input$var_quanti <- quanti_avant
           var_input$var_quali <- quali_avant
@@ -264,7 +264,7 @@ mod_Multivarie_server <- function(id, r) {
 
       showModal(
         modalDialog(
-          title = "Séléction des références",
+          title = "Sélection des références",
           tagList(lapply(1:length(nom_var_quali), function(i) {
             x <- nom_var_quali[i]
             r$BDD[, x] <- as.factor(r$BDD[, x])
