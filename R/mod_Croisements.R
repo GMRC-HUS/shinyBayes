@@ -96,19 +96,11 @@ striping:
               sidebarLayout(
                 sidebarPanel(
                   uiOutput(ns("propositionsCROISE1")),
-                  radioButtons(
-                    ns("qualiquantiCROISE1"),
-                    "Nature de la variable",
-                    c(Quantitative = "quant", Qualitative = "qual"),
-                    "quant"
-                  ),
+                  uiOutput(ns("ui_qualiquantiCROISE1")),
+       
                   uiOutput(ns("propositionsCROISE2")),
-                  radioButtons(
-                    ns("qualiquantiCROISE2"),
-                    "Nature de la variable",
-                    c(Quantitative = "quant", Qualitative = "qual"),
-                    "quant"
-                  ),
+                  uiOutput(ns("ui_qualiquantiCROISE2")),
+ 
                   conditionalPanel(
                     condition = "input.qualiquantiCROISE1 == 'qual' && input.qualiquantiCROISE2 == 'qual'",
                     radioButtons(
@@ -123,8 +115,7 @@ striping:
                   fluidRow(
                     splitLayout(
                       cellWidths = c("30%", "70%"),
-                      downloadButton(ns("PDFcroisements"), label = "AIDE et Détails", class = "butt"),
-                      h4("Faites attention s'il y a un filtre")
+                      downloadButton(ns("PDFcroisements"), label = "AIDE et Détails", class = "butt")
                     )
                   ), # finFluidRow
 
@@ -139,7 +130,7 @@ striping:
                     tableOutput(ns("montableauCroise2AUTO")),
                     tableOutput(ns("montableauCroise3AUTO")),
      
-                    h3("Rapport de cotes", align = "left", style = "color:#08088A"),
+                   
                     tableOutput(ns("oddratioAUTO"))
                   ), # fin panelQualiQuali,
                   # debut conditionnal panel QuantiQuali
@@ -147,7 +138,7 @@ striping:
                     condition = "input.qualiquantiCROISE1 != input.qualiquantiCROISE2", ns = ns,
                     h3("Descriptif complet", align = "left", style = "color:#08088A"),
                     tableOutput(ns("descr3DESCRIPTIF")),
-                    h3("Tests de comparaisons:", align = "left", style = "color:#08088A")
+       
                  
                 
                        ), # fin Panel Quali Quanti
@@ -155,7 +146,7 @@ striping:
                   conditionalPanel(
                     condition = "input.qualiquantiCROISE1 == 'quant' && input.qualiquantiCROISE2 == 'quant'", ns = ns,
                     h3("Corrélation entre deux variables quantitatives", align = "left", style = "color:#08088A"),
-                    verbatimTextOutput(ns("CorrelationCROISE"))
+                    htmlOutput(ns("CorrelationCROISE"))
                   ), # fin panelQuantiQuali,
                   plotOutput(ns("plotCROISE2"))
                 ) # fin MainPanel
@@ -194,7 +185,8 @@ striping:
 
                   # tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
                   h3("Tableau de comparaison de population"),
-                  conditionalPanel(condition = "!is.null(input$VariableCroisees)", ns = ns, tableOutput(ns("tableauCroisement")))
+                  conditionalPanel(condition = "!is.null(input$VariableCroisees)", ns = ns, tableOutput(ns("tableauCroisement"))),
+                  uiOutput(ns("legende"))
                 ) # fin MainPanel
               ) # fin sidebarlayout
             ) # fin fluidpage
@@ -235,6 +227,37 @@ striping:
         selectInput(ns("variableCROISE2"), "Variable:", choices = r$noms)
       })
 
+      output$ui_qualiquantiCROISE1 <- renderUI({
+        
+        choice <- ifelse_perso(sum(is.na(as.numeric(as.character(r$BDD[, input$variableCROISE1])))) > sum(is.na(r$BDD[, input$variableCROISE])),
+        "qual",
+        "quant")
+        if(length(unique(r$BDD[, input$variableCROISE1]))<5)   choice <-"qual"
+        radioButtons(
+          ns("qualiquantiCROISE1"),
+          "Nature de la variable",
+          c(Quantitative = "quant", Qualitative = "qual"),
+          choice
+        )
+        
+      })
+      
+      output$ui_qualiquantiCROISE2 <- renderUI({
+        
+        choice <- ifelse_perso(sum(is.na(as.numeric(as.character(r$BDD[, input$variableCROISE2])))) > sum(is.na(r$BDD[, input$variableCROISE2])),
+                               "qual",
+                               "quant")
+        
+        if(length(unique(r$BDD[, input$variableCROISE2]))<5)   choice <-"qual"
+        radioButtons(
+          ns("qualiquantiCROISE2"),
+          "Nature de la variable",
+          c(Quantitative = "quant", Qualitative = "qual"),
+          choice
+        )
+        
+        
+      })
 
 
       output$plotCROISE <- renderPlot({
@@ -242,18 +265,20 @@ striping:
         variableCROISE1 <- base[, input$variableCROISE1]
         variableCROISE2 <- base[, input$variableCROISE2]
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "quant") {
-          print(ggpoints(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2))
+          print(ggpoints(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2)+theme_ShiBA())
         }
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          boxplot(variableCROISE1 ~ variableCROISE2, xlab = input$variableCROISE2, ylab = input$variableCROISE1)
+           return(base%>%ggplot(aes(y=!!sym(input$variableCROISE1) , group =  !!sym(input$variableCROISE2)))+geom_boxplot()+theme_ShiBA())
+         
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          boxplot(variableCROISE2 ~ variableCROISE1, xlab = input$variableCROISE1, ylab = input$variableCROISE2)
+          return(base%>%ggplot(aes(y=!!sym(input$variableCROISE2) , group =  !!sym(input$variableCROISE1)))+geom_boxplot()+theme_ShiBA())
+   
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "qual") {
           # print(ggpie(as.factor(variableCROISE1),as.factor(variableCROISE2)))
-          barplotCroise <- barplot_croise(base = base, var1 = input$variableCROISE1, var2 = input$variableCROISE2)
-          print(barplotCroise)
+          barplotCroise <- barplot_croise(base = base, var1 = input$variableCROISE1, var2 = input$variableCROISE2)+theme_ShiBA()
+          return(barplotCroise)
         }
       })
       output$plotCROISE2 <- renderPlot({
@@ -263,10 +288,10 @@ striping:
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "quant") {
             }
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          print(ggcompar(input$variableCROISE1, input$variableCROISE2, base))
+          print(ggcompar(input$variableCROISE1, input$variableCROISE2, base)+theme_ShiBA())
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          print(ggcompar(input$variableCROISE2, input$variableCROISE1, base))
+          print(ggcompar(input$variableCROISE2, input$variableCROISE1, base)+theme_ShiBA())
         }
       })
 
@@ -398,7 +423,7 @@ striping:
           if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
             res <- descr3(variableCROISE2, variableCROISE1, nom = input$variableCROISE1, nomY = input$variableCROISE2)
           }
-          res$Descriptif
+          res
         },
         caption = "Descriptif global et par modalité",
         caption.placement = getOption("xtable.caption.placement", "bottom"),
@@ -408,8 +433,7 @@ striping:
 
 
 
-
-      output$CorrelationCROISE <- renderPrint({
+      output$CorrelationCROISE <- renderUI({
         base <- r$BDD
         variableCROISE1 <- base[, colnames(base) == input$variableCROISE1]
         variableCROISE2 <- base[, colnames(base) == input$variableCROISE2]
@@ -417,13 +441,14 @@ striping:
         y <- variableCROISE2
         resultatCorrelation <-
           paste0(
-            "Coefficient de corrélation de Pearson\n Le coefficient de corrélation linéaire de Pearson (Rho) est estimé à ",
-            round(cor.test(x, y, method = "pearson")$estimate, 3),".\n",
+            "Coefficient de corrélation de Pearson : ",
+            round(cor.test(x, y, method = "pearson")$estimate, 3),".<br/>",
             
-            "Coefficient de corrélation de Spearman\n Le coefficient de corrélation non-paramétrique de Spearman est estimé à ",
+            "Coefficient de corrélation de Spearman : ",
             round(cor.test(x, y, method = "s")$estimate, 3),"."
           
                  )
+        HTML(resultatCorrelation)
       })
 
     
@@ -436,8 +461,6 @@ striping:
 
 
 
-      # /home/tibo/Bureau/Shiny/BDD.csv
-      # Variable Quanti "normale"
     })
 
     observe({
@@ -496,20 +519,8 @@ striping:
     observe({
       base <- r$BDD
       if (is.null(input$VariableCroisees1) & is.null(input$VariableCroisees2) & is.null(input$VariableCroisees3)) {
-        # if(is.null(input$VariableCroisees1)){  tableauCroisement<- cbind( base%>% select(input$VariableCroisees2)%>% mutate_all(factor))
-        # } else if(is.null(input$VariableCroisees2)){  tableauCroisement<- cbind(base%>% select(input$VariableCroisees1))
       } else {
-        #
-        #   variablecommune<- input$VariableCroisees2[input$VariableCroisees2%in% input$VariableCroisees1]
-        #   if(!length(variablecommune)==0){
-        #     variablecommune2<- paste(variablecommune,"qual")
-        #     base[,variablecommune2]<- base[,variablecommune]
-        #     variabletableau2<- c(input$VariableCroisees2[!input$VariableCroisees2%in% input$VariableCroisees1],variablecommune2)
-        #   }else{
-        #     variabletableau2<-input$VariableCroisees2
-        #   }
-        #   tableauCroisement<- cbind(base%>% select(input$VariableCroisees1), base%>% select(variabletableau2)%>% mutate_all(factor))
-        # }
+
 
         # Création tableau de croisement des variables à distributions normales
         if (!is.null(input$VariableCroisees1)) {

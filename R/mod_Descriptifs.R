@@ -40,8 +40,7 @@ mod_Descriptifs_ui <- function(id) {
               fluidRow(
                 splitLayout(
                   cellWidths = c("30%", "70%"),
-                  downloadButton(ns("PDFdescriptif1o2"), label = "AIDE et Détails", class = "butt"),
-                  h4("Faites attention s'il y a un filtre")
+                  downloadButton(ns("PDFdescriptif1o2"), label = "AIDE et Détails", class = "butt")
                 )
               ), # finFluidRow
 
@@ -56,8 +55,7 @@ mod_Descriptifs_ui <- function(id) {
               fluidRow(
                 splitLayout(
                   cellWidths = c("30%", "70%"),
-                  downloadButton(ns("PDFdescriptif1o3"), label = "AIDE et Détails", class = "butt"),
-                  h4("Faites attention s'il y a un filtre")
+                  downloadButton(ns("PDFdescriptif1o3"), label = "AIDE et Détails", class = "butt")
                 )
               ), # finFluidRow
 

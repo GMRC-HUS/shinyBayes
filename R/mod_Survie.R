@@ -53,8 +53,7 @@ mod_Survie_server <- function(id, r) {
             fluidRow(
               splitLayout(
                 cellWidths = c("30%", "70%"),
-                downloadButton(ns("PDFsurvie"), label = "AIDE et Détails", class = "butt"),
-                h4("Faites attention s'il y a un filtre")
+                downloadButton(ns("PDFsurvie"), label = "AIDE et Détails", class = "butt")
               )
             ), # finFluidRow
 

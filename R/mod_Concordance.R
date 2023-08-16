@@ -66,8 +66,7 @@ mod_Concordance_server <- function(id, r) {
             fluidRow(
               splitLayout(
                 cellWidths = c("30%", "70%"),
-                downloadButton(ns("PDFconcordance"), label = "AIDE et Détails", class = "butt"),
-                h4("Faites attention s'il y a un filtre")
+                downloadButton(ns("PDFconcordance"), label = "AIDE et Détails", class = "butt")
               )
             ), # finFluidRow
 
@@ -109,8 +108,7 @@ mod_Concordance_server <- function(id, r) {
             fluidRow(
               splitLayout(
                 cellWidths = c("30%", "70%"),
-                downloadButton(ns("PDFconcordance"), label = "AIDE et Détails", class = "butt"),
-                h4("Faites attention s'il y a un filtre")
+                downloadButton(ns("PDFconcordance"), label = "AIDE et Détails", class = "butt")
               )
             ), # finFluidRow
 
