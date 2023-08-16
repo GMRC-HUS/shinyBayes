@@ -22,19 +22,30 @@ r$listeVariableNonNormale<-names(BDD)[!ret]
 r$listeVariableNormale<-names(BDD)[ret]
 
 
- source("R/fct_code_sans_dep.R")
-source("R/fct_fonctions.R")
 
-library(gmrcfun)
-source("R/mod_Multivarie.R")
-ui <- shiny::fluidPage(ShiBA:::mod_Multivarie_ui(1))
+# Set options here
+options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
+
+# Detach all loaded packages and clean your environment
+golem::detach_all_attached()
+# rm(list=ls(all.names = TRUE))
+
+# Document and reload your package
+#undebug(golem::document_and_reload)
+golem::document_and_reload()
+
+
+
+
+
+ui <- shiny::fluidPage(ShiBA:::mod_Croisements_ui(1))
 
 server <- function(input, output, session) {
   
-  ShiBA:::mod_Multivarie_server(1,r=r)
+  ShiBA:::mod_Croisements_server(1,r=r)
 }
 
 
-shinyApp(ui, server)
+shiny::shinyApp(ui, server)
 
 
