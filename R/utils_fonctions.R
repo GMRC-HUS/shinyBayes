@@ -11,6 +11,13 @@
 #' @importFrom plyr alply
 
 theme_ShiBA <- theme_light
+
+pasDeBase_ui<- function() {
+  fluidPage(
+  h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
+  p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")
+)
+}
 size_box <- "150px"
 
 css <- "
@@ -43,7 +50,45 @@ $(function () {
 })
 "
 
+bold <- function(x){
+  return(paste0("<b>",x,"</b>"))
+}
 
+
+diagrammeBarre <- function(base) {
+  data <- tablePourcent(base)
+  bp <- ggplot(data = data, aes(x = nom, y = pourcent * 100, fill = reorder(nom, 1 / pourcent)))
+  
+  maxPourcent <- max(data$pourcent, na.rm = T)
+  label <- paste(round(data$pourcent, 3) * 100, "%")
+  vjust <- unlist(as.list(ifelse(data$pourcent < maxPourcent / 5, -1.6, 1.6)), use.names = F)
+  
+  barre <- bp +
+    labs(
+      title = "Diagramme en barre",
+      x = "", y = "pourcentage"
+    ) +
+    geom_bar(stat = "identity", color = "black") +
+    guides(fill = guide_legend(override.aes = list(colour = NULL))) +
+    
+    
+    geom_text(aes(label = label), vjust = vjust, color = "black", size = 5) +
+    theme(plot.title = element_text(lineheight = 3, face = "bold", color = "black", size = 17))
+  
+  barre$labels$fill <- ""
+  return(barre)
+}
+
+tablePourcent <- function(base) {
+  pourcent <- prop.table(table(base))
+  pourcent <- pourcent[order(pourcent)]
+  
+  data <- data.frame(pourcent = as.numeric(pourcent), nom = names(pourcent))
+  
+  
+  
+  return(data)
+}
 
 
 sd_quali <- function(list_var, BDD) {

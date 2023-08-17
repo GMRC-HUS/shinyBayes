@@ -21,17 +21,22 @@ golem::add_module(name = "SaisieManuelle", with_test = FALSE) # Name of the modu
 golem::add_module(name = "Redaction", with_test = FALSE) # Name of the module
 
 golem::add_module(name = "Multivarie", with_test = T)
+golem::add_module(name = "Info_base", with_test = F)
+golem::add_module(name = "table1", with_test = F)
 
 golem::add_fct("ifelse_perso")
 golem::add_fct("glm_shiba")
 golem::add_fct( "fonctions" ) 
 golem::add_utils( "fonctions" )
+golem::add_utils("UI")
 golem::add_fct( "code_sans_dep" ) 
 
 golem::add_fct("modal_seuil2It")
 golem::add_fct("twoIt")
 golem::add_fct("shibaGlmPlot")
 golem::add_fct("shibaGlmTable")
+
+
 
 usethis::use_build_ignore("r/exemple.R")
 
@@ -169,8 +174,7 @@ usethis::use_package("waiter" )
 usethis::use_package("shinycssloaders" )
 
 usethis::use_package("data.table" )
-
-
+usethis::use_package("plotly" )
 
 
 usethis::use_dev_package("gmrc.bayes")

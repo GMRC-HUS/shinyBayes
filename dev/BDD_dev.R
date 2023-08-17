@@ -37,12 +37,11 @@ golem::document_and_reload()
 
 
 
-
-ui <- shiny::fluidPage(ShiBA:::mod_Croisements_ui(1))
+ui <- shiny::fluidPage(ShiBA:::mod_Info_base_ui(1))
 
 server <- function(input, output, session) {
   
-  ShiBA:::mod_Croisements_server(1,r=r)
+  ShiBA:::mod_Info_base_server(1,r=r)
 }
 
 
