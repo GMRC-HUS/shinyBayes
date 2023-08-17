@@ -66,9 +66,20 @@ mod_Multivarie_server <- function(id, r) {
     ns <- session$ns
 
     output$choix_y <- renderUI({
+      
+      if( input$type_glm=="poiss"){
+      
+      choix_possible = apply(r$BDD%>%select_if(is.numeric),2, function(x) ifelse_perso(sum(!x%%1==0, na.rm=T)==0 & min(x)>0, return(T), return()))%>%unlist%>%names
+      }else if( input$type_glm=="binom"){
+        choix_possible = apply(r$BDD,2, function(x) ifelse_perso(nlevels(as.factor(unique(x)))==2, return(T), return()))%>%unlist%>%names
+      }else{
+        choix_possible = r$noms
+      }
+      
+      
       selectInput(ns("variable"), h3("Variable d'interêt :"),
         choices =
-          r$noms
+          choix_possible
       )
     })
 
@@ -85,6 +96,7 @@ mod_Multivarie_server <- function(id, r) {
     })
     #
     seuil_twoit <- reactiveVal(value = NULL)
+    
     seuil_twoit_val <- reactiveVal(value = NULL)
     #
     #   # var_input2
@@ -154,6 +166,8 @@ mod_Multivarie_server <- function(id, r) {
       liste_choix <- r$noms
       liste_choix <- liste_choix[-which(liste_choix == input$variable)]
       var_input$choix_base <- liste_choix
+      var_input$var_quali <- NULL
+      var_input$var_quanti <- NULL
     })
 
     observeEvent(c(input$choix_base, input$list_quali, input$list_quanti), {
@@ -246,7 +260,7 @@ mod_Multivarie_server <- function(id, r) {
         )
       )
     })
-    #
+
     #
 
 
