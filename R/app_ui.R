@@ -132,42 +132,39 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css"),
-      tags$style(HTML(css)),
-      tags$script(HTML(js))
+      # tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css"),
+      # tags$style(HTML(css)),
+      # tags$script(HTML(js))
     ),
-
+    shinythemes::themeSelector(),
     # addResourcePath("www", tempdir),
 
     # Dev button
-    actionButton("browser", "browser"),
-    tags$script("$('#browser').hide();"),
+    # actionButton("browser", "browser"),
+    # tags$script("$('#browser').hide();"),
     # By default, this button will be hidden.
     # To show it, open your web browser JavaScript console
     # And run $('#browser').show();
 
     # Your application UI logic
-    navbarPage(
-      "G.M.R.C.",
-      tabPanel(
-        "Avec une base de données",
+
         dashboardPage(
-          dashboardHeader(title = "Base de données"),
+          dashboardHeader(title =  span(img(src="www/shiba_def.png", height = "100%" ))),
           dashboardSidebar(
             sidebarMenu(
       
-              # shinythemes::themeSelector(),
-              menuItem("Accueil", tabName = "accueil", icon = icon("fa-light fa-star", verify_fa = FALSE)),
-              menuItem("Base de données", tabName = "base", icon = icon("fa-light fa-database", verify_fa = FALSE)),
-              menuItem("Descriptif", tabName = "descriptif", icon = icon("fa-light fa-percent", verify_fa = FALSE)),
+         
+              menuItem("Accueil", tabName = "accueil", icon = icon("far fa-star fa-star", verify_fa = FALSE)),
+              menuItem("Base de données", tabName = "base", icon = icon("fas fa-database", verify_fa = FALSE)),
+              menuItem("Descriptif", tabName = "descriptif", icon = icon("fal fa-percent", verify_fa = FALSE)),
               menuItem("Descriptif croisement",
-                       tabName = "croisements" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
+                       tabName = "croisements"  , icon = icon("far fa-chart-bar",verify_fa = FALSE)
               ),
               menuItem("Inférence univarié",
-                       tabName = "infUni" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
+                       tabName = "infUni" , icon = icon("fas fa-calculator",verify_fa = FALSE)
               ),
           menuItem("Multivarié",
-                   tabName = "multivarie_Uni" # , icon = icon("fa-light fa-percent",verify_fa = FALSE)
+                   tabName = "multivarie_Uni"  , icon = icon("fas fa-table",verify_fa = FALSE)
           )
               # menuItem("Croisements/Inférence", tabName = "croisements", icon = icon("fa-light fa-dice", verify_fa = FALSE)),
               # menuItem("Analyse de survie", tabName = "survie", icon = icon("fa-light fa-skull-crossbones", verify_fa = FALSE)),
@@ -180,7 +177,7 @@ app_ui <- function(request) {
             # dashboardthemes::shinyDashboardThemes(
             #   theme = "custom_theme"
             # ),
-            customTheme,
+            # customTheme,
             tabItems(
               # First tab content
               tabItem(
@@ -225,8 +222,8 @@ app_ui <- function(request) {
               )
             )
           )
-        )
-      )
+        
+      
     
     # ,
     #   tabPanel(
