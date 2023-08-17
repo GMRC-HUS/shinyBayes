@@ -154,8 +154,15 @@ app_ui <- function(request) {
             sidebarMenu(
       
          
-              menuItem("Accueil", tabName = "accueil", icon = icon("far fa-star fa-star", verify_fa = FALSE)),
-              menuItem("Base de données", tabName = "base", icon = icon("fas fa-database", verify_fa = FALSE)),
+              menuItem("Accueil", tabName = "accueil", icon = icon("far fa-star", verify_fa = FALSE)),
+              menuItem("Base de données", tabName = "base", icon = icon("fas fa-database", verify_fa = FALSE),
+                       startExpanded = F,
+                       menuSubItem("Chargement des données",
+                                   tabName = "chargement"),
+                       menuSubItem("Visualisation de la base",
+                                   tabName = "info_base")
+                       
+                       ),
               menuItem("Descriptif", tabName = "descriptif", icon = icon("fal fa-percent", verify_fa = FALSE)),
               menuItem("Descriptif croisement",
                        tabName = "croisements"  , icon = icon("far fa-chart-bar",verify_fa = FALSE)
@@ -187,8 +194,12 @@ app_ui <- function(request) {
 
               # Second tab content
               tabItem(
-                tabName = "base",
+                tabName = "chargement",
                 mod_chargement_ui("chargement_1")
+              ),
+              tabItem(
+                tabName = "info_base",
+                mod_Info_base_ui("info_base_1")
               ),
 
               # Third tab content
@@ -208,6 +219,13 @@ app_ui <- function(request) {
                 tabName = "croisements",
                 mod_Croisements_ui("Croisements_1")
               )
+
+
+              
+              
+              
+              
+              
               # tabItem(
               #   tabName = "survie",
               #   mod_Survie_ui("Survie_1")

@@ -48,6 +48,8 @@ app_server <- function(input, output, session, BDD = NULL) {
   mod_Descriptifs_server("Descriptifs_1", r)
   mod_inferenceUni_server("inferenceUni_1", r)
   mod_Multivarie_server("multivarie_1", r)
+  
+  mod_Info_base_server("info_base_1",r)
   # mod_SaisieManuelle_server("SaisieManuelle_1")
 
   # callModule(mod_Descriptifs_server,id = "select",session = session, r = r)

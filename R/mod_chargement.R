@@ -80,36 +80,22 @@ mod_chargement_server <- function(id, r) {
 
 
     output$contents <- renderTable({
-      # input$file1 will be NULL initially. After the user selects
-      # and uploads a file, it will be a data frame with 'name',
-      # 'size', 'type', and 'datapath' columns. The 'datapath'
-      # column will contain the local filenames where the data can
-      # be found.
-      inFile <- input$file1
 
-      if (is.null(inFile)) {
+     
+
+      if (is.null( r$BDD)) {
         return(NULL)
       }
 
-      DD <- read.csv(inFile$datapath, header = input$header, sep = input$sep, na.string = c("", input$manquants), dec = input$decimale)
-      lignesVides <- apply(DD, 1, function(x) {
+      DD <-  r$BDD 
+        lignesVides <- apply(DD, 1, function(x) {
         sum(is.na(x))
       }) == dim(DD)[2]
       DD <- DD[!lignesVides, ]
       DD
     })
 
-    # BDD      <- reactive({
-    #   inFile  <- input$file1
-    #   if (is.null(inFile))
-    #     return(NULL)
-    #   D<-read.csv(inFile$datapath, header=input$header,sep=input$sep, na.string=c("",input$manquants),dec=input$decimale)
-    #   # D<-D[input$contents2_rows_all,]
-    #   lignesVides<-apply(D,1,function(x){sum(is.na(x))})==dim(D)[2]
-    #   D<-D[!lignesVides,]
-    #   D
-    # })
-
+ 
 
 
     observeEvent(input$file1, ignoreInit = T, {
@@ -124,38 +110,12 @@ mod_chargement_server <- function(id, r) {
     })
 
 
-    # BASEchargee<-reactive({
-    #   CHARGEE<- tryCatch(dim(r$BDD)[1]>0,warning= function(e) F,error= function(e) F)
-    #
-    #   CHARGEE
-    #
-    # })
-
     observe({
       # r$BASEchargee<-tryCatch(dim(r$BDD)[1]>0,warning= function(e) F,error= function(e) F)
-      r$BASEchargee <- !is.null(input$file1)
+      r$BASEchargee <- !is.null( r$BDD )
     })
 
-    # noms<- reactive({
-    #   base<- r$BDD
-    #   colnames(base)
-    # })
-    #
-    # nbSujet<-reactive({
-    #   res<-dim(r$contentInput)[1]
-    #   print(res)
-    #   res
-    #
-    # })
-
-    # Recherche du nombre de modalités par variable
-    # nbModeVariable <- reactive({
-    #   D <- r$BDD
-    #   ret <- NULL
-    #   for(i in 1 : (dim(D)[2])){
-    #     ret[i] <- nlevels(as.factor(D[,i]))
-    #   }
-    #   ret
+   
     # })
 
     observeEvent(r$BDD, ignoreInit = T, {
@@ -167,49 +127,11 @@ mod_chargement_server <- function(id, r) {
       r$nbModeVariable <- z
     })
 
-    # for(i in 1 : (dim(D)[2])){
-    #   ret[i] <- nlevels(as.factor(D[,i]))
-    # }
-    #
-
-    # observe({
-    #   D <- r$BDD
-    #
-    #   #r$nbModeVariable<-ret[1]
-    # })
-
-
-    # variableNum <- reactive({
-    #   D <- r$BDD
-    #   ret <- NULL
-    #   for(i in 1 : (dim(D)[2])){
-    #     ret[i] <- is.numeric(D[,i])
-    #   }
-    #   ret
-    # })
-    #
     observeEvent(r$BDD, ignoreInit = T, {
       D <- r$BDD
       r$variableNum <- as.logical(lapply(D, is.numeric))
     })
-    #
-    # # variableNormale <- reactive({
-    # #   D <- r$BDD
-    # #   ret <- rep(NA, dim(D)[2])
-    # #
-    # #   for(i in which(variableNum())){
-    # #     ret[i] <- desctable::is.normal(D[,i])
-    # #   }
-    # #   ret
-    # # })
-    #
-
-    # X<-isolate(r$BDD)
-    # Y<-isolate(r$variableNum)
-    # ret<-reactive({rep(NA, ncol(X))})
-    # ret[which(isolate(r$variableNum))] <- as.logical(lapply(as.data.frame(D[,which(isolate(r$variableNum))]), desctable::is.normal))
-    # #r$variableNormale<-ret
-
+    
 
     observeEvent(r$BDD, ignoreInit = T, {
       D <- r$BDD
@@ -218,14 +140,6 @@ mod_chargement_server <- function(id, r) {
       r$variableNormale <- ret
     })
 
-    #
-    #
-    #
-    #
-    # # Est-ce qu'un filtre est appliqué à la base de données ?
-    output$FILTREapplique44 <- renderUI({
-      HTML("f")
-    })
   })
 }
 

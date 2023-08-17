@@ -21,6 +21,8 @@ golem::add_module(name = "SaisieManuelle", with_test = FALSE) # Name of the modu
 golem::add_module(name = "Redaction", with_test = FALSE) # Name of the module
 
 golem::add_module(name = "Multivarie", with_test = T)
+golem::add_module(name = "Info_base", with_test = F)
+
 
 golem::add_fct("ifelse_perso")
 golem::add_fct("glm_shiba")
