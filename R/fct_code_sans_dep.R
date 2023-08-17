@@ -1763,7 +1763,7 @@ descd <- function(D) {
   colnames(RES3) <- ""
   rownames(RES3) <- c("Nombre de Var. Quantitatives", "Nombre de Var. Qualitatives", "Nombre de Var. Textuelles", "Nombre de Var. Nature Autre")
 
-  RES <- list(Dim = RES1, N.A. = RES2, Nature = RES3)
+  RES <- list("Dim" = RES1, "Données manquantes" = RES2, Nature = RES3)
 
   if (situation == 0) {
     RES <- "1 seule variable a decrire, utilisez desc()"

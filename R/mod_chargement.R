@@ -13,16 +13,10 @@ mod_chargement_ui <- function(id) {
   tagList(
     h1("Hello chargement !")
   )
-  fluidPage(
+  fluidPage(br(),br(),
     sidebarLayout(
-      sidebarPanel(
-        fileInput(ns("file1"), "Choose CSV File",
-          accept = c(
-            "text/csv",
-            "text/comma-separated-values,text/plain",
-            ".csv"
-          )
-        ),
+      sidebarPanel(h2("Chargement d'une base de données"),
+      
         tags$hr(),
         checkboxInput(ns("header"), "Titre       (Votre fichier contient-il des titres de colonnes ?)", TRUE),
         radioButtons(
@@ -61,12 +55,19 @@ mod_chargement_ui <- function(id) {
           ),
           "windows-1252"
         ),
+        fileInput(ns("file1"), "Choisir un fichier Csv",
+                  accept = c(
+                    "text/csv",
+                    "text/comma-separated-values,text/plain",
+                    ".csv"
+                  )
+        ),
         tags$br(), tags$br(), tags$br(),
         "Les lignes entièrement vides seront retirées pour la suite des analyses."
       ),
-      mainPanel(
+      mainPanel(br(),fluidRow(align="center",
         tableOutput(ns("contents"))
-      )
+      ))
     )
   )
 }

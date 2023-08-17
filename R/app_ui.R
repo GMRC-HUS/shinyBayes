@@ -164,9 +164,17 @@ app_ui <- function(request) {
                        
                        ),
               menuItem("Descriptif", tabName = "descriptif", icon = icon("fal fa-percent", verify_fa = FALSE)),
-              menuItem("Descriptif croisement",
-                       tabName = "croisements"  , icon = icon("far fa-chart-bar",verify_fa = FALSE)
+              menuItem("Croisement", tabName = "crois", icon = icon("far fa-chart-bar", verify_fa = FALSE),
+                       startExpanded = F,
+                       menuSubItem("Deux à deux",
+                                   tabName = "croisements"),
+                       menuSubItem("Table 1",
+                                   tabName = "table_1")
+                       
               ),
+                       
+                       
+       
               menuItem("Inférence univarié",
                        tabName = "infUni" , icon = icon("fas fa-calculator",verify_fa = FALSE)
               ),
@@ -218,7 +226,13 @@ app_ui <- function(request) {
               tabItem(
                 tabName = "croisements",
                 mod_Croisements_ui("Croisements_1")
+              ),
+              tabItem(
+                tabName = "table_1",
+                mod_table1_ui("table_1")
               )
+              
+              
 
 
               

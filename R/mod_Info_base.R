@@ -6,6 +6,7 @@
 #'
 #' @noRd 
 #'
+#' @import plotly
 #' @importFrom shiny NS tagList 
 mod_Info_base_ui <- function(id){
   ns <- NS(id)
@@ -35,8 +36,10 @@ mod_Info_base_server <- function(id,r){
               downloadButton(ns("PDFdescriptif1o1"), label = "AIDE et Détails", class = "butt")
             )
           ), # finFluidRow
+          br(),
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          verbatimTextOutput(ns("tableauBASE")),
+          uiOutput(ns("tableauBASE")),
+          br(),
           plotOutput(ns("plotNAbase1"))
         ),
         tabPanel(
@@ -48,11 +51,15 @@ mod_Info_base_server <- function(id,r){
             )
           ), # finFluidRow
           
-          tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          h4("Descriptif cumulé des données manquantes par variable", align = "center"),
+          tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),br(),
+          box(title="Descriptif cumulé des données manquantes par variable",width =12 ,status = "primary", solidHeader = TRUE,
+       
           p("On représente ci-dessous les données manquantes en proportions par variable étudiée."),
+          
           plotOutput(ns("plotNAbase2")),
-          tableOutput(ns("tableNAbase2"))
+          br(),
+          
+          tableOutput(ns("tableNAbase2")))
         ),
         tabPanel(
           "Données manquantes cumulées par sujet",
@@ -62,11 +69,11 @@ mod_Info_base_server <- function(id,r){
               downloadButton(ns("PDFdescriptif1o3"), label = "AIDE et Détails", class = "butt")
             )
           ), # finFluidRow
-          
+          br(),
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
           h4("Descriptif cumulé des données manquantes par sujet", align = "center"),
           p("On représente ci-dessous les données manquantes en proportions par sujet d'étude."),
-          plotOutput(ns("plotNAbase3")),
+          plotOutput(ns("plotNAbase3")),br(),
           tableOutput(ns("tableNAbase3"))
         )
       ) # fin navlistpanel
@@ -89,8 +96,8 @@ mod_Info_base_server <- function(id,r){
     
     
     output$plotNAbase1 <- renderPlot({
-      plot.na(r$BDD)
-      # DataExplorer::plot_missing(r$BDD)+theme_clean()
+      plot.na(r$BDD)+theme_ShiBA()
+      
     })
     
     
@@ -98,15 +105,36 @@ mod_Info_base_server <- function(id,r){
     
     
     output$plotNAbase2 <- renderPlot({
-      barplot(apply(is.na(r$BDD), 2, sum), xlab = "", col = "palegreen3")
-    })
+      freq <-  apply(is.na(r$BDD), 2, sum)%>%as.data.frame()%>%tibble::rownames_to_column()
+      names(freq)<- c("Var", "Nombre")
+  p <-freq%>%ggplot(aes(x=Var, y=Nombre)) + geom_col()+theme_ShiBA()
+  (p)  
+  })
     
     output$plotNAbase3 <- renderPlot({
-      barplot(apply(is.na(r$BDD), 1, sum), xlab = "", col = "lightblue1")
+      freq <- apply(is.na(r$BDD), 1, sum)%>%as.data.frame()%>%tibble::rownames_to_column()
+      names(freq)<- c("Sujet", "Nombre")
+      
+      d<- freq%>%ggplot(aes(x=Sujet, y=Nombre)) + geom_col()+theme_ShiBA()+
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      (d)  
     })
     
-    output$tableauBASE <- renderPrint({
-      descd(r$BDD)
+    output$tableauBASE <- renderUI({
+      res<- descd(r$BDD)
+      
+      tagList(
+        box(title="Dimension de la base",status = "primary", solidHeader = TRUE,
+            renderTable(res[[1]]%>%as.data.frame(),include.colnames=F, include.rownames=T)),
+        box(title="Données manquantes",status = "primary", solidHeader = TRUE,
+            renderTable(res[[2]]%>%as.vector.data.frame(),include.colnames=F, include.rownames=T)),
+        box(title="Types de variables",status = "primary", solidHeader = TRUE,
+            renderTable(res[[3]]%>%as.data.frame(),include.colnames=F, include.rownames=T))
+            
+        
+        
+      )
+      
     })
     
     output$tableNAbase2 <- renderTable(
