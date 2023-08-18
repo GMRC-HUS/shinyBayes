@@ -1751,7 +1751,7 @@ descd <- function(D) {
   RES2[2, 1] <- lig.vides
   RES2[3, 1] <- dat.vides
   RES2[4, 1] <- sub.comp
-  RES2 <- noquote(RES2)
+
   colnames(RES2) <- ""
   rownames(RES2) <- c("Nombre de colonnes vides", "Nombre de lignes vides", "Nombre de donnees manquantes", "Dimensions ss-groupe complet")
 

@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 #' @importFrom ggdist dstudent_t
 #'
-#' @import gmrc.bayes
+
 
 
 

@@ -9,19 +9,19 @@
 
 
 shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
-  print(seuilTwoIt)
+
   nomsModel <- fit$coefficients %>% names()
+  noms<-ifelse_perso (type_glm %in% c("poiss", "binom"), c(nomsModel), c(nomsModel,"sigma"))
 
-  res <- lapply(c(nomsModel,"sigma"),
+  res <- lapply(noms,
                 function(i)  quantile(as.array(fit)[, , i], c(0.5,(1-IC/100)/2,1-(1-IC/100)/2))%>%t%>%as.data.frame(   check.names= F)%>% mutate(var=i, .before=everything()))%>%rbindlist
-  print(res)
 
-  ligne_mean_PPD <- which(rownames(res) == "mean_PPD")
+
   if (is.null(seuilTwoIt)) {
-    print("type_glm")
+
 
     if (type_glm %in% c("poiss", "binom")) {
-      res[, 1:3] <- exp(res[, 1:3])
+      res[, 2:4] <- exp(res[, 2:4])
       names(res)[1] <- ifelse(type_glm == "poiss", "RR", "OR")
     }
 
@@ -71,9 +71,9 @@ shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
     res_seuil[(nrow(res_seuil) + 1):(nrow(res_seuil) + (nrow(res) - nrow(res_seuil))), ] <- ""
     res <- cbind(res, res_seuil)
 
-    ligne_mean_PPD <- which(rownames(res) == "mean_PPD")
+    
     if (type_glm %in% c("poiss", "binom")) {
-      res[1:ligne_mean_PPD - 1, 1:3] <- exp(res[1:ligne_mean_PPD - 1, 1:3])
+      res[, 1:3] <- exp(res[, 1:3])
       names(res)[1] <- ifelse(type_glm == "poiss", "RR", "OR")
     }
 
@@ -81,7 +81,7 @@ shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
   } else if (!is.null(seuilTwoIt$val$var)) {
     if (!seuilTwoIt$val$var %in% nomsModel) {
       if (type_glm %in% c("poiss", "binom")) {
-        res[1:ligne_mean_PPD - 1, 1:3] <- exp(res[1:ligne_mean_PPD - 1, 1:3])
+        res[, 2:4] <- exp(res[, 2:4])
         names(res)[1] <- ifelse(type_glm == "poiss", "RR", "OR")
       }
 
@@ -111,13 +111,13 @@ shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
 
     Pr <- data.frame(c("H|Prior", "H|Données"), twoIt$values[1:2], twoIt$values[3:4])
     names(Pr) <- c("Two It", twoIt$names[1:2])
-    ligne_para<- which(rownames(res) == list_param$var)
+    ligne_para<- which(res$var == list_param$var)
     matrice_vide <- as.data.frame(matrix("",nrow = ligne_para-1,ncol = 3))
     names(matrice_vide)<- names(Pr)
     Pr<- rbind(matrice_vide, Pr)
     
     
-    ligne_vide <- as.data.frame(matrix("",nrow = 1,ncol = ncol(res)))
+    ligne_vide <- as.data.frame(matrix(NA,nrow = 1,ncol = ncol(res)))
     rownames(ligne_vide)<-""
     names(ligne_vide) <- names(res)
     
@@ -131,11 +131,11 @@ shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
     res<- rbind(res[1:ligne_para,],ligne_vide, res[(ligne_para+1):n_ligne,])
     print(res)
     res <- cbind(res, Pr)
-    ligne_mean_PPD <- which(rownames(res) == "mean_PPD")
+ 
 
 
     if (type_glm %in% c("poiss", "binom")) {
-      res[1:ligne_mean_PPD - 1, 1:3] <- exp(res[1:ligne_mean_PPD - 1, 1:3])
+      res[, 2:4] <- exp(res[, 2:4])
       names(res)[1] <- ifelse(type_glm == "poiss", "RR", "OR")
     }
 
