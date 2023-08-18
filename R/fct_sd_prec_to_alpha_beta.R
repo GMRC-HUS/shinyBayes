@@ -16,7 +16,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @import gmrc.bayes
+
 
 mod_sd_prec_to_alph_beta_ui <- function(id) {
   ns <- NS(id)

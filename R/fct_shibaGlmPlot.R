@@ -9,7 +9,7 @@
 
 
 
-shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,...) {
+shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,..., color_1 ="#DE3163" , color_2="#40E0D0") {
   if (!is.null(pars)) {
     if (type_glm %in% c("poiss", "binom")) {
       
@@ -68,9 +68,9 @@ shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,...) {
           if(hist){
           p1 <-p + geom_histogram(aes(x =value, fill = value > seuils), alpha = 0.5)
           
-          p1<- p1+geom_segment(data=seuils%>%filter(parameter%in%pars), aes(x=seuils, xend = seuils,y=-Inf,yend=Inf, group = parameter))+facet_wrap(.~parameter)
+          p1<- p1+geom_segment(data=seuils%>%filter(parameter%in%pars), aes(x=seuils, xend = seuils,y=-Inf,yend=Inf, group = parameter))+facet_wrap(.~parameter, scales="free")
           }else{
-          p1 <- p + geom_ridgeline(aes(x = x, y = parameter, height = if_else(x > seuils, .data$plotting_density, 0), scale = 0.9), fill = "#6ad02b", alpha = 0.5)
+          p1 <- p + geom_ridgeline(aes(x = x, y = parameter, height = if_else(x > seuils, .data$plotting_density, 0), scale = 0.9), fill =color_2, alpha = 0.5)
             
           
 
@@ -102,11 +102,12 @@ shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,...) {
 
           if(hist){
 
-            p1 <-p + geom_histogram(aes(x =value, fill = value > seuils), alpha = 0.5)
+            p1 <-p + geom_histogram(aes(x =value, fill = value > seuils))+
+              scale_fill_manual(values=alpha(c( color_1,color_2),0.5),na.value = alpha("black",0),name = "Valeur > Seuil", labels = c("Faux", "Vrai", "") )
             
-            p1<- p1+geom_segment(data=seuils%>%filter(parameter%in%pars), aes(x=seuils, xend = seuils,y=-Inf,yend=Inf, group = parameter))+facet_wrap(.~parameter)
+            p1<- p1+geom_segment(data=seuils%>%filter(parameter%in%pars), aes(x=seuils, xend = seuils,y=-Inf,yend=Inf, group = parameter))+facet_wrap(.~parameter, scales="free")
           }else{
-            p1 <- p + geom_ridgeline(aes(x = x, y = parameter, height = if_else(x > seuils, .data$plotting_density, 0), scale = 0.9), fill = "#6ad02b", alpha = 0.5)
+            p1 <- p + geom_ridgeline(aes(x = x, y = parameter, height = if_else(x > seuils, .data$plotting_density, 0), scale = 0.9), fill =color_2, alpha = 0.5)
             
             
             
@@ -141,10 +142,10 @@ shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,...) {
           list_param = as.data.frame(list_param)
           p1 <- p + geom_rect(data =list_param%>%mutate(Parameter = var), mapping= aes( xmin = theta_P_min,
                                                      xmax = theta_P_max, ymin = -Inf,
-                                                     ymax = Inf, x=0, y=0 ),fill = "#40E0D0", alpha = 0.2 )+
+                                                     ymax = Inf, x=0, y=0 ),fill = color_2, alpha = 0.2 )+
             geom_rect(data =list_param%>%mutate(Parameter = var), aes( xmin = theta_A_min,
                                                                               xmax = theta_A_max, ymin = -Inf,
-                                                                              ymax = Inf,x=0,y=0) ,fill = "#DE3163", alpha = 0.2 )
+                                                                              ymax = Inf,x=0,y=0) ,fill = color_1, alpha = 0.2 )
             
    
             
@@ -152,12 +153,12 @@ shibaGlmPlot <- function(fit, type_glm, pars, seuilTwoIt = NULL, hist = F,...) {
         p1 <- p + annotate("rect",
           xmin = list_param$theta_P_min,
           xmax = list_param$theta_P_max, ymin = y,
-          ymax = y + 1, fill = "#40E0D0", alpha = 0.2
+          ymax = y + 1, fill = color_2, alpha = 0.2
         ) +
           annotate("rect",
             xmin = list_param$theta_A_min,
             xmax = list_param$theta_A_max, ymin = y,
-            ymax = y + 1, fill = "#DE3163", alpha = 0.2
+            ymax = y + 1, fill = color_1, alpha = 0.2
           )
         
         }
