@@ -61,7 +61,7 @@ mod_sd_prec_to_alph_beta_server <- function(id, alpha, beta, parent, alpha_name,
 
 
     output$ellicitationcurve <- renderPlot({
-      # print(input)
+     
       alpha_0 <- input$sigma_0
       beta_0 <- alpha_0 * input$n_sigma_0
 
@@ -80,10 +80,10 @@ mod_sd_prec_to_alph_beta_server <- function(id, alpha, beta, parent, alpha_name,
 
 
     observeEvent(input$ok, {
-      # print(session)
+     
       updateNumericInput(parent, alpha_name, value = input$sigma_0)
       updateNumericInput(parent, beta_name, value = input$sigma_0 * input$n_sigma_0)
-      print(input$sigma_0)
+  
     })
 
     # return(list(

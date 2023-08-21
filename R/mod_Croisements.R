@@ -168,9 +168,7 @@ striping:
 
 
       output$propositionsCROISE1 <- renderUI({
-        print("##########################")
-        print(r)
-        print("##########################")
+
         selectInput(ns("variableCROISE1"), "Variable:", choices = r$noms)
       })
 
@@ -216,7 +214,7 @@ striping:
         variableCROISE1 <- base[, input$variableCROISE1]
         variableCROISE2 <- base[, input$variableCROISE2]
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "quant") {
-          print(ggpoints(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2)+theme_ShiBA())
+          return(ggpoints(variableCROISE1, variableCROISE2, nomx = input$variableCROISE1, nomy = input$variableCROISE2)+theme_ShiBA())
         }
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
            return(base%>%ggplot(aes(y=!!sym(input$variableCROISE1) , group =  !!sym(input$variableCROISE2)))+geom_boxplot()+theme_ShiBA())
@@ -227,7 +225,6 @@ striping:
    
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "qual") {
-          # print(ggpie(as.factor(variableCROISE1),as.factor(variableCROISE2)))
           barplotCroise <- barplot_croise(base = base, var1 = input$variableCROISE1, var2 = input$variableCROISE2)+theme_ShiBA()
           return(barplotCroise)
         }
@@ -239,10 +236,10 @@ striping:
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "quant") {
             }
         if (input$qualiquantiCROISE1 == "quant" & input$qualiquantiCROISE2 == "qual") {
-          print(ggcompar(input$variableCROISE1, input$variableCROISE2, base)+theme_ShiBA())
+          return(ggcompar(input$variableCROISE1, input$variableCROISE2, base)+theme_ShiBA())
         }
         if (input$qualiquantiCROISE1 == "qual" & input$qualiquantiCROISE2 == "quant") {
-          print(ggcompar(input$variableCROISE2, input$variableCROISE1, base)+theme_ShiBA())
+          return(ggcompar(input$variableCROISE2, input$variableCROISE1, base)+theme_ShiBA())
         }
       })
 

@@ -93,7 +93,7 @@ mod_Descriptifs_server <- function(id, r) {
       })
     
     output$choix_quanti_quali_ui<- renderUI({
-      print(input$variable)
+      
       choix_quali_quanti(ns("qualiquanti"), r$BDD[,input$variable])
     })
     
@@ -105,7 +105,7 @@ mod_Descriptifs_server <- function(id, r) {
         {
           base <- r$BDD
           variable <- base[, colnames(base) == input$variable]
-          print(input$variable)
+      
           if (input$qualiquanti == "quant") {
             res <- data.frame(descr1(variable)$Descriptif[1:18,])
             colnames(res) <- c("Descriptif")
@@ -127,7 +127,7 @@ mod_Descriptifs_server <- function(id, r) {
   
           return(ggplot(base, aes(x=!!sym(input$variable)))+geom_histogram(fill="#75AADB", color="white")+
             xlab(input$variable)+ylab("Effectif")+ggtitle("Histogramme")+theme_ShiBA())
-          # g<-; print(g)
+         
         }
         if (input$qualiquanti == "qual") {
           variable <- as.character(variable)
@@ -146,11 +146,10 @@ mod_Descriptifs_server <- function(id, r) {
             theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())
           return(g)
         }
-        # if(input$qualiquanti=="qual"){print(graphics::pie(as.vector(table(variable))))}
-        if (input$qualiquanti == "qual") {
+          if (input$qualiquanti == "qual") {
 
           if(length(unique(variable))>3) return()
-          print(as.data.frame(table(variable)))
+         
           g <- ggplot(as.data.frame(table(variable)), aes(x = "", y = Freq, fill = variable)) +
             geom_bar(stat = "identity", width = 1) +
             coord_polar("y", start = 0) +

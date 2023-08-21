@@ -69,13 +69,13 @@ glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
   if (is.null(prior_intercept)) {
     if (!is.null(prior$scale) & !is.null(prior$location)) {
       prior <- normal(location = prior$location, scale = prior$scale)
-      fit <- stan_glm(formule,
+      fit <- rstanarm::stan_glm(formule,
         family = family,
         data = data,
         prior = prior, ...,refresh=0
       )
     } else {
-      fit <- (stan_glm(formule,
+      fit <- (rstanarm::stan_glm(formule,
         family = family,
         data = data,  ...,refresh=0
       ))
@@ -83,7 +83,7 @@ glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
   } else if (!is.null(prior$scale) & !is.null(prior$location)) {
     prior <- normal(location = prior$location, scale = prior$scale)
     prior_intercept <- normal(location = prior_intercept[1], scale = prior_intercept[2])
-    fit <- stan_glm(formule,
+    fit <- rstanarm::stan_glm(formule,
       family = family,
       data = data,
       prior_intercept = prior_intercept,
@@ -91,7 +91,7 @@ glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
     )
   } else {
     prior_intercept <- normal(location = prior_intercept[1], scale = prior_intercept[2])
-    fit <- (stan_glm(formule,
+    fit <- (rstanarm::stan_glm(formule,
       family = family,
       data = data, 
       prior_intercept = prior_intercept, ...,refresh=0

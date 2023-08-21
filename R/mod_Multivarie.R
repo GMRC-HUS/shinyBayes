@@ -31,7 +31,7 @@ mod_Multivarie_ui <- function(id) {
           radioButtons(
             ns("type_glm"), HTML(paste(h2("Type de regression"), text_aide("Choix type de régression multivarié !"))),
             c(
-              Linéaire = "lin",
+              "Linéaire" = "lin",
               Binomial = "binom",
               # Beta = "beta",
               Poisson = "poiss"
@@ -384,7 +384,7 @@ mod_Multivarie_server <- function(id, r) {
       if (length(list_quali) > 0) data <- data %>% mutate_at(list_quali, as.factor)
       formule <- formule_default(y, list_quanti, list_quali)
      
-      print(formule)
+    
         
         fit <- glm_Shiba(formule,
         data = data,
@@ -398,7 +398,7 @@ mod_Multivarie_server <- function(id, r) {
       
 
       removeModal()
-      print(fit)
+    
       
       
       model_2(fit)
@@ -445,8 +445,7 @@ mod_Multivarie_server <- function(id, r) {
       if (is.null(model_2())) {
         return()
       }
-      print(input$col1)
-      print(input$col2)
+     
       shibaGlmPlot(model_2(), type_glm = input$type_glm, pars = input$Variable_graph,
                    seuilTwoIt = isolate(seuil_twoit()$ls), prob = isolate(input$IC)/100,
                    hist = ifelse(input$hist_graph =="Histogramme",T,F),color_1 = input$col1,color_2= input$col2)
@@ -461,7 +460,7 @@ mod_Multivarie_server <- function(id, r) {
     
       var_model <- colnames(model_2()$covmat)
       type_model <- names(which(c(
-        Linéaire = "lin",
+        "Linéaire" = "lin",
         Binomial = "binom",
         Beta = "beta",
         Poisson = "poiss"
@@ -573,7 +572,7 @@ mod_Multivarie_server <- function(id, r) {
         prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
 
         prior_quanti_sd <- sapply(input$list_quanti, function(x) sd(r$BDD[, x], na.rm = T))
-        print(prior_quali_sd)
+        
         if (length(prior_quanti_sd) == 0) prior_quanti_sd <- NULL
 
         if (input$type_glm == "lin") {
@@ -655,7 +654,7 @@ mod_Multivarie_server <- function(id, r) {
         
         default_prior_beta_scale_def <- round(2.5 / c(prior_quanti_sd, prior_quali_sd) * sd(r$BDD[, input$variable], na.rm = T), 2)
         default_prior_beta_location_def <- 0
-        print(default_prior_beta_location_def)
+       
       }
       if (length(prior_quanti_sd) == 0) prior_quanti_sd <- NULL
       default_prior_intercept_def <- c(
@@ -682,7 +681,7 @@ mod_Multivarie_server <- function(id, r) {
         if (!input$type_glm == "lin") {
           transfo_exp = norm_tomin_max_exp(ifelse(x == 1, default_prior_intercept_def[1], default_prior_beta_location_def) , ifelse(x == 1, default_prior_intercept_def[2], default_prior_beta_scale_def[x - 1])   )
           transfo_exp<-as.vector(transfo_exp)
-          print(transfo_exp)
+          
           updateNumericInput(session, paste(variables[x], "_min_exp", sep = ""), value = round(transfo_exp[1],3) )
           updateNumericInput(session, paste(variables[x], "_max_exp", sep = ""), value = round(transfo_exp[2],3))
           
@@ -720,7 +719,7 @@ mod_Multivarie_server <- function(id, r) {
           return(data.frame(prior_mu = trans[1], prior_sd = trans[2]))
         }
         )%>%rbindlist
-        print(res_trans)
+     
         
         prior_mu<- c(0,res_trans$prior_mu)
         prior_sd<- c(2.5,res_trans$prior_sd)
