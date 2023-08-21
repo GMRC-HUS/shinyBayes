@@ -36,6 +36,7 @@ golem::add_fct("twoIt")
 golem::add_fct("shibaGlmPlot")
 golem::add_fct("shibaGlmTable")
 
+golem::add_fct("prop_comp")
 
 
 usethis::use_build_ignore("r/exemple.R")
