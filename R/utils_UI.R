@@ -6,6 +6,9 @@
 #'
 #' @noRd
 
+
+
+
 choix_quali_quanti <- function(name_ui,x){
   renderUI({
   
