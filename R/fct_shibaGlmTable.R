@@ -123,13 +123,12 @@ shibaGlmTable <- function(fit,IC=95, type_glm, seuilTwoIt = NULL, ...) {
     
     
     
-    print(ligne_para)
+   
     Pr[(nrow(Pr) + 1):(nrow(Pr) + (nrow(res) - nrow(Pr)+1)), ] <- ""
     n_ligne<- nrow(res)
-    print(Pr)
-    print(n_ligne)
+  
     res<- rbind(res[1:ligne_para,],ligne_vide, res[(ligne_para+1):n_ligne,])
-    print(res)
+
     res <- cbind(res, Pr)
  
 

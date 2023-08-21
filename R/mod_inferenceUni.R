@@ -125,7 +125,7 @@ mod_inferenceUni_server <- function(id, r) {
 
     output$twit_ui <- renderUI({
       if (input$twit) {
-        print(isolate(seuil_twoit()))
+      
         # twitUi("id_i")
         twitUi(ns("id_i"))
       }
