@@ -17,7 +17,7 @@ glm_Shiba <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
     if (checks) {
       return(fit)
     }
-    fit <- glm_prior(data, formule, prior = prior, type = type, prior_intercept, iter = iter * (i + 1), keep_every = keep_every * (i + 1), ...)
+    fit <- glm_prior(data, formule, prior = prior, type = type, prior_intercept, iter = iter * (i + 1), keep_every = keep_every * (i + 1), ..., refresh=0)
     message <- paste0(
       "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
       iter * (i + 1),
@@ -56,7 +56,7 @@ glm_Shiba <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
 
 
 
-glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL, ...) {
+glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL, ..., refresh = 0) {
   if (type == "lin") {
     family <- gaussian(link = "identity")
   } else if (type == "poiss") {
@@ -69,32 +69,32 @@ glm_prior <- function(data, formule, type, prior_intercept = NULL, prior = NULL,
   if (is.null(prior_intercept)) {
     if (!is.null(prior$scale) & !is.null(prior$location)) {
       prior <- normal(location = prior$location, scale = prior$scale)
-      fit <- stan_glm(formule,
+      fit <- rstanarm::stan_glm(formule,
         family = family,
         data = data,
-        prior = prior, ...
+        prior = prior, ...,refresh=0
       )
     } else {
-      fit <- (stan_glm(formule,
+      fit <- (rstanarm::stan_glm(formule,
         family = family,
-        data = data,  ...
+        data = data,  ...,refresh=0
       ))
     }
   } else if (!is.null(prior$scale) & !is.null(prior$location)) {
     prior <- normal(location = prior$location, scale = prior$scale)
     prior_intercept <- normal(location = prior_intercept[1], scale = prior_intercept[2])
-    fit <- stan_glm(formule,
+    fit <- rstanarm::stan_glm(formule,
       family = family,
       data = data,
       prior_intercept = prior_intercept,
-      prior = prior,  ...
+      prior = prior,  ...,refresh=0
     )
   } else {
     prior_intercept <- normal(location = prior_intercept[1], scale = prior_intercept[2])
-    fit <- (stan_glm(formule,
+    fit <- (rstanarm::stan_glm(formule,
       family = family,
       data = data, 
-      prior_intercept = prior_intercept, ...
+      prior_intercept = prior_intercept, ...,refresh=0
     ))
   }
   return(fit)

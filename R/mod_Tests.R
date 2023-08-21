@@ -22,10 +22,7 @@ mod_Tests_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    pasDeBase <- fluidPage(
-      h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
-      p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")
-    )
+    pasDeBase <- pasDeBase_ui()
 
     testsDiagnostiques <-
       fluidPage(
@@ -191,10 +188,7 @@ mod_Tests_server <- function(id, r) {
       variablesurvie2 <- base %>% select(input$variableLogit2)
       variablesurvie2 <- variablesurvie2[[1]]
 
-      print("variablesurvie1")
-      print(variablesurvie1)
-      print("variablesurvie2")
-      print(variablesurvie2)
+      
 
       rocobj <- roc(variablesurvie1, variablesurvie2, percent = TRUE, ci = TRUE, print.auc = input$LOGIToptionsAUC)
       x <- ci.thresholds(rocobj)

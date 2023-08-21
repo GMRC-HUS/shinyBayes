@@ -127,7 +127,7 @@ mod_Info_base_server <- function(id,r){
         box(title="Dimension de la base",status = "primary", solidHeader = TRUE,
             renderTable(res[[1]]%>%as.data.frame(),include.colnames=F, include.rownames=T)),
         box(title="Données manquantes",status = "primary", solidHeader = TRUE,
-            renderTable(res[[2]]%>%as.vector.data.frame(),include.colnames=F, include.rownames=T)),
+            renderTable(res[[2]]%>%as.data.frame(),include.colnames=F, include.rownames=T)),
         box(title="Types de variables",status = "primary", solidHeader = TRUE,
             renderTable(res[[3]]%>%as.data.frame(),include.colnames=F, include.rownames=T))
             

@@ -24,10 +24,7 @@ mod_Concordance_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    pasDeBase <- fluidPage(
-      h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
-      p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")
-    )
+    pasDeBase <- pasDeBase_ui()
 
     concordanceAvecBase <-
       fluidPage(

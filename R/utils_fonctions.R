@@ -14,41 +14,13 @@ theme_ShiBA <- theme_light
 
 pasDeBase_ui<- function() {
   fluidPage(
-  h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
-  p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")
+  h4("Aucune base n'a &eacute;t&eacute; charg&eacute;e en m&eacute;moire, cet onglet n'est pas accessible."),
+  p("Pour charger une base de donn&eacute;es, rendez-vous sur l'onglet « Base de Donn&eacute;es » dans la barre lat&eacute;rale.")
 )
 }
 size_box <- "150px"
 
-css <- "
-.tooltip {
-  pointer-events: none;
-}
-.tooltip > .tooltip-inner {
-  pointer-events: none;
-  background-color: #ffffff;
-  color: black;
-  border: 1px solid lightgray;
-  padding: 10px;
-  font-size: 25px;
-  font-style: italic;
-  text-align: justify;
-  margin-left: 0;
-  max-width: 1000px;
-}
-.tooltip > .arrow::before {
-  border-right-color: #73AD21;
-}
 
-.fas{font-size: 20px;}
-
-"
-
-js <- "
-$(function () {
-  $('[data-toggle=tooltip]').tooltip()
-})
-"
 
 bold <- function(x){
   return(paste0("<b>",x,"</b>"))
@@ -93,7 +65,7 @@ tablePourcent <- function(base) {
 
 sd_quali <- function(list_var, BDD) {
   unlist(sapply(list_var, function(x) {
-    sapply(levels(BDD[, x])[-1], function(i) sd(BDD[, x] == i, na.rm = T))
+    sapply(levels(as.factor(BDD[, x]))[-1], function(i) sd(BDD[, x] == i, na.rm = T))
   }))
 }
 
@@ -120,7 +92,7 @@ formule_default <- function(y, X_quanti, X_quali) {
   paste(isolate(y), "~", var_interet)
 }
 
-df_prior<- function(fit){
+df_prior<- function(fit, type ="lin"){
   
   loc_var  <- prior_summary(fit)$prior$location
   scale_var <- prior_summary(fit)$prior$adjusted_scale
@@ -134,10 +106,17 @@ df_prior<- function(fit){
   if (is.null(scale_inter)) {
     scale_inter <- prior_summary(fit)$prior_intercept$scale
   }
+  res<- data.frame(Var = fit$coefficients%>%names, 
+                   Position =c(loc_inter, loc_var),
+                   Dispersion = c(scale_inter,scale_var))
+  if(type=="lin"){
+  return(res)
+    
+  }
   
-  return(data.frame(Var = fit$coefficients%>%names, 
-                     Position =c(loc_inter, loc_var),
-                     Dispersion = c(scale_inter,scale_var)))
+  res<-res%>% mutate("min (exp)" = round(norm_tomin_max_exp(Position,Dispersion)[1],3),
+               "max (exp)" = round(norm_tomin_max_exp(Position,Dispersion)[2],3))
+  return(res)
 }
 
 
@@ -176,7 +155,9 @@ tablePourcent <- function(base) {
 
 diag_convergence <- function(fit, rhat = 1.05, autocorr = 0.2, lags = c(1:50)) {
   s <- as.array(fit)
-  mcmc <- as.mcmc.list(alply(s[, , -dim(s)[3]], 2, function(x) as.mcmc(x)))
+
+  
+  mcmc <- as.mcmc.list(alply(s[, , 1:length( names(fit$coefficients))], 2, function(x) as.mcmc(x)))
 
   AC <- autocorr.diag(mcmc, lags = lags)
 
@@ -187,7 +168,7 @@ diag_convergence <- function(fit, rhat = 1.05, autocorr = 0.2, lags = c(1:50)) {
 }
 verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
   for (i in 1:nb_repeat) {
-    print(i)
+    
     checks <- diag_convergence(fit)
     if (checks) {
       return(fit)
@@ -199,7 +180,7 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
         keep_every = fit$stanfit@sim$thin * 2,
         seed = 42
       )
-    print(fit$stanfit@sim$iter)
+    
     checks <- diag_convergence(fit)
     if (checks) {
       return(fit)
@@ -209,9 +190,9 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
       shinyalert(
         "Warning!",
         paste0(
-          "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
+          "Problème de convergence\n\nLe nombre d'it&eacute;ration a &eacute;t&eacute; augment&eacute; à ",
           fit$stanfit@sim$iter,
-          "\n Thining augmenté à ",
+          "\n Thining augment&eacute; à ",
           fit$stanfit@sim$thin,
           "\n\n"
         ),
@@ -220,9 +201,9 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
     } else {
       message(
         paste0(
-          "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
+          "Problème de convergence\n\nLe nombre d'it&eacute;ration a &eacute;t&eacute; augment&eacute; à ",
           fit$stanfit@sim$iter,
-          "\n\n Thining augmenté à ",
+          "\n\n Thining augment&eacute; à ",
           fit$stanfit@sim$thin,
           "\n\n"
         )
@@ -231,11 +212,11 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
   }
   if (shiny) {
     shinyalert("Warning!",
-      paste0("Problème de convergence, vérifier le modèle"),
+      paste0("Problème de convergence, v&eacute;rifier le modèle"),
       type = "error"
     )
   } else {
-    message("Problème de convergence, vérifier le modèle")
+    message("Problème de convergence, v&eacute;rifier le modèle")
   }
   return(fit)
 }
@@ -371,8 +352,8 @@ plot_diag <- function(fit, var) {
 }
 
 min_max_exp_to_norm <- function(min, max, prob = 0.95){
-  
-  min_log = log(min)
+  min_log<-ifelse(min<=0,log(0.0001), log(min))
+ 
   max_log = log(max)
   
   moy  = (min_log+max_log)/2
@@ -398,9 +379,24 @@ res<-  exp(qnorm(c((1-prob)/2, prob+(1-prob)/2), mean = moy, sd=sd))
 
 
 arrondi_echelle_sup <- function(x){
-  ceiling(x/10**(floor(log(x,10))))*10**floor(log(x,10))
+  
+  ceiling(x/10**(floor(log(abs(x),10))))*10**floor(log(abs(x),10))
 }
 arrondi_echelle_inf <- function(x){
-  floor(x/10**(floor(log(x,10))))*10**floor(log(x,10))
+  floor(x/10**(floor(log(abs(x),10))))*10**floor(log(abs(x),10))
 }
 
+
+ggfst_lst_label_bld <- function(ggp){
+  
+  labels <- ggplot_build(ggp)$layout$panel_params[[1]]$x$get_labels()
+  color<- rep("black", length(labels))
+  color[c(1, length(color))] <- "#FF2424"
+  face<- rep("plain", length(labels))
+  face[c(1, length(face))] <- "bold"
+  return(ggp+theme(
+    
+    axis.text.x= element_text(face = face,
+                              color =color)
+  ) )
+}

@@ -24,6 +24,7 @@ golem::add_module(name = "Multivarie", with_test = T)
 golem::add_module(name = "Info_base", with_test = F)
 golem::add_module(name = "table1", with_test = F)
 
+
 golem::add_fct("ifelse_perso")
 golem::add_fct("glm_shiba")
 golem::add_fct( "fonctions" ) 
@@ -173,12 +174,18 @@ usethis::use_package("gridExtra" )
 usethis::use_package("shinyalert" )
 usethis::use_package("waiter" )
 usethis::use_package("shinycssloaders" )
+usethis::use_package("colourpicker" )
 
 usethis::use_package("data.table" )
 usethis::use_package("plotly" )
 
+usethis::use_package("coda" )
+usethis::use_package("colourpicker" )
+usethis::use_package("ggridges" )
+usethis::use_package("plotly" )
+usethis::use_package("plyr" )
 
-usethis::use_dev_package("gmrc.bayes")
+
 
 attachment::att_from_rscripts()
 

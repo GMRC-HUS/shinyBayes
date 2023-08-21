@@ -8,42 +8,7 @@
 
 
 
-css <- "
-.tooltip {
-  pointer-events: none;
-}
-.tooltip > .tooltip-inner {
-  pointer-events: none;
-  background-color: #ffffff;
-  color: black;
-  border: 1px solid lightgray;
-  padding: 10px;
-  font-size: 25px;
-  font-style: italic;
-  text-align: justify;
-  margin-left: 0;
-  max-width: 1000px;
-}
-.tooltip > .arrow::before {
-  border-right-color: #73AD21;
-}
 
-.fas{font-size: 20px;}
-
-"
-
-js <- "
-$(function () {
-  $('[data-toggle=tooltip]').tooltip()
-})
-"
-text_aide <- function(text) {
-  return(span(
-    `data-toggle` = "tooltip", `data-placement` = "right",
-    title = text,
-    icon("info-circle")
-  ))
-}
 formule <- function(x) {
   return(as.formula(paste("~", x)))
 }

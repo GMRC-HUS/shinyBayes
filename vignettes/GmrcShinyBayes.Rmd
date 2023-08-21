@@ -15,6 +15,16 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
+
+# Detach all loaded packages and clean your environment
+golem::detach_all_attached()
+# rm(list=ls(all.names = TRUE))
+
+# Document and reload your package
+#undebug(golem::document_and_reload)
+golem::document_and_reload()
+
 library(ShiBA)
 ```
 
@@ -32,19 +42,76 @@ fit <- ShiBA:::glm_Shiba(iris,formule =Sepal.Length ~., type="lin",refresh = 0)
 ```{r}
 # exemple shibaplo
 
-a<-
+
 ShiBA:::shibaGlmPlot(fit,"lin",pars=names(fit$coefficients),hist = T)
 
 
-a$facet$params
+
 
 ```
 
 ```{r}
-library(ggplot2)
+
+
 seuilTwoIt<- list(type = "seuil",plusieur_seuils=F,val =-1.1)
 
-ShiBA:::shibaGlmPlot(fit,"lin",pars=names(fit$coefficients),hist = T,seuilTwoIt = seuilTwoIt)+xlim(c(-1.5,0))
+ShiBA:::shibaGlmPlot(fit,"lin",pars=names(fit$coefficients),hist = T,seuilTwoIt = seuilTwoIt,color_1 = "#0000FF",color_2 = "red", )
 ```
 
+
+
+```{r}
+
+
+ShiBA:::shibaGlmPlot(fit,"lin",pars=names(fit$coefficients),hist = F,seuilTwoIt = seuilTwoIt)
+
+```
+
+
+```{r}
+
+
+seuilTwoIt<- list(type = "",plusieur_seuils=T,val=list(var= "Petal.Length",
+                                                       theta_A_min=-1,
+                                                       theta_A_max = 0,
+                                                       theta_P_min=0,
+                                                       theta_P_max = 1))
+
+ShiBA:::shibaGlmTable(fit,type_glm = "lin" , seuilTwoIt = seuilTwoIt)
+```
+
+
+```{r}
+seuilTwoIt<- list(type = "seuil",plusieur_seuils=T,val=c(0.1,0.52,-0.13,0.4,0.5))
+
+ShiBA:::shibaGlmTable(fit,type_glm = "lin" , seuilTwoIt = seuilTwoIt)
+```
+
+
+```{r}
+fit2 <- ShiBA:::glm_Shiba(mtcars,formule =vs~1, type="binom",refresh = 0)
+```
+
+
+
+```{r}
+options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
+
+# Detach all loaded packages and clean your environment
+golem::detach_all_attached()
+# rm(list=ls(all.names = TRUE))
+
+# Document and reload your package
+#undebug(golem::document_and_reload)
+golem::document_and_reload()
+
+library(ShiBA)
+library(ggplot2)
+
+
+
+
+ShiBA:::shibaGlmTable(fit2,type_glm = "binom")
+ShiBA:::diag_convergence(fit2)
+```
 
