@@ -43,7 +43,14 @@ mod_comp_pour_server <- function(id,r){
                      uiOutput(ns("vbl_prop")), 
                      h3("Choix des priors"),
                      actionButton(ns("ellicitation"), "Ellicitation"),
-
+                     br(),
+                     sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 80,max = 100,step = 1,animate = F,post = " %",value = 95),
+                     h3("Seuils/Two IT ?"), text_aide("Texte Aide Two IT multivarié "),
+                     # shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
+                     uiOutput(ns("twit_ui")),
+                     br(),
+                     actionButton(ns("go"), "Go :")
+    
                      
                      
         ),
@@ -52,10 +59,10 @@ mod_comp_pour_server <- function(id,r){
           
           
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          fluidRow(
-            column(6,align="center", uiOutput(ns("descriptifUni")), br(), tableOutput(ns("descvar"))%>% withSpinner()),
-            column(6,align="center", plotOutput(ns("plot1"))%>% withSpinner(), plotOutput(ns("plot2"))%>% withSpinner())
-          ) # fin fluid row du main panel
+          # fluidRow(
+          #   column(6,align="center", uiOutput(ns("descriptifUni")), br(), tableOutput(ns("descvar"))%>% withSpinner()),
+          #   column(6,align="center", plotOutput(ns("plot1"))%>% withSpinner(), plotOutput(ns("plot2"))%>% withSpinner())
+          # ) # fin fluid row du main panel
         ) # fin MainPanel
       ) # fin sidebarlayout
     ) # fin fluidpage
@@ -90,44 +97,48 @@ mod_comp_pour_server <- function(id,r){
         
       )
       
+    })
+      #
+      output$vbl_prop <- renderUI({
+        choix_var <-r$BDD%>%apply(2, function(x) nlevels(as.factor(x))==2)%>%which()%>%names
+        print(choix_var)
+        if(length(choix_var)==0){ return(h3("Pas de variables avec 2 à 4 groupes dans la base"))}
+        return(
+          pickerInput(
+            inputId = ns("var_prop"),
+            label = "", 
+            choices = choix_var
+          )
+          
+        )
+        
+        
+      })
       
-      observeEvent(input$ellicitation, ignoreInit = T, {
-        if (is.null(prior_glm$prior_intercept) | is.null(prior_glm$prior_beta_scale)) {
-          prior_quali_sd <- sd_quali(input$list_quali, r$BDD)
-          
-          prior_quanti_sd <- sapply(input$list_quanti, function(x) sd(r$BDD[, x], na.rm = T))
-          
-          if (length(prior_quanti_sd) == 0) prior_quanti_sd <- NULL
-          
-          if (input$type_glm == "lin") {
-            prior_glm$prior_intercept <- c(
-              round(mean(r$BDD[, input$variable], na.rm = T), 2),
-              round(2.5 * sd(r$BDD[, input$variable], na.rm = T), 2)
-            )
-          } else if (input$type_glm %in% c("binom", "poiss")) {
-            prior_glm$prior_intercept <- c(0, 2.5)
-          }
-          prior_glm$prior_beta_scale <- round(2.5 / c(prior_quanti_sd, prior_quali_sd) * sd(r$BDD[, input$variable], na.rm = T), 2)
-          prior_glm$prior_beta_location <- rep(0, length(c(prior_quanti_sd, prior_quali_sd)))
+      
+      prior_prop <- reactiveValues(
+      prior=NULL
+      )
+      
+      observeEvent(c(input$var_grp,input$var_prop), {
+        prior_prop$prior <- NULL
+
+      })
+      
+      
+      
+      
+ observeEvent(input$ellicitation, ignoreInit = T, {
+
+        if (is.null(prior_prop$prior)) {
+          var_grp <- r$BDD[,input$var_grp]
+          prior_prop$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), alpha=0.5,beta=0.5))
         }
         
-        
-        
-        prior_beta_scale_def <- c(prior_glm$prior_intercept[2], prior_glm$prior_beta_scale) # ), default_prior_beta_scale_def, prior_glm$prior_beta_scale)
-        prior_beta_location_def <- c(prior_glm$prior_intercept[1], prior_glm$prior_beta_location) # ), default_prior_beta_location_def, prior_glm$prior_beta_location)
-        
-        if (length(input$list_quali) > 0) {
-          nom_var_quali <- lapply(input$list_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "_")) %>% unlist()
-        } else {
-          nom_var_quali <- NULL
-        }
-        
-        
-        variables <-c("intercept",input$list_quanti,nom_var_quali)
-        if (input$type_glm == "lin") {
+   
           showModal(
             modalDialog(size = "l",
-                        tagList(lapply(1:length(variables), function(i) ui_choix_prior_norm(i,variables,ns,prior_beta_location_def,prior_beta_scale_def )
+                        tagList(lapply(prior_prop$prior, function(i) ui_choix_prior_dbeta(i, ns )
                         )),
                         footer = tagList(
                           actionButton(ns("ok"), "OK"),
@@ -135,58 +146,96 @@ mod_comp_pour_server <- function(id,r){
                         )
             )
           )
-          
-          noms <-variables
-          positions <- c(prior_glm$prior_intercept[1], prior_glm$prior_beta_location)
-          dispersions <- c(prior_glm$prior_intercept[2], prior_glm$prior_beta_scale)
-          
-          lapply(1:length(noms), function(i) {
-            output[[paste(noms[i], "_courbe", sep = "")]] <- ui_ggplot_prior_norm(i,input,variables)
+
+          lapply(prior_prop$prior, function(i) {
+            output[[paste(i$nom, "_courbe", sep = "")]] <- ui_ggplot_prior_dbeta(i,input)
           })
-        }else if (input$type_glm %in% c("binom", "poiss")) {
-          
-          showModal(
-            modalDialog(size = "l",
-                        tagList(lapply(2:length(variables), 
-                                       function(i) ui_choix_prior_exp(i,variables,ns,prior_beta_location_def,prior_beta_scale_def ))),
-                        footer = tagList(
-                          actionButton(ns("ok"), "OK"),
-                          actionButton(ns("defaut"), "Défaut")
-                        )
-            )
-          )
-          
-          noms <-variables
-          positions <- c(prior_glm$prior_intercept[1], prior_glm$prior_beta_location)
-          dispersions <- c(prior_glm$prior_intercept[2], prior_glm$prior_beta_scale)
-          
-          lapply(1:length(noms), function(i) {
-            output[[paste(noms[i], "_courbe", sep = "")]] <- ui_ggplot_prior_exp(i,input,variables)
-          })  
-        }
         
-        
-      })
+          })
       
-      
+    
+  observeEvent(input$defaut, {
+    
+    var_grp <- r$BDD[,input$var_grp]
+    prior_prop$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), alpha=0.5,beta=0.5))
+    
+    for (x in prior_prop$prior) {
+    updateNumericInput(session, paste0(x$nom, "_alpha"), value = x$alpha)
+    updateNumericInput(session, paste0(x$nom, "_beta"), value = x$beta)
+    
+  }
+  })
+  
+  observeEvent(input$ok, {
+
+    prior_prop$prior<-  lapply( prior_prop$prior, function(i) {
+      list(nom = i$nom,
+      alpha = input[[paste(i$nom, "alpha", sep = "_")]],
+      beta = input[[paste(i$nom, "beta", sep = "_")]])
     })
+        removeModal()
+
+  })
     
+  
+  
+  
+  
+  output$twit_ui <- renderUI({
     
-    
-    output$vbl_prop <- renderUI({
-      choix_var <-r$BDD%>%apply(2, function(x) nlevels(as.factor(x))==2)%>%which()%>%names
-      if(length(choix_var)==0){ return(h3("Pas de variables avec 2 à 4 groupes dans la base"))}
-      return(
-        pickerInput(
-          inputId = ns("var_prop"),
-          label = "", 
-          choices = choix_var
-        )
-        
+  })
+  #
+  seuil_twoit <- reactiveVal(value = NULL)
+  
+  seuil_twoit_val <- reactiveVal(value = NULL)
+  #
+  #   # var_input2
+  observeEvent(c(input$list_quali, input$list_quanti, input$variable, input$type_glm), {
+    output$twit_ui <- renderUI({
+      actionBttn(
+        inputId = ns("seuil_2it"),
+        label = "Définition Seuil ou Two It",
+        style = "gradient",
+        color = "primary"
       )
-      
-      
     })
+    
+    model_2(NULL)
+    
+    var_quali <- isolate(input$list_quali)
+    if (length(var_quali) > 0) {
+      nom_var_quali <- lapply(var_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "")) %>% unlist()
+    } else {
+      nom_var_quali <- NULL
+    }
+    
+    var <- c(isolate(input$list_quanti), nom_var_quali)
+    seuil_twoit(twitServer("id_i", var, type_glm = input$type_glm))
+  })
+  observeEvent(input$seuil_2it, {
+    model_2(NULL)
+    output$twit_ui <- renderUI({
+      actionBttn(
+        inputId = ns("seuil_2it"),
+        label = "Définition Seuil ou Two It",
+        style = "gradient",
+        color = "success",
+        icon = icon("check")
+      )
+    })
+    
+    twitUi(ns("id_i"))
+    # seuil_twoit(twitServer("id_i",var))
+  })
+  
+  
+  
+  
+  
+  
+  
+
+  
   })
 }
     
