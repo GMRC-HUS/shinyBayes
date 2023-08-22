@@ -127,7 +127,7 @@ mod_comp_pour_server <- function(id,r){
       
       
       
-      
+      ############### Ellicitation #########
  observeEvent(input$ellicitation, ignoreInit = T, {
 
         if (is.null(prior_prop$prior)) {
@@ -178,11 +178,11 @@ mod_comp_pour_server <- function(id,r){
   })
     
   
-  
+  ########### Seuil ...#########
   
   
   output$twit_ui <- renderUI({
-    
+    ui_twit("seuil_2it", ns)
   })
   #
   seuil_twoit <- reactiveVal(value = NULL)
@@ -190,30 +190,22 @@ mod_comp_pour_server <- function(id,r){
   seuil_twoit_val <- reactiveVal(value = NULL)
   #
   #   # var_input2
-  observeEvent(c(input$list_quali, input$list_quanti, input$variable, input$type_glm), {
+  observeEvent(c(input$var_grp,input$var_prop), {
     output$twit_ui <- renderUI({
-      actionBttn(
-        inputId = ns("seuil_2it"),
-        label = "Définition Seuil ou Two It",
-        style = "gradient",
-        color = "primary"
-      )
+      ui_twit("seuil_2it", ns)
     })
     
-    model_2(NULL)
-    
-    var_quali <- isolate(input$list_quali)
-    if (length(var_quali) > 0) {
-      nom_var_quali <- lapply(var_quali, function(x) paste(x, levels(factor(r$BDD[, x]))[-1], sep = "")) %>% unlist()
-    } else {
-      nom_var_quali <- NULL
+    if (is.null(prior_prop$prior)) {
+      var_grp <- r$BDD[,input$var_grp]
+      prior_prop$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), alpha=0.5,beta=0.5))
     }
     
-    var <- c(isolate(input$list_quanti), nom_var_quali)
-    seuil_twoit(twitServer("id_i", var, type_glm = input$type_glm))
+    var <- sapply(prior_prop$prior, function(x) x$nom)
+    seuil_twoit(twitServer_prop("id_i", var))
   })
   observeEvent(input$seuil_2it, {
-    model_2(NULL)
+    
+   
     output$twit_ui <- renderUI({
       actionBttn(
         inputId = ns("seuil_2it"),
@@ -224,7 +216,7 @@ mod_comp_pour_server <- function(id,r){
       )
     })
     
-    twitUi(ns("id_i"))
+    twitUi_prop(ns("id_i"))
     # seuil_twoit(twitServer("id_i",var))
   })
   
