@@ -3,7 +3,7 @@
 #' @description A fct function
 #'
 #' @return The return value, if any, from executing the function.
-#'
+#' @import shinyWidgets
 #' @noRd
 
 
@@ -221,7 +221,7 @@ twitUi_prop <- function(id) {
 }
 
 # Module server function
-twitServer_prop <- function(id, twit, seuil,group) {
+twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_RR,group) {
   moduleServer(
     id,
     
@@ -230,10 +230,13 @@ twitServer_prop <- function(id, twit, seuil,group) {
     function(input, output, session) {
       ns <- session$ns
       observeEvent(input$choix_seuil_2it, {
+        
+        
         output$seuil_ou_two_it_ui <- renderUI({
-          if (length(list_var) == 0) {
-            return(h2("Pas de variables dans le modèle"))
-          }
+    print("foezi")
+          
+          choix_var<- apply(utils::combn(group, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector()
+          print(input$choix_seuil_2it)
           if (input$choix_seuil_2it) {
   
             
@@ -256,154 +259,113 @@ twitServer_prop <- function(id, twit, seuil,group) {
               pickerInput(
                 inputId = ns("var_sel"),
                 label = "Variable à monitorer",
-                choices = list_var,
+                choices =choix_var ,
                 options = list(
                   size = 5
                 )
               ),
-              splitLayout(
-                cellWidths = c("50%", "50%"),
-                h3("Présence d'effet :"), h3("Absence d'effet : ")
-              ),
-              splitLayout(
-                cellWidths = c("25%", "25%", "25%", "25%"),
-                ifelse_perso(
-                  type_glm %in% c("poiss", "binom"), numericInput(ns("theta_P_min"), "Min :",
-                                                                  min = 0.0000,
-                                                                  value = 1, step = 0.1
-                  ),
-                  numericInput(ns("theta_P_min"), "Min :",
-                               value = 0, step = 0.1
-                  )
-                ),
-                ifelse_perso(
-                  type_glm %in% c("poiss", "binom"), numericInput(ns("theta_P_max"), "Max :",
-                                                                  min = 0,
-                                                                  value = 1, step = 0.1
-                  ),
-                  numericInput(ns("theta_P_max"), "Max :",
-                               value = 0, step = 0.1
-                  )
-                ),
-                ifelse_perso(
-                  type_glm %in% c("poiss", "binom"), numericInput(ns("theta_A_min"), "Min :",
-                                                                  min = 0,
-                                                                  value = 1, step = 0.1
-                  ),
-                  numericInput(ns("theta_A_min"), "Min :",
-                               value = 0, step = 0.1
-                  )
-                ),
-                ifelse_perso(
-                  type_glm %in% c("poiss", "binom"), numericInput(ns("theta_A_max"), "Max :",
-                                                                  min = 0,
-                                                                  value = 1, step = 0.1
-                  ),
-                  numericInput(ns("theta_A_max"), "Max :",
-                               value = 0, step = 0.1
-                  )
-                )
+             
+              box("Définition du twit", table_interact_UI(ns("twit_choix")))
+                
               )
-            )
+            
           }
+          
         })
-        if (input$choix_seuil_2it) {
-  if( input$plusieur_seuils == "Non"){
-          seuil$data <-  list(data.frame(Type= c("Diff", "RR","OR"), seuil = c(0,1,1)))
-  }else{
+          
+          if (!input$choix_seuil_2it) {
+          twit$data <-data.frame(Type= c("Diff", "RR","OR"), 
+                                             minHa = c(0,1,1), 
+                                             maxHa = c(0,1,1), 
+                                             minHr = c(0,1,1), 
+                                             maxHr = c(0,1,1), row.names = "Type"
+          )
+          
+          
+ 
+          
+          }else{
+          
+            twit$data <- NULL
+        }
     
-    diff_moy<- rr<- or <-data.frame(Group= group) 
-    diff_moy[,group]<-0
-    rr[,group]<-1
-    or[,group]<-1
-    for(i in 2:dim(rr)[1]){
+      })
+      
+          
+     
+        
+    
+        observeEvent(input$plusieur_seuils, {  
+        if (input$choix_seuil_2it) {
+          print(input$plusieur_seuils4)
+          print(names(input))
+  if( input$plusieur_seuils == "Oui"){
+    seuil_unique$data <-  data.frame(Type= c("Diff", "RR","OR"), seuil = c(0,1,1),row.names = "Type")
+    seuil_diff$data = NULL
+    seuil_OR$data= NULL
+    seuil_RR$data=NULL
+  
+  }else{
+    group<- as.character(group)
+    diff_moy<- rr<- or <-data.frame(Group= group[-1],row.names = "Group")
+    diff_moy[,group[-length(group)]]<-0
+    rr[,group[-length(group)]]<-1
+    or[,group[-length(group)]]<-1
+    for(i in 1:dim(rr)[1]){
       for(j in 2:dim(rr)[2]){
-        if(j>=i){
+        if(j>=i+1){
         rr [i,j]<- NA
         or [i,j]<- NA
         diff_moy[i,j]<-NA
       }
       }
     }
-    seuil$data <-  list(diff_moy=diff_moy,
-                        rr=rr,
-                        or= or)
-    
+    seuil_diff$data = diff_moy
+    seuil_OR$data= or
+    seuil_RR$data=rr
+    seuil_unique$data <-  NULL
+
   }
            
-        
+        print(seuil_unique$data)
         
          twit$data<- NULL 
         }else{
-          twit$data <-  list(data.frame(Type= c("Diff", "RR","OR"), 
-                                        minHa = c(0,1,1), 
-                                          maxHa = c(0,1,1), 
-                                        minHr = c(0,1,1), 
-                                        maxHr = c(0,1,1)
-                                        ))
-          
-          
-          seuil$data<- NULL
-          
-          
-        }
-        
-        
-      })
-      
+         
+      }
+
+        })
 
       output$choix_seuils <- renderUI({
         if (input$plusieur_seuils == "Non") {
           tagList(
-            lapply(1:length(list_var), function(i) {
-              list(
-                numericInput(
-                  inputId = ns(paste("seuil_", list_var[i], sep = "")), label = list_var[i],
-                  value = ifelse(type_glm %in% c("poiss", "binom"), 1, 0),
-                  min = ifelse(type_glm %in% c("poiss", "binom"), 0.001, NA), step = 0.1
-                )
-              )
-            })
+            box("Seuils sur la différence",table_interact_UI(ns("seuil_diff"))),
+            box("Seuils sur l'odds ratio",table_interact_UI(ns("seuil_OR"))),
+            box("Seuils sur le risque relatif", table_interact_UI(ns("seuil_RR")))
+            
           )
         } else {
-          numericInput(ns("valeur_seuil"), "Valeur du seuil :",
-                       value = ifelse(type_glm %in% c("poiss", "binom"), 1, 0),
-                       min = ifelse(type_glm %in% c("poiss", "binom"), 0.001, NA), step = 0.1
+          print("oihfze")
+          print(seuil_unique$data)
+          tagList(table_interact_UI(ns("test"))
           )
         }
       })
       
+      table_interact_server("test",seuil_unique,F)
       
+      table_interact_server("seuil_OR",seuil_OR)
+      table_interact_server("seuil_diff",seuil_diff)
+      table_interact_server("seuil_RR",seuil_RR)
+      table_interact_server("twit_choix",twit,F)
       
+ 
       myreturn <- reactiveValues()
       observeEvent(input$ok_seuil, {
-        if (length(list_var) == 0) {
-          removeModal()
-          return(NULL)
-        }
-        if (input$choix_seuil_2it) {
-          type <- "seuil"
-          if (!input$plusieur_seuils == "Non") {
-            plusieur_seuils <- F
-            val <- input$valeur_seuil
-          } else {
-            plusieur_seuils <- T
-            val <- sapply(list_var, function(x) input[[paste("seuil_", x, sep = "")]])
-          }
-        } else {
-          type <- "2It"
-          plusieur_seuils <- NA
-          val <- list(
-            var = isolate(input$var_sel),
-            "theta_P_min" = isolate(input$theta_P_min),
-            "theta_P_max" = isolate(input$theta_P_max),
-            "theta_A_min" = isolate(input$theta_A_min),
-            "theta_A_max" = isolate(input$theta_A_max)
-          )
-        }
+
         
         removeModal()
-        myreturn$ls <- list(type = type, plusieur_seuils = plusieur_seuils, val = val)
+        # myreturn$ls <- list(type = type, plusieur_seuils = plusieur_seuils, val = val)
       })
       
       

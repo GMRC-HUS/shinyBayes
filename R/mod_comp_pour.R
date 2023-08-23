@@ -59,7 +59,7 @@ mod_comp_pour_server <- function(id,r){
           
           
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          table_interact_UI(ns("test"))
+         
           # fluidRow(
           #   column(6,align="center", uiOutput(ns("descriptifUni")), br(), tableOutput(ns("descvar"))%>% withSpinner()),
           #   column(6,align="center", plotOutput(ns("plot1"))%>% withSpinner(), plotOutput(ns("plot2"))%>% withSpinner())
@@ -217,10 +217,9 @@ mod_comp_pour_server <- function(id,r){
       )
      
     })
-    
-    print(v$data)
-    
-   twitUi_prop(ns("twit_seuil"))
+    print(seuil_react$data)
+   
+    twitUi_prop(ns("twit_seuil"))
    
   })
  
@@ -232,9 +231,19 @@ mod_comp_pour_server <- function(id,r){
   seuil_react <- reactiveValues(data = { 
     NULL
   })
-  twitServer_prop("twit_seuil",twit_react,seuil_react)
+  seuil_react_diff<- reactiveValues(data = { 
+    NULL
+  })
+    seuil_react_OR<-reactiveValues(data = { 
+      NULL
+    })
+    
+    seuil_react_RR<-reactiveValues(data = { 
+    NULL
+  })
+  twitServer_prop("twit_seuil",twit_react,seuil_react,seuil_react_diff,seuil_react_OR,seuil_react_RR, group=levels(as.factor(r$BDD[,input$var_grp])))
   
-  table_interact_server("test",v)
+ 
   
   
   
