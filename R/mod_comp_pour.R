@@ -59,6 +59,7 @@ mod_comp_pour_server <- function(id,r){
           
           
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
+          table_interact_UI(ns("test"))
           # fluidRow(
           #   column(6,align="center", uiOutput(ns("descriptifUni")), br(), tableOutput(ns("descvar"))%>% withSpinner()),
           #   column(6,align="center", plotOutput(ns("plot1"))%>% withSpinner(), plotOutput(ns("plot2"))%>% withSpinner())
@@ -201,7 +202,7 @@ mod_comp_pour_server <- function(id,r){
     }
     
     var <- sapply(prior_prop$prior, function(x) x$nom)
-    seuil_twoit(twitServer_prop("id_i", var))
+    #seuil_twoit(twitServer_prop("id_i", var))
   })
   observeEvent(input$seuil_2it, {
     
@@ -214,14 +215,26 @@ mod_comp_pour_server <- function(id,r){
         color = "success",
         icon = icon("check")
       )
+     
     })
     
-    twitUi_prop(ns("id_i"))
-    # seuil_twoit(twitServer("id_i",var))
+    print(v$data)
+    
+   twitUi_prop(ns("twit_seuil"))
+   
+  })
+ 
+  
+  twit_react <- reactiveValues(data = { 
+   NULL
   })
   
+  seuil_react <- reactiveValues(data = { 
+    NULL
+  })
+  twitServer_prop("twit_seuil",twit_react,seuil_react)
   
-  
+  table_interact_server("test",v)
   
   
   

@@ -41,7 +41,7 @@ golem::add_fct("shibaGlmPlot")
 golem::add_fct("shibaGlmTable")
 
 golem::add_fct("prop_comp")
-
+golem::add_fct("table_interact")
 
 usethis::use_build_ignore("r/exemple.R")
 
