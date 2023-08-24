@@ -180,9 +180,9 @@ app_ui <- function(request) {
               ),
               menuItem("Comparaison", tabName = "comp", icon = icon("fas fa-people-arrows", verify_fa = FALSE),
                        startExpanded = F,
-                       menuSubItem("Comparaison de moyennes",
+                       menuSubItem("Moyennes",
                                    tabName = "comp_moy"),
-                       menuSubItem("Comparaison de pourcentages",
+                       menuSubItem("Pourcentages",
                                    tabName = "comp_pour")
                        
               ),
