@@ -37,7 +37,7 @@ function(input, output, session) {
   observeEvent(input$mod_table_cell_edit, {
  
     info = input$mod_table_cell_edit
-
+  
     i = info$row
     j = info$col
     k = info$value
@@ -49,7 +49,7 @@ function(input, output, session) {
       
     }else{
       
-      # warning("pas possibke")
+    
       }
   
     )
@@ -57,9 +57,11 @@ function(input, output, session) {
   })
   
   
-  print(isolate(colnames(v$data)))
+
   output$mod_table <- DT::renderDataTable({
-    DT::datatable(v$data, editable = TRUE,options = list(dom="t",ordering=F))
+    DT::datatable(v$data, editable = TRUE,options = list(dom="t",ordering=F,columnDefs = list(list(className = 'dt-center', targets = "_all")))
+                  
+                  )
     
   })
 }

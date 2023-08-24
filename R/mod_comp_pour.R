@@ -59,7 +59,9 @@ mod_comp_pour_server <- function(id,r){
           
           
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-         
+         fluidPage(
+           uiOutput(ns("res_crois_prop"))
+         )
           # fluidRow(
           #   column(6,align="center", uiOutput(ns("descriptifUni")), br(), tableOutput(ns("descvar"))%>% withSpinner()),
           #   column(6,align="center", plotOutput(ns("plot1"))%>% withSpinner(), plotOutput(ns("plot2"))%>% withSpinner())
@@ -186,9 +188,7 @@ mod_comp_pour_server <- function(id,r){
     ui_twit("seuil_2it", ns)
   })
   #
-  seuil_twoit <- reactiveVal(value = NULL)
-  
-  seuil_twoit_val <- reactiveVal(value = NULL)
+
   #
   #   # var_input2
   observeEvent(c(input$var_grp,input$var_prop), {
@@ -203,7 +203,13 @@ mod_comp_pour_server <- function(id,r){
     
     var <- sapply(prior_prop$prior, function(x) x$nom)
     #seuil_twoit(twitServer_prop("id_i", var))
+    twitServer_prop("twit_seuil",twit_react,
+                    seuil_react,seuil_react_diff,seuil_react_OR,seuil_react_RR, group=levels(as.factor(r$BDD[,input$var_grp])),
+                    seuil_comp_prop)
   })
+  
+  
+  
   observeEvent(input$seuil_2it, {
     
    
@@ -217,7 +223,7 @@ mod_comp_pour_server <- function(id,r){
       )
      
     })
-    print(seuil_react$data)
+    
    
     twitUi_prop(ns("twit_seuil"))
    
@@ -226,7 +232,7 @@ mod_comp_pour_server <- function(id,r){
   
   twit_react <- reactiveValues(data = { 
    NULL
-  })
+  }, var = NULL)
   
   seuil_react <- reactiveValues(data = { 
     NULL
@@ -241,14 +247,56 @@ mod_comp_pour_server <- function(id,r){
     seuil_react_RR<-reactiveValues(data = { 
     NULL
   })
-  twitServer_prop("twit_seuil",twit_react,seuil_react,seuil_react_diff,seuil_react_OR,seuil_react_RR, group=levels(as.factor(r$BDD[,input$var_grp])))
+    seuil_comp_prop<-reactiveValues(type = { 
+      NULL
+    },
+    plusieurs = {NULL})
+
   
  
   
   
   
   
-
+##### Analyse ####
+  
+  observeEvent(input$go,{
+    print(twit_react$var)
+    print(seuil_comp_prop$type)
+    
+    if (is.null(prior_prop$prior)) {
+      var_grp <- r$BDD[,input$var_grp]
+      prior_prop$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), alpha=0.5,beta=0.5))
+    }
+    
+    priors =  prior_prop$prior%>%rbindlist()%>%dplyr::select(alpha, beta)%>%t
+    print(r$BDD[,input$var_grp])
+    res<-(Cpmultprop2IT(Y = r$BDD[,input$var_prop], Gr = r$BDD[,input$var_grp],priors = priors,
+                        seuil_global = seuil_react$data,
+                        seuild=seuil_react_diff$data,seuilr=seuil_react_RR$data, seuilo=seuil_react_OR$data, 
+                        twit=twit_react, 
+                        arr=3,M=100000, IC=0.95, type =  seuil_comp_prop$type, plusieurs = seuil_comp_prop$plusieurs
+                        
+                        ))
+    lapply(1:length(res), function(x) print(names(res)[x]))
+    output$res_crois_prop<- renderUI({tagList(
+      lapply(1:length(res),function(x)  box(title = names(res)[x], DT::dataTableOutput(ns(make.names(names(res)[x]))))
+             
+             )
+    )})
+    lapply(1:length(res), function(i) {
+      output[[make.names(names(res)[i]) ]] <- DT::renderDataTable({
+        DT::datatable(res[[i]],options = list(dom="t",ordering=F))
+      })
+        
+      
+      
+    })
+    
+    
+    
+    
+    })
   
   })
 }

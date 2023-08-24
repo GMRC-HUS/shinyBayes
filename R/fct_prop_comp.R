@@ -7,81 +7,97 @@
 #' @noRd
 
 
-Cpmultprop2IT<-function(Y,Gr,priors,
-                        seuild=NULL,seuilr=NULL,seuilo=NULL,
-                        arr=3,M=100000, IC=0.95){
+Cpmultprop2IT<-function(Y,Gr,priors,seuil_global = NULL,
+                        seuild=NULL,seuilr=NULL,seuilo=NULL, twit=NULL, 
+                        arr=3,M=100000, IC=0.95, type =  NULL, plusieurs = NULL){
   pourcent_IC2 = (1-IC)/2
   
   Ngroup<-nlevels(as.factor(Gr))
+  print(Ngroup)
   noms<-levels(as.factor(Gr))
+  long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
+
+
+if(is.null(type)){
   
-  if(Ngroup==1){
-    stop(paste0("Un seul groupe :\n",paste0(noms,collapse=" ; ")))
-  }
+}else{
+  if((!is.null(type)) &  "seuil" %in%type){
   
-  if(Ngroup>4){
-    stop(paste0("Plus de 4 groupes :\n",paste0(noms,collapse=" ; ")))
-  }
-  
-  if(!is.matrix(priors)){
-    dimension<-dim(priors)
-    stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
-                " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
-  }
-  
-  if(!all(dim(priors)==c(2,Ngroup))){
-    dimension<-dim(priors)
-    stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
-                " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
-  }
-  
-  if(!is.null(seuild)&!is.vector(seuild)){
-    long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-    if(length(seuild)!=long){
-      stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
-                  "\n Ici ce n'est pas un vecteur"))
+    if(!plusieurs & !is.null(seuil_global)){
+      seuild = rep(seuil_global["Diff","seuil"],long)
+      
+      seuilr = rep(seuil_global["RR","seuil"],long)
+      seuilo = rep(seuil_global["OR","seuil"],long)
+    }else{
+   
+      seuild = unlist(seuild%>%unlist%>%na.omit()%>%as.vector())
+      seuilr = unlist(seuilr%>%unlist%>%na.omit()%>%as.vector())
+      seuilo = unlist(seuilo%>%unlist%>%na.omit()%>%as.vector())
+
     }
   }
   
-  if(!is.null(seuild)){
-    long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-    if(length(seuild)!=long){
-      stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
-                  "\n Ici le vecteur fait ",length(seuild)))
-    }
-  }
+}
+  print('dans la fonction ')
+  # if(Ngroup==1){
+  #   stop(paste0("Un seul groupe :\n",paste0(noms,collapse=" ; ")))
+  # }
+  # 
+  # if(Ngroup>4){
+  #   stop(paste0("Plus de 4 groupes :\n",paste0(noms,collapse=" ; ")))
+  # }
+  # 
+  # if(!is.matrix(priors)){
+  #   dimension<-dim(priors)
+  #   stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
+  #               " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
+  # }
+  # 
+  # if(!all(dim(priors)==c(2,Ngroup))){
+  #   dimension<-dim(priors)
+  #   stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
+  #               " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
+  # }
+  # 
+  # if(!is.null(seuild)){
+  # 
+  #   if(!is.vector(seuild)){
+  #     stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
+  #                 "\n Ici ce n'est pas un vecteur"))
+  #   }
+  #   
+  #   if(length(seuild)!=long){
+  #     stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
+  #                 "\n Ici le vecteur fait ",length(seuild)))
+  #   }
+  # }
+  # 
+  # if(!is.null(seuilr)){
+  #  
+  #   if(!is.vector(seuilr)){
+  #     stop(paste0("Les seuils risques relatifs doivent être un vecteur de dimension ",long,
+  #                 "\n Ici ce n'est pas un vecteur"))
+  #   }
+  #   if(length(seuilr)!=long){
+  #     stop(paste0("Les seuils de risques relatifs doivent être un vecteur de dimension ",long,
+  #                 "\n Ici le vecteur fait ",length(seuilr)))
+  #   }
+  # }
+  # 
+  # 
+  # if(!is.null(seuilo)){
+  #   long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
+  #   if (!is.vector(seuilo)){
+  #     stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
+  #                 "\n Ici ce n'est pas un vecteur"))
+  #   }
+  #   if(length(seuilo)!=long){
+  #     stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
+  #                 "\n Ici le vecteur fait ",length(seuilo)))
+  #   }
+  # }
   
-  if(!is.null(seuilr)&!is.vector(seuilr)){
-    long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-    if(length(seuilr)!=long){
-      stop(paste0("Les seuils de risques relatifs doivent être un vecteur de dimension ",long,
-                  "\n Ici ce n'est pas un vecteur"))
-    }
-  }
-  
-  if(!is.null(seuilr)){
-    long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-    if(length(seuilr)!=long){
-      stop(paste0("Les seuils de risques relatifs doivent être un vecteur de dimension ",long,
-                  "\n Ici le vecteur fait ",length(seuilr)))
-    }
-  }
-  
-  if(!is.null(seuilo)&!is.vector(seuilo)){
-    long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-    if(length(seuilo)!=long){
-      stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
-                  "\n Ici ce n'est pas un vecteur"))
-    }
-  }
-  
-  if(!is.null(seuilo)){
-    long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-    if(length(seuilo)!=long){
-      stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
-                  "\n Ici le vecteur fait ",length(seuilo)))
-    }
-  }
+
   
   posteriors<-matrix(0,ncol=Ngroup,nrow=2)
   
@@ -112,7 +128,7 @@ Cpmultprop2IT<-function(Y,Gr,priors,
     descrxxprior[[j]]<-descriptif(xxprior[[j]], probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))
   }
   
-  nomsx<-paste0("P",1:length(descrxxprior))
+  nomsx<-paste0("P",noms)
   
   diffprior<-list(NULL,NULL,NULL)
   nomsdiff<-NULL
@@ -124,11 +140,11 @@ Cpmultprop2IT<-function(Y,Gr,priors,
     for(j in 2:Ngroup){
       if(j<=i)next
       diffprior[[i]]<-append(diffprior[[i]],list(xxprior[[i]]-xxprior[[j]]))
-      nomsdiff<-c(nomsdiff,paste0("Diff P",i,"-P",j))
+      nomsdiff<-c(nomsdiff,paste0("Diff P(x=",noms[i],")-P(x=",noms[j],")"))
       RRprior[[i]]<-append(RRprior[[i]],list(xxprior[[i]]/xxprior[[j]]))
-      nomsRR<-c(nomsRR,paste0("RR P",i,"/P",j))
+      nomsRR<-c(nomsRR,paste0("RR P(x=",noms[i],")/P(x",noms[j],")"))
       ORprior[[i]]<-append(ORprior[[i]],list(calcor(xxprior[[i]],xxprior[[j]])))
-      nomsOR<-c(nomsOR,paste0("OR P",i,"/P",j))
+      nomsOR<-c(nomsOR,paste0("OR P(x=",noms[i],")/P(x",noms[j],")"))
     }
   }
   
@@ -195,7 +211,10 @@ Cpmultprop2IT<-function(Y,Gr,priors,
   RR<-unlist(RR,recursive = F)
   OR<-unlist(OR,recursive = F)
   
+  
   TEST<-unlist(list(diff,RR,OR),recursive = F)
+  if(is.null(type)){
+  }else if(type =="seuil"){
   seuils<-c(seuild,seuilr,seuilo)
   tests<-NULL
   for(i in 1:length(TEST)){
@@ -205,9 +224,30 @@ Cpmultprop2IT<-function(Y,Gr,priors,
   res$seuils<-c(rep(NA,Ngroup),seuils)
   res[,"Pr(X>seuil|D)"]<-c(rep(NA,Ngroup),tests)
   
-  cat("========================================================================================","\n")
-  cat(" RAPPELS : ","\n")
-  cat("========================================================================================","\n")
+  
+  }else{
+    
+    sel<-which(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() ==twit$var )
+    print(twit$var)
+    print(sel)
+    print(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() )
+    lequel <- ceiling(sel/2)
+    signe = 1-sel%%2
+    data=twit$data
+    data$`Pr Ha` = c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","minHa"],data["Diff","maxHa"])),arr),
+                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","minHa"],data["RR","maxHa"])),arr), 
+                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","minHa"],data["OR","maxHa"])),arr))
+                     
+                     
+    data$`Pr Hr` =  c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","minHr"],data["Diff","maxHr"])),arr),
+                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","minHr"],data["RR","maxHr"])),arr),
+                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","minHr"],data["OR","maxHr"])),arr) )                
+
+                    
+    
+    
+  }
+
   prior<-  paste(" Prior du groupe 1 (=",noms[1],") : Beta(",priors[1,1],",",priors[2,1],")","\n",
                  " Prior du groupe 2 (=",noms[2],") : Beta(",priors[1,2],",",priors[2,2],")","\n",sep="")
   if(Ngroup>2){
@@ -217,8 +257,18 @@ Cpmultprop2IT<-function(Y,Gr,priors,
     prior<- paste(prior," Prior du groupe 4 (=",noms[4],") : Beta(",priors[1,4],",",priors[2,4],")","\n",sep="")
   }
 
-
+  prior<- as.data.frame(prior)
   laliste<-list(prior,resprior,res)
-  names(laliste) <- c("Valeurs a priori","Valeurs a posteriori")
+  names(laliste) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
+  if(is.null(type)){
+    
+  }else if(type =="twit" & !is.null(type)){
+    res_twit= list(TwoIt = data)
+    names(res_twit) = twit$var
+    laliste<-append(laliste,res_twit)
+  }
+    
+    
+  
   return(laliste)
 }

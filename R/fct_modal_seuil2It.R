@@ -12,7 +12,7 @@ twitUi <- function(id) {
   # invoke later.
   ns <- NS(id)
   showModal(
-    modalDialog(
+    modalDialog(size ="l",
       title = "Définition des seuils ou Two It",
 
       # là
@@ -194,7 +194,7 @@ twitUi_prop <- function(id) {
   # invoke later.
   ns <- NS(id)
   showModal(
-    modalDialog(
+    modalDialog(size ="l",
       title = "Définition des seuils ou Two It",
       
       # là
@@ -221,7 +221,7 @@ twitUi_prop <- function(id) {
 }
 
 # Module server function
-twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_RR,group) {
+twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_RR,group,seuil_comp_retour ) {
   moduleServer(
     id,
     
@@ -233,7 +233,7 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
         
         
         output$seuil_ou_two_it_ui <- renderUI({
-    print("foezi")
+
           
           choix_var<- apply(utils::combn(group, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector()
           print(input$choix_seuil_2it)
@@ -274,6 +274,7 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
         })
           
           if (!input$choix_seuil_2it) {
+            twit$var <- input$var_sel 
           twit$data <-data.frame(Type= c("Diff", "RR","OR"), 
                                              minHa = c(0,1,1), 
                                              maxHa = c(0,1,1), 
@@ -282,21 +283,24 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
           )
           
           
- 
+         
+          seuil_comp_retour$type <-"twit"
           
           }else{
           
             twit$data <- NULL
+            seuil_comp_retour$type <-"seuil"
         }
     
       })
       
-          
+        
      
         
     
         observeEvent(input$plusieur_seuils, {  
         if (input$choix_seuil_2it) {
+          seuil_comp_retour$data$seuil <- "seuil"
           print(input$plusieur_seuils4)
           print(names(input))
   if( input$plusieur_seuils == "Oui"){
@@ -304,15 +308,16 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
     seuil_diff$data = NULL
     seuil_OR$data= NULL
     seuil_RR$data=NULL
-  
+    seuil_comp_retour$plusieurs = F
   }else{
+    seuil_comp_retour$plusieurs = T
     group<- as.character(group)
-    diff_moy<- rr<- or <-data.frame(Group= group[-1],row.names = "Group")
+    diff_moy<- rr<- or <-data.frame(row.names= group[-1])
     diff_moy[,group[-length(group)]]<-0
     rr[,group[-length(group)]]<-1
     or[,group[-length(group)]]<-1
     for(i in 1:dim(rr)[1]){
-      for(j in 2:dim(rr)[2]){
+      for(j in min(2,dim(rr)[2]) :dim(rr)[2]){
         if(j>=i+1){
         rr [i,j]<- NA
         or [i,j]<- NA
@@ -345,7 +350,7 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
             
           )
         } else {
-          print("oihfze")
+         
           print(seuil_unique$data)
           tagList(table_interact_UI(ns("test"))
           )
@@ -362,14 +367,25 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
  
       myreturn <- reactiveValues()
       observeEvent(input$ok_seuil, {
-
+        if (input$choix_seuil_2it) {
+          seuil_comp_retour$type <-"seuil"
+          if( input$plusieur_seuils == "Oui"){
+            seuil_comp_retour$plusieurs = F
+          }else{
+            seuil_comp_retour$plusieurs = T
+          }
+        }else{
+          
+          seuil_comp_retour$type <-"twit"
+          twit$var <- input$var_sel 
+          
+        }
         
         removeModal()
-        # myreturn$ls <- list(type = type, plusieur_seuils = plusieur_seuils, val = val)
+     
       })
       
       
-      return(myreturn)
-    }
+     }
   )
 }
