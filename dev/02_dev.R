@@ -24,6 +24,9 @@ golem::add_module(name = "Multivarie", with_test = T)
 golem::add_module(name = "Info_base", with_test = F)
 golem::add_module(name = "table1", with_test = F)
 
+golem::add_module(name = "comp_moy", with_test = F)
+golem::add_module(name = "comp_pour", with_test = F)
+
 
 golem::add_fct("ifelse_perso")
 golem::add_fct("glm_shiba")
@@ -37,7 +40,8 @@ golem::add_fct("twoIt")
 golem::add_fct("shibaGlmPlot")
 golem::add_fct("shibaGlmTable")
 
-
+golem::add_fct("prop_comp")
+golem::add_fct("table_interact")
 
 usethis::use_build_ignore("r/exemple.R")
 

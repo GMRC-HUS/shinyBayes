@@ -3,7 +3,7 @@
 #' @description A fct function
 #'
 #' @return The return value, if any, from executing the function.
-#'
+#' @import shinyWidgets
 #' @noRd
 
 
@@ -12,7 +12,7 @@ twitUi <- function(id) {
   # invoke later.
   ns <- NS(id)
   showModal(
-    modalDialog(
+    modalDialog(size ="l",
       title = "Définition des seuils ou Two It",
 
       # là
@@ -183,5 +183,209 @@ twitServer <- function(id, list_var, type_glm) {
 
       return(myreturn)
     }
+  )
+}
+
+
+
+
+twitUi_prop <- function(id) {
+  # `NS(id)` returns a namespace function, which was save as `ns` and will
+  # invoke later.
+  ns <- NS(id)
+  showModal(
+    modalDialog(size ="l",
+      title = "Définition des seuils ou Two It",
+      
+      # là
+      
+      
+      
+      tags$div(
+        shinyWidgets::switchInput(
+          inputId = ns("choix_seuil_2it"),
+          onLabel = "Seuil",
+          offLabel = "Two It",
+          offStatus = "primary",
+          onStatus = "primary"
+        ),
+        # shinyWidgets::materialSwitch(ns("twit_funct"),"Two It", FALSE, status = "success",right=T),
+        uiOutput(ns("seuil_ou_two_it_ui"))
+        # shinyWidgets::materialSwitch(ns("seuil"),"Seuil", FALSE, status = "success",right=T),
+      ),
+      footer = tagList(
+        actionButton(ns("ok_seuil"), "OK")
+      )
+    )
+  )
+}
+
+# Module server function
+twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_RR,group,seuil_comp_retour ) {
+  moduleServer(
+    id,
+    
+    
+    ## Below is the module function
+    function(input, output, session) {
+      ns <- session$ns
+      observeEvent(input$choix_seuil_2it, {
+        
+        
+        output$seuil_ou_two_it_ui <- renderUI({
+
+          
+          choix_var<- apply(utils::combn(group, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector()
+          print(input$choix_seuil_2it)
+          if (input$choix_seuil_2it) {
+  
+            
+            tagList(
+              h2("Choix des seuils"),
+              awesomeRadio(
+                inputId = ns("plusieur_seuils"),
+                label = "Le même seuil pour l'ensemble des covariables",
+                choices = c("Oui", "Non"),
+                selected = "Non",
+                inline = TRUE,
+                status = "success",
+                checkbox = TRUE
+              ),
+              uiOutput(ns("choix_seuils"))
+            )
+          } else {
+            tagList(
+              h2("Choix des Bornes du Two It"),
+              pickerInput(
+                inputId = ns("var_sel"),
+                label = "Variable à monitorer",
+                choices =choix_var ,
+                options = list(
+                  size = 5
+                )
+              ),
+             
+              box("Définition du twit", table_interact_UI(ns("twit_choix")))
+                
+              )
+            
+          }
+          
+        })
+          
+          if (!input$choix_seuil_2it) {
+            twit$var <- input$var_sel 
+          twit$data <-data.frame(Type= c("Diff", "RR","OR"), 
+                                             minHa = c(0,1,1), 
+                                             maxHa = c(0,1,1), 
+                                             minHr = c(0,1,1), 
+                                             maxHr = c(0,1,1), row.names = "Type"
+          )
+          
+          
+         
+          seuil_comp_retour$type <-"twit"
+          
+          }else{
+          
+            twit$data <- NULL
+            seuil_comp_retour$type <-"seuil"
+        }
+    
+      })
+      
+        
+     
+        
+    
+        observeEvent(input$plusieur_seuils, {  
+        if (input$choix_seuil_2it) {
+          seuil_comp_retour$data$seuil <- "seuil"
+          print(input$plusieur_seuils4)
+          print(names(input))
+  if( input$plusieur_seuils == "Oui"){
+    seuil_unique$data <-  data.frame(Type= c("Diff", "RR","OR"), seuil = c(0,1,1),row.names = "Type")
+    seuil_diff$data = NULL
+    seuil_OR$data= NULL
+    seuil_RR$data=NULL
+    seuil_comp_retour$plusieurs = F
+  }else{
+    seuil_comp_retour$plusieurs = T
+    group<- as.character(group)
+    diff_moy<- rr<- or <-data.frame(row.names= group[-1])
+    diff_moy[,group[-length(group)]]<-0
+    rr[,group[-length(group)]]<-1
+    or[,group[-length(group)]]<-1
+    for(i in 1:dim(rr)[1]){
+      for(j in min(2,dim(rr)[2]) :dim(rr)[2]){
+        if(j>=i+1){
+        rr [i,j]<- NA
+        or [i,j]<- NA
+        diff_moy[i,j]<-NA
+      }
+      }
+    }
+    seuil_diff$data = diff_moy
+    seuil_OR$data= or
+    seuil_RR$data=rr
+    seuil_unique$data <-  NULL
+
+  }
+           
+        print(seuil_unique$data)
+        
+         twit$data<- NULL 
+        }else{
+         
+      }
+
+        })
+
+      output$choix_seuils <- renderUI({
+        if (input$plusieur_seuils == "Non") {
+          tagList(
+            box("Seuils sur la différence",table_interact_UI(ns("seuil_diff"))),
+            box("Seuils sur l'odds ratio",table_interact_UI(ns("seuil_OR"))),
+            box("Seuils sur le risque relatif", table_interact_UI(ns("seuil_RR")))
+            
+          )
+        } else {
+         
+          print(seuil_unique$data)
+          tagList(table_interact_UI(ns("test"))
+          )
+        }
+      })
+      
+      table_interact_server("test",seuil_unique,F)
+      
+      table_interact_server("seuil_OR",seuil_OR)
+      table_interact_server("seuil_diff",seuil_diff)
+      table_interact_server("seuil_RR",seuil_RR)
+      table_interact_server("twit_choix",twit,F)
+      
+ 
+      myreturn <- reactiveValues()
+      observeEvent(input$ok_seuil, {
+        if (input$choix_seuil_2it) {
+          seuil_comp_retour$type <-"seuil"
+          if( input$plusieur_seuils == "Oui"){
+            seuil_comp_retour$plusieurs = F
+          }else{
+            seuil_comp_retour$plusieurs = T
+          }
+        }else{
+          
+          seuil_comp_retour$type <-"twit"
+          twit$var <- input$var_sel 
+          
+        }
+        
+        removeModal()
+     
+      })
+      
+      
+     }
   )
 }

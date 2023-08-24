@@ -88,12 +88,8 @@ mod_Multivarie_server <- function(id, r) {
 
     # Choix seuil two_it
     output$twit_ui <- renderUI({
-      actionBttn(
-        inputId = ns("seuil_2it"),
-        label = "Définition Seuil ou Two It",
-        style = "gradient",
-        color = "primary"
-      )
+      ui_twit("seuil_2it", ns)
+     
     })
     #
     seuil_twoit <- reactiveVal(value = NULL)
@@ -103,12 +99,8 @@ mod_Multivarie_server <- function(id, r) {
     #   # var_input2
     observeEvent(c(input$list_quali, input$list_quanti, input$variable, input$type_glm), {
       output$twit_ui <- renderUI({
-        actionBttn(
-          inputId = ns("seuil_2it"),
-          label = "Définition Seuil ou Two It",
-          style = "gradient",
-          color = "primary"
-        )
+        ui_twit("seuil_2it", ns)
+       
       })
 
       model_2(NULL)
@@ -127,13 +119,8 @@ mod_Multivarie_server <- function(id, r) {
     observeEvent(input$seuil_2it, {
       model_2(NULL)
       output$twit_ui <- renderUI({
-        actionBttn(
-          inputId = ns("seuil_2it"),
-          label = "Définition Seuil ou Two It",
-          style = "gradient",
-          color = "success",
-          icon = icon("check")
-        )
+        ui_twit("seuil_2it", ns, color="success", icon = icon("check"))
+  
       })
 
       twitUi(ns("id_i"))

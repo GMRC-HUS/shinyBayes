@@ -6,6 +6,9 @@
 #'
 #' @noRd
 
+
+
+
 choix_quali_quanti <- function(name_ui,x){
   renderUI({
   
@@ -155,3 +158,51 @@ ui_ggplot_prior_exp <-  function(i,input, noms) {
   })
 }
 
+
+
+
+ui_choix_prior_dbeta <-  function(i, ns) {
+
+  
+  
+  box( title = i$nom,
+       plotOutput(width = 300, height = 150, ns(paste(i$nom, "_courbe", sep = ""))),
+       numericInput(ns(paste(i$nom, "_alpha", sep = "")), "A priori parametre alpha : ",
+                    value = i$alpha, step = 0.1, min=0
+       ),
+       numericInput(ns(paste(i$nom, "_beta", sep = "")), "A priori parametre beta : ",
+                    step = 0.1, value = i$beta, min=0
+       )
+  )
+  
+}
+
+
+ui_ggplot_prior_dbeta <-  function(i, input) {
+  renderPlot({
+    (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
+       stat_function(fun = dbeta, args = list(shape1 = input[[paste0(i$nom, "_alpha")]], shape2 = input[[paste0(i$nom, "_beta")]])) +
+       theme_light() +
+       xlim(c(
+         0,1
+       )) +
+       theme(
+         axis.text.y = element_blank(),
+         axis.ticks.y = element_blank(),
+         axis.ticks.x = element_blank()
+       ) +
+       ylab("") +
+       xlab(i$nom)) %>% ggfst_lst_label_bld
+  })
+}
+
+
+
+ui_twit<- function(nom,ns, color="primary",...){
+  actionBttn(
+    inputId = ns(nom),
+    label = "Définition Seuil ou Two It",
+    style = "gradient",
+    color = color, ...
+  )
+}

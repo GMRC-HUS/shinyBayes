@@ -14,8 +14,8 @@ theme_ShiBA <- theme_light
 
 pasDeBase_ui<- function() {
   fluidPage(
-  h4("Aucune base n'a &eacute;t&eacute; charg&eacute;e en m&eacute;moire, cet onglet n'est pas accessible."),
-  p("Pour charger une base de donn&eacute;es, rendez-vous sur l'onglet « Base de Donn&eacute;es » dans la barre lat&eacute;rale.")
+  h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
+  p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")
 )
 }
 size_box <- "150px"
@@ -190,9 +190,9 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
       shinyalert(
         "Warning!",
         paste0(
-          "Problème de convergence\n\nLe nombre d'it&eacute;ration a &eacute;t&eacute; augment&eacute; à ",
+          "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
           fit$stanfit@sim$iter,
-          "\n Thining augment&eacute; à ",
+          "\n Thining augmenté à ",
           fit$stanfit@sim$thin,
           "\n\n"
         ),
@@ -201,9 +201,9 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
     } else {
       message(
         paste0(
-          "Problème de convergence\n\nLe nombre d'it&eacute;ration a &eacute;t&eacute; augment&eacute; à ",
+          "Problème de convergence\n\nLe nombre d'itération a été augmenté à ",
           fit$stanfit@sim$iter,
-          "\n\n Thining augment&eacute; à ",
+          "\n\n Thining augmenté à ",
           fit$stanfit@sim$thin,
           "\n\n"
         )
@@ -212,11 +212,11 @@ verif_conv <- function(fit, shiny = F, nb_repeat = 3) {
   }
   if (shiny) {
     shinyalert("Warning!",
-      paste0("Problème de convergence, v&eacute;rifier le modèle"),
+      paste0("Problème de convergence, vérifier le modèle"),
       type = "error"
     )
   } else {
-    message("Problème de convergence, v&eacute;rifier le modèle")
+    message("Problème de convergence, vérifier le modèle")
   }
   return(fit)
 }

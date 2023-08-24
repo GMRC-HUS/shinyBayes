@@ -48,6 +48,13 @@ app_server <- function(input, output, session, BDD = NULL) {
   
   mod_Info_base_server("info_base_1",r)
   mod_table1_server("table_1",r)
+  
+  
+  mod_comp_moy_server("comp_moy_1",r)
+  mod_comp_pour_server("comp_pour_1",r)
+  
+  
+  
   # mod_SaisieManuelle_server("SaisieManuelle_1")
 
   # callModule(mod_Descriptifs_server,id = "select",session = session, r = r)

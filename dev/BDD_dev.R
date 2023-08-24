@@ -37,11 +37,11 @@ golem::document_and_reload()
 
 
 
-ui <- shiny::fluidPage(ShiBA:::mod_Multivarie_ui(1))
+ui <- shiny::fluidPage(ShiBA:::mod_comp_pour_ui(1))
 
 server <- function(input, output, session) {
   
-  ShiBA:::mod_Multivarie_server(1,r=r)
+  ShiBA:::mod_comp_pour_server(1,r=r)
 }
 
 
