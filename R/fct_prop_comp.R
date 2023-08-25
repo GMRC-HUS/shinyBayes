@@ -248,16 +248,10 @@ if(is.null(type)){
     
   }
 
-  prior<-  paste(" Prior du groupe 1 (=",noms[1],") : Beta(",priors[1,1],",",priors[2,1],")","\n",
-                 " Prior du groupe 2 (=",noms[2],") : Beta(",priors[1,2],",",priors[2,2],")","\n",sep="")
-  if(Ngroup>2){
-     prior<-paste(prior," Prior du groupe 3 (=",noms[3],") : Beta(",priors[1,3],",",priors[2,3],")","\n",sep="")
-  }
-  if(Ngroup>3){
-    prior<- paste(prior," Prior du groupe 4 (=",noms[4],") : Beta(",priors[1,4],",",priors[2,4],")","\n",sep="")
-  }
+  prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1,] , "Parametre beta" = priors[2,],row.names = paste("Groupe",noms), check.names = F)
 
-  prior<- as.data.frame(prior)
+
+
   laliste<-list(prior,resprior,res)
   names(laliste) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
   if(is.null(type)){
