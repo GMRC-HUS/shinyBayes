@@ -43,12 +43,15 @@ app_server <- function(input, output, session, BDD = NULL) {
   mod_chargement_server("chargement_1",r)
   mod_Accueil_server("Accueil_1")
   mod_Descriptifs_server("Descriptifs_1", r)
-  mod_inferenceUni_server("inferenceUni_1", r)
+
   mod_Multivarie_server("multivarie_1", r)
   
   mod_Info_base_server("info_base_1",r)
   mod_table1_server("table_1",r)
   
+  
+  mod_infe_moy_server("infe_moy_1",r)
+  mod_infe_pour_server("infe_pour_1",r)
   
   mod_comp_moy_server("comp_moy_1",r)
   mod_comp_pour_server("comp_pour_1",r)

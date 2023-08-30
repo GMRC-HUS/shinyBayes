@@ -38,66 +38,7 @@ if(is.null(type)){
   }
   
 }
-  print('dans la fonction ')
-  # if(Ngroup==1){
-  #   stop(paste0("Un seul groupe :\n",paste0(noms,collapse=" ; ")))
-  # }
-  # 
-  # if(Ngroup>4){
-  #   stop(paste0("Plus de 4 groupes :\n",paste0(noms,collapse=" ; ")))
-  # }
-  # 
-  # if(!is.matrix(priors)){
-  #   dimension<-dim(priors)
-  #   stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
-  #               " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
-  # }
-  # 
-  # if(!all(dim(priors)==c(2,Ngroup))){
-  #   dimension<-dim(priors)
-  #   stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
-  #               " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
-  # }
-  # 
-  # if(!is.null(seuild)){
-  # 
-  #   if(!is.vector(seuild)){
-  #     stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
-  #                 "\n Ici ce n'est pas un vecteur"))
-  #   }
-  #   
-  #   if(length(seuild)!=long){
-  #     stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
-  #                 "\n Ici le vecteur fait ",length(seuild)))
-  #   }
-  # }
-  # 
-  # if(!is.null(seuilr)){
-  #  
-  #   if(!is.vector(seuilr)){
-  #     stop(paste0("Les seuils risques relatifs doivent être un vecteur de dimension ",long,
-  #                 "\n Ici ce n'est pas un vecteur"))
-  #   }
-  #   if(length(seuilr)!=long){
-  #     stop(paste0("Les seuils de risques relatifs doivent être un vecteur de dimension ",long,
-  #                 "\n Ici le vecteur fait ",length(seuilr)))
-  #   }
-  # }
-  # 
-  # 
-  # if(!is.null(seuilo)){
-  #   long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-  #   if (!is.vector(seuilo)){
-  #     stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
-  #                 "\n Ici ce n'est pas un vecteur"))
-  #   }
-  #   if(length(seuilo)!=long){
-  #     stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
-  #                 "\n Ici le vecteur fait ",length(seuilo)))
-  #   }
-  # }
   
-
   
   posteriors<-matrix(0,ncol=Ngroup,nrow=2)
   
@@ -248,16 +189,10 @@ if(is.null(type)){
     
   }
 
-  prior<-  paste(" Prior du groupe 1 (=",noms[1],") : Beta(",priors[1,1],",",priors[2,1],")","\n",
-                 " Prior du groupe 2 (=",noms[2],") : Beta(",priors[1,2],",",priors[2,2],")","\n",sep="")
-  if(Ngroup>2){
-     prior<-paste(prior," Prior du groupe 3 (=",noms[3],") : Beta(",priors[1,3],",",priors[2,3],")","\n",sep="")
-  }
-  if(Ngroup>3){
-    prior<- paste(prior," Prior du groupe 4 (=",noms[4],") : Beta(",priors[1,4],",",priors[2,4],")","\n",sep="")
-  }
+  prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1,] , "Parametre beta" = priors[2,],row.names = paste("Groupe",noms), check.names = F)
 
-  prior<- as.data.frame(prior)
+
+
   laliste<-list(prior,resprior,res)
   names(laliste) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
   if(is.null(type)){
@@ -272,3 +207,132 @@ if(is.null(type)){
   
   return(laliste)
 }
+
+
+
+
+Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL, 
+                       arr=3,M=100000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
+  pourcent_IC2 = (1-IC)/2
+  
+  
+  
+  
+  
+  
+  
+  
+  posteriors<-c(length(Y), sum(Y==0))
+  
+  
+  
+  
+  descriptif<-function(x, probs=c(pourcent_IC2,0.5, 1-pourcent_IC2 )){
+    return(c(mean(x),quantile(x,probs=probs)))
+  }
+  
+  
+  
+  # a priori 
+  
+  xxprior<-rbeta(M,priors[1],priors[2])*100
+  descrxxprior<-descriptif(xxprior, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))
+  
+  print(paste("posterior: " ,posteriors ))
+ p<- ggplot(data.frame(x=c(0,1)),aes(x=x))+ 
+   
+    stat_function(fun = dbeta,args=list(shape1 = priors[1],
+                                                       shape2 = priors[2]),aes(color="prior"))+
+    stat_function(fun = dbeta,args=list(shape1 = priors[1]+posteriors[1],
+                                        shape2 = priors[2]+posteriors[2]),aes(color="posterior"))+
+    
+    theme_light() +
+    xlim(c(0,1
+    )) +
+    theme(
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.ticks.x = element_blank()
+    ) +
+    ylab("") +
+   scale_color_manual(name = "Distribution",
+                      breaks = c("prior", "posterior"),
+                      values = c("prior" = color_3, "posterior" = color_4) )
+  
+  
+  xx<-rbeta(M,priors[1]+posteriors[1],priors[2]+posteriors[2])*100
+  descrxx<-descriptif(xx)%>%round(arr)
+  
+  
+  
+  
+  
+  
+  
+  resprior<-descrxxprior%>%round(arr)
+  
+  
+  resprior<-data.frame(resprior)%>%t%>%as.data.frame()
+  colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(resprior)<-c("Proportion")
+  
+  
+  res<-data.frame(descrxx)%>%t%>%as.data.frame()
+  colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(res)<-c("Proportion")
+  
+  
+  
+  
+  
+  if(is.null(type)){
+  }else if(type =="seuil"){
+    tests <- round(mean(xx>seuil),arr)
+    
+    
+
+    res$seuils<-c(seuil)
+    res$`Pr(X>seuil|D)`<-c(tests)
+    
+p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
+  }else{
+    
+    
+    data=twit$data
+    data$`Pr Ha` = round(mean(between(xx,data[,"minHa"],data[,"maxHa"])),arr)
+    
+    
+    data$`Pr Hr` =  round(mean(between(xx,data[,"minHr"],data[,"maxHr"])),arr)
+    
+    
+    p<- p+ geom_rect( mapping= aes( xmin = data[,"minHa"],xmax = data[,"maxHa"], ymin = -Inf,
+                                                                        ymax = Inf, x=0, y=0,fill ="Acceptée" ), alpha = 0.2 )+
+      geom_rect(aes( xmin = data[,"minHr"],
+                                                                 xmax = data[,"maxHr"], ymin = -Inf,
+                                                                 ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
+      scale_fill_manual(name = "Hypothèse",
+                        breaks = c("Acceptée", "Rejetée"),
+                        values = c("Acceptée" = color_2, "Rejetée" = color_1))
+    
+    
+  }
+  
+  prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1] , "Parametre beta" = priors[2],row.names = ("Prior"), check.names = F)
+  
+  
+  
+  df<-list(prior,resprior,res)
+  names(df) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
+  if(is.null(type)){
+    
+  }else if(type =="twit" & !is.null(type)){
+    res_twit= list(TwoIt = data)
+    names(res_twit) = twit$var
+    df<-append(df,res_twit)
+  }
+  
+  
+  
+  return(list(df=df, graph = p))
+}
+

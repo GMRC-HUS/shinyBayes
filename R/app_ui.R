@@ -176,7 +176,12 @@ app_ui <- function(request) {
                        
        
               menuItem("Inférence univarié",
-                       tabName = "infUni" , icon = icon("fas fa-calculator",verify_fa = FALSE)
+                       tabName = "infUni" , icon = icon("fas fa-calculator",verify_fa = FALSE),
+                       startExpanded = F,
+                       menuSubItem("Moyennes",
+                                   tabName = "infe_moy"),
+                       menuSubItem("Pourcentages",
+                                   tabName = "infe_pour")
               ),
               menuItem("Comparaison", tabName = "comp", icon = icon("fas fa-people-arrows", verify_fa = FALSE),
                        startExpanded = F,
@@ -224,10 +229,10 @@ app_ui <- function(request) {
                 tabName = "descriptif",
                 mod_Descriptifs_ui("Descriptifs_1")
               ),
-              tabItem(
-                tabName = "infUni",
-                mod_inferenceUni_ui("inferenceUni_1")
-              ),
+              # tabItem(
+              #   tabName = "infUni",
+              #   mod_inferenceUni_ui("inferenceUni_1")
+              # ),
               tabItem(
                 tabName = "multivarie_Uni",
                 mod_Multivarie_ui("multivarie_1")
@@ -241,6 +246,15 @@ app_ui <- function(request) {
                 mod_table1_ui("table_1")
               ),
               
+              
+              tabItem(
+                tabName = "infe_moy",
+                mod_infe_moy_ui("infe_moy_1")
+              ),
+              tabItem(
+                tabName = "infe_pour",
+                mod_infe_pour_ui("infe_pour_1")
+              ),
               tabItem(
                 tabName = "comp_moy",
                 mod_comp_moy_ui("comp_moy_1")
