@@ -229,10 +229,10 @@ app_ui <- function(request) {
                 tabName = "descriptif",
                 mod_Descriptifs_ui("Descriptifs_1")
               ),
-              tabItem(
-                tabName = "infUni",
-                mod_inferenceUni_ui("inferenceUni_1")
-              ),
+              # tabItem(
+              #   tabName = "infUni",
+              #   mod_inferenceUni_ui("inferenceUni_1")
+              # ),
               tabItem(
                 tabName = "multivarie_Uni",
                 mod_Multivarie_ui("multivarie_1")

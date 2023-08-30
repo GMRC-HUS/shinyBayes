@@ -46,16 +46,10 @@ mod_infe_pour_server <-  function(id,r){
         ),
         mainPanel(
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          fluidRow(
-            h2(textOutput(ns("nameVariable"))),
-            # column(6,
-            uiOutput(ns("inferenceUni")), br() # ,  #tableOutput(ns("descvar"))
-            #                                                            ),
-            ,
-            column(
-              6,
-              plotOutput(ns("plotinferenceUni"))
-            )
+         fluidPage(
+            uiOutput(ns("res_infe_prop")),
+            plotOutput(ns("graph_inde_prop"))
+          
           ) # fin fluid row du main panel
         ) # fin MainPanel
       ) # fin sidebarlayout
@@ -119,9 +113,9 @@ mod_infe_pour_server <-  function(id,r){
 
   
       
-      tagList(
+      tagList(fluidRow(
         ui_choix_prior_dbeta( prior_prop$prior, ns)
-        
+      )
       )
      
     })
@@ -200,7 +194,7 @@ mod_infe_pour_server <-  function(id,r){
     plusieurs = {NULL})
     
     
-    ############ A Trier ############# 
+    ############ Go ############# 
     
     
   
@@ -216,15 +210,35 @@ mod_infe_pour_server <-  function(id,r){
                               alpha = input[[paste(prior_prop$prior$nom, "alpha", sep = "_")]],
                               beta = input[[paste(prior_prop$prior$nom, "beta", sep = "_")]])
       print(prior_prop)
-      print(input$var_grp)
-      print(seuil_react$data$seuil)
+      print(r$BDD[,input$var_prop])
+    
       
       
-      print(Infe_prop2IT(r$BDD[,input$var_grp],
+      res<-Infe_prop2IT(r$BDD[,input$var_prop],
                          c(prior_prop$alpha, prior_prop$beta),
                          seuil_react$data$seuil,
-                         twit_react,
-                         type= seuil_comp_prop$type ))
+                         twit_react,IC= input$IC/100,
+                         type= seuil_comp_prop$type )
+      
+      output$res_infe_prop<- renderUI({tagList(
+        lapply(1:length(res$df),function(x)  box(title = names(res$df)[x], DT::dataTableOutput(ns(make.names(names(res$df)[x]))))
+               
+        )
+      )})
+      
+      lapply(1:length(res$df), function(i) {
+        output[[make.names(names(res$df)[i]) ]] <- DT::renderDataTable({
+          DT::datatable(res$df[[i]],options = list(dom="t",ordering=F))
+        })
+        
+        
+        
+      })
+      
+      output$graph_inde_prop <- renderPlot({
+        
+        res$graph
+      })
       
       })
     
@@ -244,55 +258,7 @@ mod_infe_pour_server <-  function(id,r){
    
     
     
-    output$plotinferenceUni <- renderPlot(plot(fitInference()))
     
-    output$priorSigma <- renderPlot({
-      ggplot(data = data.frame(x = c(0, 1)), aes(x)) +
-        stat_function(fun = dgamma, n = 101, args = list(shape = input$alpha_0, rate = 1 / input$beta_0)) +
-        theme_light() +
-        theme(
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.ticks.x = element_blank()
-        ) +
-        ylab("") +
-        xlab("")
-    })
-    
-    
-    
-    
-    output$plotinferenceUni <- renderPlot(plot(fitInference()))
-    
-    output$priorSigma <- renderPlot({
-      ggplot(data = data.frame(x = c(0, input$alpha_0 * 4)), aes(x)) +
-        stat_function(fun = dgamma, n = 101, args = list(shape = input$alpha_0, rate = input$beta_0)) +
-        theme_light() +
-        theme(
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.ticks.x = element_blank()
-        ) +
-        ylab("") +
-        xlab("")
-    })
-    
-    output$priorMean <- renderPlot({
-      x <- r$BDD[, input$variable]
-      x <- x[!is.na(x)]
-      min_x <- min(x)
-      max_x <- max(x)
-      ggplot(data = data.frame(x = c(min_x - max_x, 2 * max_x)), aes(x)) +
-        stat_function(fun = dnorm, n = 101, args = list(mean = input$mu0, sd = 1 / input$k0)) +
-        theme_light() +
-        theme(
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.ticks.x = element_blank()
-        ) +
-        ylab("") +
-        xlab("")
-    })
   })
 }
     

@@ -58,7 +58,7 @@ mod_comp_pour_server <- function(id,r){
         mainPanel(
           
           
-          tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
+          # tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
          fluidPage(
            uiOutput(ns("res_crois_prop"))
          )

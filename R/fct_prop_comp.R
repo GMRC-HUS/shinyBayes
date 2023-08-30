@@ -212,7 +212,7 @@ if(is.null(type)){
 
 
 Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL, 
-                       arr=3,M=100000, IC=0.95, type =  NULL){
+                       arr=3,M=100000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
   pourcent_IC2 = (1-IC)/2
   
   
@@ -238,11 +238,26 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   xxprior<-rbeta(M,priors[1],priors[2])*100
   descrxxprior<-descriptif(xxprior, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))
   
-  
+  print(paste("posterior: " ,posteriors ))
+ p<- ggplot(data.frame(x=c(0,1)),aes(x=x))+ 
+    stat_function(fun = dbeta,args=list(shape1 = priors[1],
+                                                       shape2 = priors[2]),color=color_3)+
+    stat_function(fun = dbeta,args=list(shape1 = priors[1]+posteriors[1],
+                                        shape2 = priors[2]+posteriors[2]),color=color_4)+
+    
+    theme_light() +
+    xlim(c(0,1
+    )) +
+    theme(
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.ticks.x = element_blank()
+    ) +
+    ylab("") 
   
   
   xx<-rbeta(M,priors[1]+posteriors[1],priors[2]+posteriors[2])*100
-  descrxx<-descriptif(xx)
+  descrxx<-descriptif(xx)%>%round(arr)
   
   
   
@@ -271,11 +286,11 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
     tests <- round(mean(xx>seuil),arr)
     
     
-    print(res)
+
     res$seuils<-c(seuil)
     res$`Pr(X>seuil|D)`<-c(tests)
     
-    print(res)
+p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
   }else{
     
     
@@ -286,6 +301,11 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
     data$`Pr Hr` =  round(mean(between(xx,data[,"minHr"],data[,"maxHr"])),arr)
     
     
+    p<- p+ geom_rect( mapping= aes( xmin = data[,"minHa"],xmax = data[,"maxHa"], ymin = -Inf,
+                                                                        ymax = Inf, x=0, y=0 ),fill = color_2, alpha = 0.2 )+
+      geom_rect(aes( xmin = data[,"minHr"],
+                                                                 xmax = data[,"maxHr"], ymin = -Inf,
+                                                                 ymax = Inf,x=0,y=0) ,fill = color_1, alpha = 0.2 )
     
     
   }
@@ -294,18 +314,18 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   
   
-  laliste<-list(prior,resprior,res)
-  names(laliste) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
+  df<-list(prior,resprior,res)
+  names(df) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
   if(is.null(type)){
     
   }else if(type =="twit" & !is.null(type)){
     res_twit= list(TwoIt = data)
     names(res_twit) = twit$var
-    laliste<-append(laliste,res_twit)
+    df<-append(df,res_twit)
   }
   
   
   
-  return(laliste)
+  return(list(df=df, graph = p))
 }
 
