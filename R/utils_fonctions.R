@@ -12,10 +12,14 @@
 
 theme_ShiBA <- theme_light
 
-pasDeBase_ui<- function() {
+pasDeBase_ui<- function(text=NULL) {
   fluidPage(
-  h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
-  p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")
+    
+    
+  ifelse_perso(is.null(text),tagList(h4("Aucune base n'a été chargée en mémoire, cet onglet n'est pas accessible."),
+  p("Pour charger une base de données, rendez-vous sur l'onglet « Base de Données » dans la barre latérale.")),
+  h4(text))
+  
 )
 }
 size_box <- "150px"

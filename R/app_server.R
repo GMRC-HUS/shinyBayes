@@ -50,6 +50,9 @@ app_server <- function(input, output, session, BDD = NULL) {
   mod_table1_server("table_1",r)
   
   
+  mod_infe_moy_server("infe_moy_1",r)
+  mod_infe_pour_server("infe_pour_1",r)
+  
   mod_comp_moy_server("comp_moy_1",r)
   mod_comp_pour_server("comp_pour_1",r)
   

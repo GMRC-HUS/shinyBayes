@@ -1,19 +1,13 @@
-#' inferenceUni UI Function
+#' infe_moy UI Function
 #'
 #' @description A shiny Module.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
-#' @noRd
+#' @noRd 
 #'
-#' @importFrom shiny NS tagList
-#' @importFrom ggdist dstudent_t
-#'
-
-
-
-
-mod_inferenceUni_ui <- function(id) {
+#' @importFrom shiny NS tagList 
+mod_infe_moy_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidPage(
@@ -50,21 +44,21 @@ mod_inferenceUni_ui <- function(id) {
     ) # fin fluidpage
   )
 }
-
-#' inferenceUni Server Functions
+    
+#' infe_moy Server Functions
 #'
-#' @noRd
-mod_inferenceUni_server <- function(id, r) {
+#' @noRd 
+mod_infe_moy_server <- function(id,r){
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
-
-
+    
+    
+    
     ########################################################################################################################
     ####    OUTPUT : Inférence univarie
     ########################################################################################################################
-
-
+    
+    
     output$propositions <- renderUI({
       num <- r$noms[which(r$variableNum)] %>% as.list()
       non_num <- r$noms[which(!r$variableNum)] %>% as.list()
@@ -82,11 +76,11 @@ mod_inferenceUni_server <- function(id, r) {
         )
       }
       selectInput(ns("variable"), "Variable:",
-        choices =
-          liste_choix
+                  choices =
+                    liste_choix
       )
     })
-
+    
     output$apriori <- renderUI({
       x <- r$BDD[, input$variable]
       x <- x[!is.na(x)]
@@ -97,10 +91,10 @@ mod_inferenceUni_server <- function(id, r) {
         splitLayout(
           cellWidths = size_box,
           numericInput(ns("mu0"), "µ0 : ",
-            min = min_x - max_x, max = max_x * 2, value = round(mean(x))
+                       min = min_x - max_x, max = max_x * 2, value = round(mean(x))
           ),
           numericInput(ns("k0"), "Pseudo-Echantillon :",
-            min = 0, max = length(x) * 4, value = 1
+                       min = 0, max = length(x) * 4, value = 1
           )
         ),
         plotOutput(width = 200, height = 100, ns("priorMean")),
@@ -108,51 +102,51 @@ mod_inferenceUni_server <- function(id, r) {
         splitLayout(
           cellWidths = size_box,
           numericInput(ns("alpha_0"), "Alpha :",
-            # min = min_x-max_x, max = max_x*2,
-            value = 1,
-            min = 1,
-            max = Inf,
+                       # min = min_x-max_x, max = max_x*2,
+                       value = 1,
+                       min = 1,
+                       max = Inf,
           ),
           numericInput(ns("beta_0"), "Beta :",
-            min = 1, max = Inf, value = 1
+                       min = 1, max = Inf, value = 1
           )
         ),
         plotOutput(width = 200, height = 100, ns("priorSigma")), br(),
         actionButton(ns("ellicitation"), "Aide ellicitation"), text_aide("Texte Aide surellicitation ")
       )
     })
-
-
+    
+    
     output$twit_ui <- renderUI({
       if (input$twit) {
-      
+        
         # twitUi("id_i")
         twitUi(ns("id_i"))
       }
     })
-
+    
     seuil_twoit <- twitServer("id_i")
-
+    
     fitInference <- reactive({
       randomVals()
       BDD <- isolate(r$BDD[, input$variable])
-
+      
       isolate({
         theta_P <- ifelse_perso(input$twit, c(input$theta_P_min, input$theta_P_max), NULL)
         theta_A <- ifelse_perso(input$twit, c(input$theta_A_min, input$theta_A_max), NULL)
       })
       oneMeanEstim(BDD,
-        alpha = 0.15, mu_0 = isolate(input$mu0), kappa_0 = isolate(input$k0),
-        alpha_0 = isolate(input$alpha_0),
-        beta_0 = isolate(input$beta_0), seuil = 3,
-        theta_P = theta_P, theta_A = theta_A
+                   alpha = 0.15, mu_0 = isolate(input$mu0), kappa_0 = isolate(input$k0),
+                   alpha_0 = isolate(input$alpha_0),
+                   beta_0 = isolate(input$beta_0), seuil = 3,
+                   theta_P = theta_P, theta_A = theta_A
       )
     })
-
-
+    
+    
     output$nameVariable <- renderText({
       randomVals()
-
+      
       isolate(input$variable)
     })
     randomVals <- eventReactive(input$go, {
@@ -179,9 +173,9 @@ mod_inferenceUni_server <- function(id, r) {
         })
       }
     })
-
-
-
+    
+    
+    
     observeEvent(input$ellicitation, ignoreInit = T, {
       mod_sd_prec_to_alph_beta_ui(ns("alpha_beta"))
       mod_sd_prec_to_alph_beta_server(
@@ -189,10 +183,10 @@ mod_inferenceUni_server <- function(id, r) {
         "alpha_0", "beta_0"
       )
     })
-
-
+    
+    
     output$plotinferenceUni <- renderPlot(plot(fitInference()))
-
+    
     output$priorSigma <- renderPlot({
       ggplot(data = data.frame(x = c(0, 1)), aes(x)) +
         stat_function(fun = dgamma, n = 101, args = list(shape = input$alpha_0, rate = 1 / input$beta_0)) +
@@ -205,12 +199,12 @@ mod_inferenceUni_server <- function(id, r) {
         ylab("") +
         xlab("")
     })
-
-
-
-
+    
+    
+    
+    
     output$plotinferenceUni <- renderPlot(plot(fitInference()))
-
+    
     output$priorSigma <- renderPlot({
       ggplot(data = data.frame(x = c(0, input$alpha_0 * 4)), aes(x)) +
         stat_function(fun = dgamma, n = 101, args = list(shape = input$alpha_0, rate = input$beta_0)) +
@@ -223,7 +217,7 @@ mod_inferenceUni_server <- function(id, r) {
         ylab("") +
         xlab("")
     })
-
+    
     output$priorMean <- renderPlot({
       x <- r$BDD[, input$variable]
       x <- x[!is.na(x)]
@@ -242,9 +236,16 @@ mod_inferenceUni_server <- function(id, r) {
     })
   })
 }
-
+    
 ## To be copied in the UI
-# mod_inferenceUni_ui("inferenceUni_1")
-
+# mod_infe_moy_ui("infe_moy_1")
+    
 ## To be copied in the server
-# mod_inferenceUni_server("inferenceUni_1")
+# mod_infe_moy_server("infe_moy_1")
+
+
+
+
+
+
+

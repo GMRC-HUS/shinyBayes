@@ -389,3 +389,145 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
      }
   )
 }
+
+
+twitUi_prop_infe <- function(id) {
+  # `NS(id)` returns a namespace function, which was save as `ns` and will
+  # invoke later.
+  ns <- NS(id)
+  showModal(
+    modalDialog(size ="l",
+                title = "Définition des seuils ou Two It",
+                
+                # là
+                
+                
+                
+                tags$div(
+                  shinyWidgets::switchInput(
+                    inputId = ns("choix_seuil_2it"),
+                    onLabel = "Seuil",
+                    offLabel = "Two It",
+                    offStatus = "primary",
+                    onStatus = "primary"
+                  ),
+                  # shinyWidgets::materialSwitch(ns("twit_funct"),"Two It", FALSE, status = "success",right=T),
+                  uiOutput(ns("seuil_ou_two_it_ui"))
+                  # shinyWidgets::materialSwitch(ns("seuil"),"Seuil", FALSE, status = "success",right=T),
+                ),
+                footer = tagList(
+                  actionButton(ns("ok_seuil"), "OK")
+                )
+    )
+  )
+}
+
+# Module server function
+twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour ) {
+  moduleServer(
+    id,
+    
+    
+    ## Below is the module function
+    function(input, output, session) {
+      ns <- session$ns
+      observeEvent(input$choix_seuil_2it, {
+        
+        
+        output$seuil_ou_two_it_ui <- renderUI({
+          
+          
+        
+          print(input$choix_seuil_2it)
+          if (input$choix_seuil_2it) {
+            
+            
+            tagList(
+              h2("Choix du seuil"),
+  
+              uiOutput(ns("choix_seuils"))
+            )
+          } else {
+            tagList(
+              h2("Choix des Bornes du Two It"),
+  
+              box("Définition du twit", table_interact_UI(ns("twit_choix")))
+              
+            )
+            
+          }
+          
+        })
+        
+        if (!input$choix_seuil_2it) {
+
+          twit$data <-data.frame(
+                                 minHa = c(0), 
+                                 maxHa = c(0.5), 
+                                 minHr = c(0.5), 
+                                 maxHr = c(1), row.names = c("Seuil")
+          )
+          
+          
+          
+          seuil_comp_retour$type <-"twit"
+          
+        }else{
+          
+          seuil_comp_retour$data$seuil <- "seuil"
+          print(input$plusieur_seuils4)
+          print(names(input))
+          
+          seuil_unique$data <-  data.frame( seuil = c(0.5),row.names = "Seuil")
+          
+          seuil_comp_retour$plusieurs = F
+          
+          
+          print(seuil_unique$data)
+          
+          twit$data<- NULL 
+        }
+        
+      })
+      
+      
+      
+      
+
+      
+      output$choix_seuils <- renderUI({
+
+          
+          print(seuil_unique$data)
+          tagList(table_interact_UI(ns("seuil_unique"))
+          )
+        
+      })
+      
+      table_interact_server("seuil_unique",seuil_unique,F)
+      
+
+
+      table_interact_server("twit_choix",twit,F)
+      
+      
+      myreturn <- reactiveValues()
+      observeEvent(input$ok_seuil, {
+        if (input$choix_seuil_2it) {
+          seuil_comp_retour$type <-"seuil"
+  
+        }else{
+          
+          seuil_comp_retour$type <-"twit"
+          twit$var <- input$var_sel 
+          
+        }
+        
+        removeModal()
+        
+      })
+      
+      
+    }
+  )
+}

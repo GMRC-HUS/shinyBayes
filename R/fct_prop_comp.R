@@ -38,66 +38,7 @@ if(is.null(type)){
   }
   
 }
-  print('dans la fonction ')
-  # if(Ngroup==1){
-  #   stop(paste0("Un seul groupe :\n",paste0(noms,collapse=" ; ")))
-  # }
-  # 
-  # if(Ngroup>4){
-  #   stop(paste0("Plus de 4 groupes :\n",paste0(noms,collapse=" ; ")))
-  # }
-  # 
-  # if(!is.matrix(priors)){
-  #   dimension<-dim(priors)
-  #   stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
-  #               " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
-  # }
-  # 
-  # if(!all(dim(priors)==c(2,Ngroup))){
-  #   dimension<-dim(priors)
-  #   stop(paste0("Les priors doivent être une matrice de dimension 2 lignes x ",Ngroup,
-  #               " colonnes (nombre de groupes) \n Ici la matrice fait ",dimension[1]," lignes x ",dimension[2]," colonnes"))
-  # }
-  # 
-  # if(!is.null(seuild)){
-  # 
-  #   if(!is.vector(seuild)){
-  #     stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
-  #                 "\n Ici ce n'est pas un vecteur"))
-  #   }
-  #   
-  #   if(length(seuild)!=long){
-  #     stop(paste0("Les seuils de différences doivent être un vecteur de dimension ",long,
-  #                 "\n Ici le vecteur fait ",length(seuild)))
-  #   }
-  # }
-  # 
-  # if(!is.null(seuilr)){
-  #  
-  #   if(!is.vector(seuilr)){
-  #     stop(paste0("Les seuils risques relatifs doivent être un vecteur de dimension ",long,
-  #                 "\n Ici ce n'est pas un vecteur"))
-  #   }
-  #   if(length(seuilr)!=long){
-  #     stop(paste0("Les seuils de risques relatifs doivent être un vecteur de dimension ",long,
-  #                 "\n Ici le vecteur fait ",length(seuilr)))
-  #   }
-  # }
-  # 
-  # 
-  # if(!is.null(seuilo)){
-  #   long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
-  #   if (!is.vector(seuilo)){
-  #     stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
-  #                 "\n Ici ce n'est pas un vecteur"))
-  #   }
-  #   if(length(seuilo)!=long){
-  #     stop(paste0("Les seuils d'odds-ratio doivent être un vecteur de dimension ",long,
-  #                 "\n Ici le vecteur fait ",length(seuilo)))
-  #   }
-  # }
   
-
   
   posteriors<-matrix(0,ncol=Ngroup,nrow=2)
   
@@ -266,3 +207,105 @@ if(is.null(type)){
   
   return(laliste)
 }
+
+
+
+
+Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL, 
+                       arr=3,M=100000, IC=0.95, type =  NULL){
+  pourcent_IC2 = (1-IC)/2
+  
+  
+  
+  
+  
+  
+  
+  
+  posteriors<-c(length(Y), sum(Y==0))
+  
+  
+  
+  
+  descriptif<-function(x, probs=c(pourcent_IC2,0.5, 1-pourcent_IC2 )){
+    return(c(mean(x),quantile(x,probs=probs)))
+  }
+  
+  
+  
+  # a priori 
+  
+  xxprior<-rbeta(M,priors[1],priors[2])*100
+  descrxxprior<-descriptif(xxprior, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))
+  
+  
+  
+  
+  xx<-rbeta(M,priors[1]+posteriors[1],priors[2]+posteriors[2])*100
+  descrxx<-descriptif(xx)
+  
+  
+  
+  
+  
+  
+  
+  resprior<-descrxxprior%>%round(arr)
+  
+  
+  resprior<-data.frame(resprior)%>%t%>%as.data.frame()
+  colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(resprior)<-c("Proportion")
+  
+  
+  res<-data.frame(descrxx)%>%t%>%as.data.frame()
+  colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(res)<-c("Proportion")
+  
+  
+  
+  
+  
+  if(is.null(type)){
+  }else if(type =="seuil"){
+    tests <- round(mean(xx>seuil),arr)
+    
+    
+    print(res)
+    res$seuils<-c(seuil)
+    res$`Pr(X>seuil|D)`<-c(tests)
+    
+    print(res)
+  }else{
+    
+    
+    data=twit$data
+    data$`Pr Ha` = round(mean(between(xx,data[,"minHa"],data[,"maxHa"])),arr)
+    
+    
+    data$`Pr Hr` =  round(mean(between(xx,data[,"minHr"],data[,"maxHr"])),arr)
+    
+    
+    
+    
+  }
+  
+  prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1] , "Parametre beta" = priors[2],row.names = ("Prior"), check.names = F)
+  
+  
+  
+  laliste<-list(prior,resprior,res)
+  names(laliste) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
+  if(is.null(type)){
+    
+  }else if(type =="twit" & !is.null(type)){
+    res_twit= list(TwoIt = data)
+    names(res_twit) = twit$var
+    laliste<-append(laliste,res_twit)
+  }
+  
+  
+  
+  return(laliste)
+}
+
