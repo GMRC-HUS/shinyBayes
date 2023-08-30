@@ -240,10 +240,11 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   print(paste("posterior: " ,posteriors ))
  p<- ggplot(data.frame(x=c(0,1)),aes(x=x))+ 
+   
     stat_function(fun = dbeta,args=list(shape1 = priors[1],
-                                                       shape2 = priors[2]),color=color_3)+
+                                                       shape2 = priors[2]),aes(color="prior"))+
     stat_function(fun = dbeta,args=list(shape1 = priors[1]+posteriors[1],
-                                        shape2 = priors[2]+posteriors[2]),color=color_4)+
+                                        shape2 = priors[2]+posteriors[2]),aes(color="posterior"))+
     
     theme_light() +
     xlim(c(0,1
@@ -253,7 +254,10 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
       axis.ticks.y = element_blank(),
       axis.ticks.x = element_blank()
     ) +
-    ylab("") 
+    ylab("") +
+   scale_color_manual(name = "Distribution",
+                      breaks = c("prior", "posterior"),
+                      values = c("prior" = color_3, "posterior" = color_4) )
   
   
   xx<-rbeta(M,priors[1]+posteriors[1],priors[2]+posteriors[2])*100
@@ -302,10 +306,13 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
     
     
     p<- p+ geom_rect( mapping= aes( xmin = data[,"minHa"],xmax = data[,"maxHa"], ymin = -Inf,
-                                                                        ymax = Inf, x=0, y=0 ),fill = color_2, alpha = 0.2 )+
+                                                                        ymax = Inf, x=0, y=0,fill ="Acceptée" ), alpha = 0.2 )+
       geom_rect(aes( xmin = data[,"minHr"],
                                                                  xmax = data[,"maxHr"], ymin = -Inf,
-                                                                 ymax = Inf,x=0,y=0) ,fill = color_1, alpha = 0.2 )
+                                                                 ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
+      scale_fill_manual(name = "Hypothèse",
+                        breaks = c("Acceptée", "Rejetée"),
+                        values = c("Acceptée" = color_2, "Rejetée" = color_1))
     
     
   }

@@ -249,11 +249,11 @@ app_ui <- function(request) {
               
               tabItem(
                 tabName = "infe_moy",
-                mod_comp_moy_ui("infe_moy_1")
+                mod_infe_moy_ui("infe_moy_1")
               ),
               tabItem(
                 tabName = "infe_pour",
-                mod_comp_pour_ui("infe_pour_1")
+                mod_infe_pour_ui("infe_pour_1")
               ),
               tabItem(
                 tabName = "comp_moy",

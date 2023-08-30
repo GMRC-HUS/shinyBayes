@@ -47,9 +47,55 @@ mod_infe_pour_server <-  function(id,r){
         mainPanel(
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
          fluidPage(
-            uiOutput(ns("res_infe_prop")),
+           fluidRow( uiOutput(ns("res_infe_prop"))),
+            br(),
+            fluidRow(dropdownButton(
+              
+              
+              fluidPage(
+                
+                awesomeRadio(
+                  inputId = ns("prior_plot"),
+                  label = "Afficher Prior :", 
+                  choices = c("Oui", "Non"),
+                  selected = "Oui",
+                  inline = TRUE
+                ),
+              
+              awesomeRadio(
+                inputId = ns("Seuil_plot"),
+                label = "Afficher Seuil ou Two It :", 
+                choices = c("Oui", "Non"),
+                selected = "Oui",
+                inline = TRUE
+              ),
+              
+              
+            
+      
+              
+              colourInput(
+                ns("col1"), "Couleur 1", "#DE3163",
+                showColour = "background"),
+              
+              colourInput(
+                ns("col2"),  "Couleur 2", "#40E0D0",
+                showColour = "background"),
+              colourInput(
+                ns("col3"),  "Couleur 3", "#EBC341",
+                showColour = "background"),
+            colourInput(
+              ns("col4"),  "Couleur 4", "#9242A6",
+              showColour = "background"),
+              
+              
+              circle = TRUE,
+              status = "danger",
+              icon = icon("gear"), width = "300px",
+              tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
+            )),br(),
             plotOutput(ns("graph_inde_prop"))
-          
+            )
           ) # fin fluid row du main panel
         ) # fin MainPanel
       ) # fin sidebarlayout
@@ -203,7 +249,7 @@ mod_infe_pour_server <-  function(id,r){
     
 
     
-    
+    res_infe <- reactiveVal(value = NULL)
     observeEvent(input$go,{
       
       prior_prop<- list(nom = "nom",
@@ -214,11 +260,13 @@ mod_infe_pour_server <-  function(id,r){
     
       
       
-      res<-Infe_prop2IT(r$BDD[,input$var_prop],
+      res_infe(Infe_prop2IT(r$BDD[,input$var_prop],
                          c(prior_prop$alpha, prior_prop$beta),
                          seuil_react$data$seuil,
                          twit_react,IC= input$IC/100,
-                         type= seuil_comp_prop$type )
+                         type= seuil_comp_prop$type ))
+      
+      res<-res_infe()
       
       output$res_infe_prop<- renderUI({tagList(
         lapply(1:length(res$df),function(x)  box(title = names(res$df)[x], DT::dataTableOutput(ns(make.names(names(res$df)[x]))))
@@ -232,16 +280,43 @@ mod_infe_pour_server <-  function(id,r){
         })
         
         
-        
+          
       })
       
-      output$graph_inde_prop <- renderPlot({
-        
-        res$graph
-      })
+    
       
       })
     
+    
+    output$graph_inde_prop <- renderPlot({
+      input$go
+      if (is.null(res_infe())) {
+        return()
+      }
+      p <- res_infe()$graph
+      
+p<- p +
+      scale_color_manual(name = "Distribution",
+                         breaks = c("prior", "posterior"),
+                         values = c("prior" =  input$col3, "posterior" =  input$col4) )+
+  scale_fill_manual(name = "Hypothèse",
+                    breaks = c("Acceptée", "Rejetée"),
+                    values = c("Acceptée" =  input$col2, "Rejetée" =  input$col1))
+    
+
+if(input$Seuil_plot=="Non") {
+  if(length(p$layers)>=3){
+    for(i in length(p$layers):3){
+      p$layers[[i]]<-NULL
+    }
+    
+  }
+}
+  if( input$prior_plot=="Non"){p$layers[[1]]<-NULL}
+
+
+      return(p)
+    })
     
     
     
