@@ -66,7 +66,11 @@ mod_chargement_ui <- function(id) {
         "Les lignes entièrement vides seront retirées pour la suite des analyses."
       ),
       mainPanel(br(),fluidRow(align="center",
-        tableOutput(ns("contents"))
+        
+                              box(title = "Base de données :", width =12,status = "primary", solidHeader = TRUE,
+                                  fluidRow(align="center",   div(style = 'overflow-x: scroll; width:95%',DT::dataTableOutput( ns("contents")))
+                                  )
+                              )
       ))
     )
   )
@@ -80,7 +84,7 @@ mod_chargement_server <- function(id, r) {
     ns <- session$ns
 
 
-    output$contents <- renderTable({
+    output$contents <- renderDT({
 
      
 

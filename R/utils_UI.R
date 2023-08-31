@@ -52,7 +52,19 @@ css <- "
              position:fixed;
              top: calc(50%);
              left: calc(50%);
-             }
+}
+             
+             
+.default-sortable .rank-list {
+  flex: 1 0 auto;
+  -webkit-border-radius: 3px;
+  border-radius: 5px;
+  background-color: white;
+  margin: 5px;
+  min-height: 45px;
+  overflow-y: scroll;
+  height: 100px;
+}
 "
 
 js <- "
