@@ -77,7 +77,7 @@ ui_choix_prior_norm <-  function(i,variables, ns,prior_beta_location_def,prior_b
   prior_beta_scale_def_i <- prior_beta_scale_def[i]
   
   box( title = x,
-       plotOutput(width = 300, height = 150, ns(paste(x, "_courbe", sep = ""))),
+       plotOutput(width = "100%", height = 150, ns(paste(x, "_courbe", sep = ""))),
        numericInput(ns(paste(x, "_mu_0", sep = "")), "A priori mu beta: ",
                     value = prior_beta_location_def_i, step = 0.1
        ),
@@ -161,12 +161,21 @@ ui_ggplot_prior_exp <-  function(i,input, noms) {
 
 
 
-ui_choix_prior_dbeta <-  function(i, ns) {
+ui_twit<- function(nom,ns, color="primary",...){
+  actionBttn(
+    inputId = ns(nom),
+    label = "Définition Seuil ou Two It",
+    style = "gradient",
+    color = color, ...
+  )
+}
+
+ui_choix_prior_dbeta <-  function(i, ns, width = 4, height_figure = 100, width_figure ="100%") {
 
   
   
-  box( title = i$nom,
-       plotOutput(width = 300, height = 150, ns(paste(i$nom, "_courbe", sep = ""))),
+  box( title = i$nom,width=width,
+       plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe", sep = "")))%>% withSpinner(),
        numericInput(ns(paste(i$nom, "_alpha", sep = "")), "A priori parametre alpha : ",
                     value = i$alpha, step = 0.1, min=0
        ),
@@ -194,15 +203,4 @@ ui_ggplot_prior_dbeta <-  function(i, input) {
        ylab("") +
        xlab(i$nom)) %>% ggfst_lst_label_bld
   })
-}
-
-
-
-ui_twit<- function(nom,ns, color="primary",...){
-  actionBttn(
-    inputId = ns(nom),
-    label = "Définition Seuil ou Two It",
-    style = "gradient",
-    color = color, ...
-  )
 }

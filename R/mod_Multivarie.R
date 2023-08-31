@@ -51,7 +51,7 @@ mod_Multivarie_ui <- function(id) {
           actionButton(ns("go"), "Go :")
         ),
         mainPanel(
-          tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
+          # tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
           uiOutput(ns("result_multi"))
         ) # fin MainPanel
       ) # fin sidebarlayout
@@ -457,22 +457,29 @@ mod_Multivarie_server <- function(id, r) {
       fluidPage(
         div(
           id = "div_model",
-          h1(type_model),
+    
           br(),
-          fluidRow(h3(textOutput(ns("model_text")) %>% withSpinner())),
-          br(),
-          h2("Prior :"),
-          fluidRow(align = "center", tableOutput(ns("model_prior")) %>% withSpinner()),
-          br(),
+         fluidRow(
+            box(title = paste("Modèle :",type_model ),align = "center",status = "primary", solidHeader = TRUE,
+            
+            h3(textOutput(ns("model_text")) %>% withSpinner())),
+        
+          box(title = ("Prior :"),status = "primary", solidHeader = TRUE,
+              fluidRow(align = "center", tableOutput(ns("model_prior")) %>% withSpinner()))
+          ),
+         br(),
           fluidRow(align = "center", uiOutput(ns("diag")) %>% withSpinner()),
           br(),
-          h2("Résultats :"),
-          fluidRow(align = "center", tableOutput(ns("res_multi")) %>% withSpinner()),
-          br(),
-          h2("Graphiques :"),
-          fluidRow(
-            align = "center",
-            dropdownButton(
+          box(title = 
+          ("Résultats :"),width  = 12,status = "primary", solidHeader = TRUE,
+          fluidRow(align = "center",
+         tableOutput(ns("res_multi")) %>% withSpinner())),
+          
+         box(title = 
+          ("Graphiques :"),width  = 12,status = "primary", solidHeader = TRUE,fluidRow(align = "center",
+         
+       
+            dropdownButton(up=T,
             
             
               fluidPage(awesomeCheckboxGroup(
@@ -502,16 +509,16 @@ mod_Multivarie_server <- function(id, r) {
               
               
               circle = TRUE,
-              status = "danger",
+              status = "primary",
               icon = icon("gear"), width = "300px",
               tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
             )
             ,
             plotOutput(width = 600, height = 400, ns("graph_model")) %>% withSpinner()
           ),
-          br(),
+          br()
         )
-      )
+      ))
     })
     # Afficher les prior
 

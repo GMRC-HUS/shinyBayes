@@ -71,7 +71,7 @@ mod_infe_pour_server <-  function(id,r){
               ),
               
               
-            
+            sliderInput(ns("line_size"), "Largeur des lignes",min = 0,max = 10,value = 1,step = 0.1),
       
               
               colourInput(
@@ -86,14 +86,14 @@ mod_infe_pour_server <-  function(id,r){
                 showColour = "background"),
             colourInput(
               ns("col4"),  "Couleur 4", "#9242A6",
-              showColour = "background"),
+              showColour = "background")),
               
               
               circle = TRUE,
-              status = "danger",
+              status = "primary",
               icon = icon("gear"), width = "300px",
               tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
-            )),br(),
+            ),br(),
             plotOutput(ns("graph_inde_prop"))
             )
           ) # fin fluid row du main panel
@@ -160,7 +160,7 @@ mod_infe_pour_server <-  function(id,r){
   
       
       tagList(fluidRow(
-        ui_choix_prior_dbeta( prior_prop$prior, ns)
+        ui_choix_prior_dbeta( prior_prop$prior, ns, width = 12)
       )
       )
      
@@ -304,6 +304,8 @@ p<- p +
                     values = c("Acceptée" =  input$col2, "Rejetée" =  input$col1))
     
 
+p$layers[[1]]$aes_params$linewidth = input$line_size
+p$layers[[2]]$aes_params$linewidth = input$line_size
 if(input$Seuil_plot=="Non") {
   if(length(p$layers)>=3){
     for(i in length(p$layers):3){
@@ -313,6 +315,7 @@ if(input$Seuil_plot=="Non") {
   }
 }
   if( input$prior_plot=="Non"){p$layers[[1]]<-NULL}
+
 
 
       return(p)
