@@ -11,7 +11,9 @@
 # source("./theme.R", local = TRUE)
 
 
-
+couleur_shiba <-"#428bca"
+couleur_mddle = "#bed9ed"
+couleur_back_logo <- "rgb(64,64,64)"
 ### creating custom theme object
 customTheme <- shinyDashboardThemeDIY(
 
@@ -26,21 +28,21 @@ customTheme <- shinyDashboardThemeDIY(
   bodyBackColor = "rgb(248,248,248)"
 
   ### header
-  , logoBackColor = "rgb(205, 92, 92)",
-  headerButtonBackColor = "rgb(205, 92, 92) ",
+  , logoBackColor = couleur_back_logo,
+  headerButtonBackColor = couleur_shiba,
   headerButtonIconColor = "rgb(75,75,75)",
   headerButtonBackColorHover = "rgb(210,210,210)",
   headerButtonIconColorHover = "rgb(0,0,0)",
-  headerBackColor = "rgb(205, 92, 92) ",
+  headerBackColor = couleur_shiba,
   headerBoxShadowColor = "#aaaaaa",
   headerBoxShadowSize = "2px 2px 2px"
 
   ### sidebar
   , sidebarBackColor = cssGradientThreeColors(
     direction = "down",
-    colorStart = "rgb(64,64,64)",
+    colorStart = couleur_back_logo,
     colorMiddle = "rgb(96,96,96)",
-    colorEnd = "rgb(192,192,192)",
+    colorEnd ="rgb(64,64,64)",
     colorStartPos = 0,
     colorMiddlePos = 50,
     colorEndPos = 100
@@ -62,9 +64,9 @@ customTheme <- shinyDashboardThemeDIY(
   sidebarTabBorderWidth = 1,
   sidebarTabBackColorSelected = cssGradientThreeColors(
     direction = "right",
-    colorStart = "rgba(205, 148, 148,1)",
-    colorMiddle = "rgba(255, 240, 240,1)",
-    colorEnd = "rgba(255,240,240,1)",
+    colorStart = couleur_shiba,
+    colorMiddle = couleur_mddle,
+    colorEnd = "rgba(240,240,255,1)",
     colorStartPos = 0,
     colorMiddlePos = 30,
     colorEndPos = 100
@@ -73,9 +75,9 @@ customTheme <- shinyDashboardThemeDIY(
   sidebarTabRadiusSelected = "0px 20px 20px 0px",
   sidebarTabBackColorHover = cssGradientThreeColors(
     direction = "right",
-    colorStart = "rgba(205, 148, 148,1)",
-    colorMiddle = "rgba(255, 240, 240,1)",
-    colorEnd = "rgba(255,240,240,1)",
+    colorStart = couleur_shiba,
+    colorMiddle = couleur_mddle,
+    colorEnd = "rgba(240,240,255,1)",
     colorStartPos = 0,
     colorMiddlePos = 30,
     colorEndPos = 100
@@ -93,7 +95,7 @@ customTheme <- shinyDashboardThemeDIY(
   boxShadowColor = "rgba(0,0,0,.1)",
   boxTitleSize = 16,
   boxDefaultColor = "rgb(210,214,220)",
-  boxPrimaryColor = "rgba(44,222,235,1)",
+  boxPrimaryColor = couleur_shiba,
   boxInfoColor = "rgb(210,214,220)",
   boxSuccessColor = "rgba(60,179,113,1)",
   boxWarningColor = "rgb(244,156,104)",
@@ -136,7 +138,7 @@ app_ui <- function(request) {
        tags$style(HTML(css)),
        tags$script(HTML(js))
     ),
-    shinythemes::themeSelector(),
+  customTheme,
     # addResourcePath("www", tempdir),
 
     # Dev button
