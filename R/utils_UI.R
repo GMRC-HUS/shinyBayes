@@ -63,7 +63,12 @@ css <- "
   margin: 5px;
   min-height: 45px;
   overflow-y: scroll;
-  height: 100px;
+  max-height: 200px;
+}
+
+.box-header .box-title {
+ 
+  font-weight: bold;
 }
 "
 
