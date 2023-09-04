@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapitre 4 Modèle de régression multivariée. | SHIBA</title>
+  <meta name="description" content="blabla" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapitre 4 Modèle de régression multivariée. | SHIBA" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="blabla" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapitre 4 Modèle de régression multivariée. | SHIBA" />
+  
+  <meta name="twitter:description" content="blabla" />
+  
+
+<meta name="author" content="Une application du GMRC: Groupe Méthodes en Recherche Clinique" />
+
+
+<meta name="date" content="2023-09-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="principes-de-la-statistique-bayésienne.html"/>
+<link rel="next" href="it-test-à-deux-intervalles.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Le livre de SHIBA</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="principes-généraux-de-shiba.html"><a href="principes-généraux-de-shiba.html"><i class="fa fa-check"></i><b>1</b> Principes généraux de SHIBA</a></li>
+<li class="chapter" data-level="2" data-path="fonctionnement-général-de-shiba.html"><a href="fonctionnement-général-de-shiba.html"><i class="fa fa-check"></i><b>2</b> Fonctionnement général de SHIBA</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fonctionnement-général-de-shiba.html"><a href="fonctionnement-général-de-shiba.html#vocabulaire-de-base"><i class="fa fa-check"></i><b>2.1</b> Vocabulaire de base</a></li>
+<li class="chapter" data-level="2.2" data-path="fonctionnement-général-de-shiba.html"><a href="fonctionnement-général-de-shiba.html#les-différents-types-de-variables"><i class="fa fa-check"></i><b>2.2</b> Les différents types de variables</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="principes-de-la-statistique-bayésienne.html"><a href="principes-de-la-statistique-bayésienne.html"><i class="fa fa-check"></i><b>3</b> Principes de la statistique Bayésienne</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="principes-de-la-statistique-bayésienne.html"><a href="principes-de-la-statistique-bayésienne.html#notion-dhypothèse-scientifique-et-dhypothèse-statistique."><i class="fa fa-check"></i><b>3.1</b> Notion d’hypothèse scientifique et d’hypothèse statistique.</a></li>
+<li class="chapter" data-level="3.2" data-path="principes-de-la-statistique-bayésienne.html"><a href="principes-de-la-statistique-bayésienne.html#notion-de-probabilité."><i class="fa fa-check"></i><b>3.2</b> Notion de probabilité.</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html"><i class="fa fa-check"></i><b>4</b> Modèle de régression multivariée.</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#eléments-généraux"><i class="fa fa-check"></i><b>4.1</b> Eléments généraux</a></li>
+<li class="chapter" data-level="4.2" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemples-de-modèle-multivarié"><i class="fa fa-check"></i><b>4.2</b> Exemples de modèle multivarié</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-linéaire"><i class="fa fa-check"></i><b>4.2.1</b> Exemple de régression linéaire</a></li>
+<li class="chapter" data-level="4.2.2" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-logistique"><i class="fa fa-check"></i><b>4.2.2</b> Exemple de régression logistique</a></li>
+<li class="chapter" data-level="4.2.3" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-beta"><i class="fa fa-check"></i><b>4.2.3</b> Exemple de régression Beta</a></li>
+<li class="chapter" data-level="4.2.4" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-de-poisson"><i class="fa fa-check"></i><b>4.2.4</b> Exemple de régression de Poisson</a></li>
+<li class="chapter" data-level="4.2.5" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#un-message-derreur"><i class="fa fa-check"></i><b>4.2.5</b> un message d’erreur</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#aide-des-graphiques-à-faire."><i class="fa fa-check"></i><b>4.3</b> aide des graphiques : à faire.</a></li>
+<li class="chapter" data-level="4.4" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#digest-sur-les-priors-de-stan."><i class="fa fa-check"></i><b>4.4</b> digest sur les priors de STAN.</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="it-test-à-deux-intervalles.html"><a href="it-test-à-deux-intervalles.html"><i class="fa fa-check"></i><b>5</b> 2IT test à deux intervalles</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="it-test-à-deux-intervalles.html"><a href="it-test-à-deux-intervalles.html#premier-exemple"><i class="fa fa-check"></i><b>5.1</b> Premier exemple</a></li>
+<li class="chapter" data-level="5.2" data-path="it-test-à-deux-intervalles.html"><a href="it-test-à-deux-intervalles.html#second-exemple"><i class="fa fa-check"></i><b>5.2</b> Second exemple</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="les-résultats.html"><a href="les-résultats.html"><i class="fa fa-check"></i><b>6</b> Les résultats</a></li>
+<li class="chapter" data-level="7" data-path="les-graphiques.html"><a href="les-graphiques.html"><i class="fa fa-check"></i><b>7</b> Les graphiques</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="les-graphiques.html"><a href="les-graphiques.html#diagrammes-de-convergence"><i class="fa fa-check"></i><b>7.1</b> Diagrammes de convergence</a></li>
+<li class="chapter" data-level="7.2" data-path="les-graphiques.html"><a href="les-graphiques.html#diagrammes-dautocorrélation"><i class="fa fa-check"></i><b>7.2</b> Diagrammes d’autocorrélation</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="références..html"><a href="références..html"><i class="fa fa-check"></i><b>8</b> Références.</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SHIBA</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="modèle-de-régression-multivariée." class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapitre 4</span> Modèle de régression multivariée.<a href="modèle-de-régression-multivariée..html#modèle-de-régression-multivariée." class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="eléments-généraux" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Eléments généraux<a href="modèle-de-régression-multivariée..html#eléments-généraux" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Dans le menu « Multivarié », vous pourrez réaliser au choix (selon le type de la variable à modéliser, spécifié entre parenthèse) :</p>
+<ul>
+<li>une régression linéaire pour modéliser une variable quantitative</li>
+<li>une régression logistique pour modéliser une variable binaire. La variable doit obligatoirement contenir deux modalités seulement et vous devrez définir la modalité de référence. SHIBA réalisera automatiquement le recodage en 1 ou 0 (modalité de référence) nécessaire pour ce type de modèle.</li>
+<li>une régression Bêta lorsque vous souhaitez modéliser une variable de type score dont les valeurs sont par définition contenues entre deux limites connues. Vous devrez préciser quelles sont les bornes théoriques du score (minimum théorique et maximum théorique). Ce type de modèle peut également être utilisé pour un pourcentage lorsqu’il s’agit d’un pourcentage mesuré pour chaque individu (comme une fraction de cholestérol, ou une proportion de polynucléaires dans une formule leucocytaire) et pas sur un groupe de sujet,.</li>
+<li>une régression de Poisson pour modéliser un comptage c.-à-d. un nombre de quelque chose, comme un nombre d’évènements indésirables par patient au cours d’un suivi ou un nombre de tentatives d’intubation.</li>
+<li>un modèle de survie pour modéliser une durée jusqu’à survenue d’un évènement, la durée étant censurée pour un certain nombre de sujets.</li>
+</ul>
+<p>Pour chacun de ces modèles, il y a les éléments suivants dans le menu :</p>
+<ul>
+<li>La variable à modéliser</li>
+<li>Le choix des variables pour le modèle
+o Noms des variables
+o Variables quantitatives (une fenêtre vide en début de procédure)
+o Variables qualitatives (une fenêtre vide en début de procédure)</li>
+<li>L’aide à l’élicitation</li>
+<li>Le test à deux intervalles (TADI, ou 2IT – Two interval test – en anglais)</li>
+<li>La définition d’un seuil d’intérêt pour tester le paramètre</li>
+<li>Un bouton « Go » (estimation, analyse, calcul, loi a priori) : bouton de lancement de l’analyse</li>
+</ul>
+<p>Comment réaliser un modèle dans l’onglet « Multivarié » ?
+Pour obtenir un modèle, il vous faudra spécifier les différents éléments du modèle à l’aide des options proposées dans la colonne centrale de l’onglet.</p>
+<p>Les étapes sont les suivantes :</p>
+<ol style="list-style-type: decimal">
+<li>Choisissez l’un des 4 modèles proposés (linéaire, logistique, Beta, Poisson) en cliquant sur son nom</li>
+<li>Indiquez la variable d’intérêt (la variable à modéliser) en la choisissant dans le menu déroulant « Variable à modéliser »</li>
+<li>Indiquez la ou les Variables quantitatives à inclure dans le modèle en faisant glisser les étiquettes des variables à utiliser présentées dans la liste des Variables quantitatives vers la petite fenêtre « Variables quantitatives » situées en dessous de la liste des Noms des variables. Vous pouvez spécifier une ou plusieurs variables dans cette fenêtre ; les variables s’ajouteront les unes après les autres pour former la liste des variables à inclure dans le modèle.<br />
+</li>
+<li>De la même manière que pour les Variables quantitatives, vous pouvez ajouter dans le modèle une ou plusieurs Variables qualitatives, en faisant glisser les étiquettes des variables à utiliser présentées dans la liste des Variables qualitatives vers la fenêtre des Variables qualitatives. En amont, assurez-vous d’avoir codé correctement ces variables qualitatives notamment pour la modalité de référence. A noter : par défaut, la modalité de référence est la première dans l’ordre alphabétique.</li>
+<li>Utilisez si besoin l’aide à l’élicitation. L’utilisation de cet outil est fortement conseillée car il permet d’utiliser au maximum les avantages des méthodes bayésiennes. Il y a cependant pour chaque modèle une loi a priori par défaut définie par le logiciel STAN.Cette loi par défaut n’est pas nécessairement la meilleure option (justification).<br />
+</li>
+<li>Précisez le niveau de risque souhaité pour les intervalles de crédibilité. Par défaut, SHIBA fournit des intervalles de crédibilité à 95%.</li>
+<li>Si besoin, utiliser le test à 2 intervalles pour la variable à tester. Cliquer sur le bouton, ce qui fera apparaître un ensemble de fenêtres permettant de spécifier les seuils des hypothèses HA et HP du Test à deux intervalles (2IT). SHIBA calculera automatiquement Pr(HA), Pr(HP) et leur rapport, Pr(HA|D), Pr(HP|D) et leur rapport, ainsi que le Facteur de Bayes FBP/A correspondant.<br />
+</li>
+<li>Si besoin, spécifiez une valeur seuil à tester. SHIBA calculera alors <span class="math inline">\(Pr(\theta &gt; seuil | D)\)</span>, la probabilité que la valeur du paramètre soit supérieure sachant les données et la loi a priori de <span class="math inline">\(\theta\)</span>.</li>
+<li>Lancez le modèle en appuyant sur « Go »</li>
+</ol>
+<p>L’interprétation des résultats pour un paramètre donné dépend bien sûr du type de modèle, lequel détermine l’interprétation que l’on donne au paramètre (un OR, une moyenne, etc.).</p>
+<ul>
+<li>Si le modèle est une régression linéaire (variable d’intérêt quantitative), …</li>
+<li>Si le modèle est une régression logistique (variable d’intérêt qualitative), …</li>
+<li>Si le modèle est une régression Beta (variable d’intérêt quantitative de type % par individu), …</li>
+<li>Si le modèle est une régression de Poisson (variable d’intérêt quantitative de dénombrement), …</li>
+<li>Lorsque le paramètre est une probabilité (pour le 2IT / TADI ou pour la probabilité que le paramètre d’intérêt dépasse une valeur seuil) la valeur dans estimate est directement la valeur de la probabilité cherchée.</li>
+</ul>
+<p>La colonne std.error indique l’erreur standard du paramètre.</p>
+</div>
+<div id="exemples-de-modèle-multivarié" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Exemples de modèle multivarié<a href="modèle-de-régression-multivariée..html#exemples-de-modèle-multivarié" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exemple-de-régression-linéaire" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Exemple de régression linéaire<a href="modèle-de-régression-multivariée..html#exemple-de-régression-linéaire" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>la droite qui va bien</p>
+</div>
+<div id="exemple-de-régression-logistique" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Exemple de régression logistique<a href="modèle-de-régression-multivariée..html#exemple-de-régression-logistique" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La sigmoïde qui va bien</p>
+</div>
+<div id="exemple-de-régression-beta" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Exemple de régression Beta<a href="modèle-de-régression-multivariée..html#exemple-de-régression-beta" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Un chameau à une bosse est un dromadaire.</p>
+</div>
+<div id="exemple-de-régression-de-poisson" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> Exemple de régression de Poisson<a href="modèle-de-régression-multivariée..html#exemple-de-régression-de-poisson" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ou comment noyer le Poisson dans des statistiques.</p>
+</div>
+<div id="un-message-derreur" class="section level3 hasAnchor" number="4.2.5">
+<h3><span class="header-section-number">4.2.5</span> un message d’erreur<a href="modèle-de-régression-multivariée..html#un-message-derreur" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dans certain cas peut apparaître un message d’erreur indiquant que le nombre d’itérations utilisées n’a pas permis d’obtenir une convergence satisfaisante des chaines McMC. Veuillez vous adresser à un spécialiste de l’analyse bayésienne des données.</p>
+<p>Le message en question apparait alors que SHIBA a déjà automatiquement réalisé deux ajustements itératifs de l’algorithme.</p>
+<p>(Pour nous, GMRC) Le message en question est le suivant : “Le nombre d’itérations utilisées n’a pas permis d’obtenir une convergence satisfaisante des chaines McMC. Veuillez vous adresser à un spécialiste de l’analyse bayésienne des données.”</p>
+</div>
+</div>
+<div id="aide-des-graphiques-à-faire." class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> aide des graphiques : à faire.<a href="modèle-de-régression-multivariée..html#aide-des-graphiques-à-faire." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>des jolis graphiques.</p>
+</div>
+<div id="digest-sur-les-priors-de-stan." class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> digest sur les priors de STAN.<a href="modèle-de-régression-multivariée..html#digest-sur-les-priors-de-stan." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>OK, mais on mets ça où ?</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="principes-de-la-statistique-bayésienne.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="it-test-à-deux-intervalles.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

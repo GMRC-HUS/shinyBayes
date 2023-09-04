@@ -1,0 +1,78 @@
+# Modèle de régression multivariée.  
+## Eléments généraux
+Dans le menu « Multivarié », vous pourrez réaliser au choix (selon le type de la variable à modéliser, spécifié entre parenthèse) : 
+
+-	une régression linéaire pour modéliser une variable quantitative
+-	une régression logistique pour modéliser une variable binaire. La variable doit obligatoirement contenir deux modalités seulement et vous devrez définir la modalité de référence. SHIBA réalisera automatiquement le recodage en 1 ou 0 (modalité de référence) nécessaire pour ce type de modèle. 
+-	une régression Bêta lorsque vous souhaitez modéliser une variable de type score dont les valeurs sont par définition contenues entre deux limites connues. Vous devrez préciser quelles sont les bornes théoriques du score (minimum théorique et maximum théorique). Ce type de modèle peut également être utilisé pour un pourcentage lorsqu’il s’agit d’un pourcentage mesuré pour chaque individu (comme une fraction de cholestérol, ou une proportion de polynucléaires dans une formule leucocytaire) et pas sur un groupe de sujet,.
+-	une régression de Poisson pour modéliser un comptage c.-à-d. un nombre de quelque chose, comme un nombre d’évènements indésirables par patient au cours d’un suivi ou un nombre de tentatives d’intubation. 
+-	un modèle de survie pour modéliser une durée jusqu’à survenue d’un évènement, la durée étant censurée pour un certain nombre de sujets.  
+
+
+Pour chacun de ces modèles, il y a les éléments suivants dans le menu : 
+
+-	La variable à modéliser
+-	Le choix des variables pour le modèle
+o	Noms des variables
+o	Variables quantitatives (une fenêtre vide en début de procédure)
+o	Variables qualitatives (une fenêtre vide en début de procédure)
+-	L’aide à l’élicitation
+-	Le test à deux intervalles (TADI, ou 2IT – Two interval test –  en anglais)
+-	La définition d’un seuil d’intérêt pour tester le paramètre
+-	Un bouton « Go » (estimation, analyse, calcul, loi a priori) : bouton de lancement de l’analyse
+
+Comment réaliser un modèle dans l’onglet « Multivarié » ? 
+Pour obtenir un modèle, il vous faudra spécifier les différents éléments du modèle à l’aide des options proposées dans la colonne centrale de l’onglet. 
+
+Les étapes sont les suivantes : 
+
+1.	Choisissez l’un des 4 modèles proposés (linéaire, logistique, Beta, Poisson) en cliquant sur son nom
+2.	Indiquez la variable d’intérêt (la variable à modéliser) en la choisissant dans le menu déroulant « Variable à modéliser »
+3.	Indiquez la ou les Variables quantitatives à inclure dans le modèle en faisant glisser les étiquettes des variables à utiliser présentées dans la liste des Variables quantitatives vers la petite fenêtre « Variables quantitatives » situées en dessous de la liste des Noms des variables. Vous pouvez spécifier une ou plusieurs variables dans cette fenêtre ; les variables s’ajouteront les unes après les autres pour former la liste des variables à inclure dans le modèle.  
+4.	De la même manière que pour les Variables quantitatives, vous pouvez ajouter dans le modèle une ou plusieurs Variables qualitatives, en faisant glisser les étiquettes des variables à utiliser présentées dans la liste des Variables qualitatives vers la fenêtre des Variables qualitatives. En amont, assurez-vous d’avoir codé correctement ces variables qualitatives notamment pour la modalité de référence. A noter : par défaut, la modalité de référence est la première dans l’ordre alphabétique. 
+5.	Utilisez si besoin l’aide à l’élicitation. L’utilisation de cet outil est fortement conseillée car il permet d’utiliser au maximum les avantages des méthodes bayésiennes. Il y a cependant pour chaque modèle une loi a priori par défaut définie par le logiciel STAN.Cette loi par défaut n’est pas nécessairement la meilleure option (justification).  
+6.	Précisez le niveau de risque souhaité pour les intervalles de crédibilité. Par défaut, SHIBA fournit des intervalles de crédibilité à 95%. 
+7.	Si besoin, utiliser le test à 2 intervalles pour la variable à tester. Cliquer sur le bouton, ce qui fera apparaître un ensemble de fenêtres permettant de spécifier les seuils des hypothèses HA et HP du Test à deux intervalles (2IT). SHIBA calculera automatiquement Pr(HA), Pr(HP) et leur rapport, Pr(HA|D), Pr(HP|D) et leur rapport, ainsi que le Facteur de Bayes FBP/A correspondant.  
+8.	Si besoin, spécifiez une valeur seuil à tester. SHIBA calculera alors $Pr(\theta > seuil | D)$, la probabilité que la valeur du paramètre soit supérieure sachant les données et la loi a priori de $\theta$.
+9.	Lancez le modèle en appuyant sur « Go » 
+
+
+L’interprétation des résultats pour un paramètre donné dépend bien sûr du type de modèle, lequel détermine l’interprétation que l’on donne au paramètre (un OR, une moyenne, etc.). 
+
+-	Si le modèle est une régression linéaire (variable d’intérêt quantitative), …
+-	Si le modèle est une régression logistique (variable d’intérêt qualitative), …
+-	Si le modèle est une régression Beta (variable d’intérêt quantitative de type % par individu), … 
+-	Si le modèle est une régression de Poisson (variable d’intérêt quantitative de dénombrement), …
+-	Lorsque le paramètre est une probabilité (pour le 2IT / TADI ou pour la probabilité que le paramètre d’intérêt dépasse une valeur seuil) la valeur dans estimate est directement la valeur de la probabilité cherchée. 
+
+La colonne std.error indique l’erreur standard du paramètre. 
+
+
+
+## Exemples de modèle multivarié
+### Exemple de régression linéaire
+la droite qui va bien 
+
+### Exemple de régression logistique
+La sigmoïde qui va bien
+
+### Exemple de régression Beta
+Un chameau à une bosse est un dromadaire. 
+
+### Exemple de régression de Poisson
+Ou comment noyer le Poisson dans des statistiques.
+
+### un message d'erreur 
+Dans certain cas peut apparaître un message d'erreur indiquant que le nombre d'itérations utilisées n'a pas permis d'obtenir une convergence satisfaisante des chaines McMC. Veuillez vous adresser à un spécialiste de l'analyse bayésienne des données. 
+
+Le message en question apparait alors que SHIBA a déjà automatiquement réalisé deux ajustements itératifs de l'algorithme. 
+
+(Pour nous, GMRC) Le message en question est le suivant : "Le nombre d'itérations utilisées n'a pas permis d'obtenir une convergence satisfaisante des chaines McMC. Veuillez vous adresser à un spécialiste de l'analyse bayésienne des données." 
+
+
+## aide des graphiques : à faire. 
+des jolis graphiques. 
+
+## digest sur les priors de STAN. 
+
+OK, mais on mets ça où ? 

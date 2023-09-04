@@ -1,0 +1,7 @@
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapitre "
+    rmd_files: 
+      html: ["O1.Rmd", "03.Rmd","02.Rmd"]
+output_dir: "docs"

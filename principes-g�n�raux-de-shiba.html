@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>SHIBA</title>
+  <meta name="description" content="rien à dire," />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="SHIBA" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="rien à dire," />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="SHIBA" />
+  
+  <meta name="twitter:description" content="rien à dire," />
+  
+
+<meta name="author" content="Une application du GMRC: Groupe Méthodes en Recherche Clinique" />
+
+
+<meta name="date" content="2023-08-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="fonctionnement-général-de-shiba.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="principes-généraux-de-shiba.html"><a href="principes-généraux-de-shiba.html"><i class="fa fa-check"></i><b>1</b> Principes généraux de SHIBA</a></li>
+<li class="chapter" data-level="2" data-path="fonctionnement-général-de-shiba.html"><a href="fonctionnement-général-de-shiba.html"><i class="fa fa-check"></i><b>2</b> Fonctionnement général de SHIBA</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="fonctionnement-général-de-shiba.html"><a href="fonctionnement-général-de-shiba.html#vocabulaire-de-base"><i class="fa fa-check"></i><b>2.1</b> Vocabulaire de base</a></li>
+<li class="chapter" data-level="2.2" data-path="fonctionnement-général-de-shiba.html"><a href="fonctionnement-général-de-shiba.html#les-différents-types-de-variables"><i class="fa fa-check"></i><b>2.2</b> Les différents types de variables</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="principes-de-la-statistique-bayésienne.html"><a href="principes-de-la-statistique-bayésienne.html"><i class="fa fa-check"></i><b>3</b> Principes de la statistique Bayésienne</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="principes-de-la-statistique-bayésienne.html"><a href="principes-de-la-statistique-bayésienne.html#notion-dhypothèse-scientifique-et-dhypothèse-statistique."><i class="fa fa-check"></i><b>3.1</b> Notion d’hypothèse scientifique et d’hypothèse statistique.</a></li>
+<li class="chapter" data-level="3.2" data-path="principes-de-la-statistique-bayésienne.html"><a href="principes-de-la-statistique-bayésienne.html#notion-de-probabilité."><i class="fa fa-check"></i><b>3.2</b> Notion de probabilité.</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html"><i class="fa fa-check"></i><b>4</b> Modèle de régression multivariée.</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#eléments-généraux"><i class="fa fa-check"></i><b>4.1</b> Eléments généraux</a></li>
+<li class="chapter" data-level="4.2" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemples-de-modèle-multivarié"><i class="fa fa-check"></i><b>4.2</b> Exemples de modèle multivarié</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-linéaire"><i class="fa fa-check"></i><b>4.2.1</b> Exemple de régression linéaire</a></li>
+<li class="chapter" data-level="4.2.2" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-logistique"><i class="fa fa-check"></i><b>4.2.2</b> Exemple de régression logistique</a></li>
+<li class="chapter" data-level="4.2.3" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-beta"><i class="fa fa-check"></i><b>4.2.3</b> Exemple de régression Beta</a></li>
+<li class="chapter" data-level="4.2.4" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#exemple-de-régression-de-poisson"><i class="fa fa-check"></i><b>4.2.4</b> Exemple de régression de Poisson</a></li>
+<li class="chapter" data-level="4.2.5" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#un-message-derreur"><i class="fa fa-check"></i><b>4.2.5</b> un message d’erreur</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#aide-des-graphiques-à-faire."><i class="fa fa-check"></i><b>4.3</b> aide des graphiques : à faire.</a></li>
+<li class="chapter" data-level="4.4" data-path="modèle-de-régression-multivariée..html"><a href="modèle-de-régression-multivariée..html#digest-sur-les-priors-de-stan."><i class="fa fa-check"></i><b>4.4</b> digest sur les priors de STAN.</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="it-test-à-deux-intervalles.html"><a href="it-test-à-deux-intervalles.html"><i class="fa fa-check"></i><b>5</b> 2IT test à deux intervalles</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="it-test-à-deux-intervalles.html"><a href="it-test-à-deux-intervalles.html#premier-exemple"><i class="fa fa-check"></i><b>5.1</b> premier exemple</a></li>
+<li class="chapter" data-level="5.2" data-path="it-test-à-deux-intervalles.html"><a href="it-test-à-deux-intervalles.html#second-exemple"><i class="fa fa-check"></i><b>5.2</b> second exemple</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="les-résultats.html"><a href="les-résultats.html"><i class="fa fa-check"></i><b>6</b> Les résultats</a></li>
+<li class="chapter" data-level="7" data-path="les-graphiques.html"><a href="les-graphiques.html"><i class="fa fa-check"></i><b>7</b> Les graphiques</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="les-graphiques.html"><a href="les-graphiques.html#diagrammes-de-convergence"><i class="fa fa-check"></i><b>7.1</b> Diagrammes de convergence</a></li>
+<li class="chapter" data-level="7.2" data-path="les-graphiques.html"><a href="les-graphiques.html#diagrammes-dautocorrélation"><i class="fa fa-check"></i><b>7.2</b> Diagrammes d’autocorrélation</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="références..html"><a href="références..html"><i class="fa fa-check"></i><b>8</b> Références.</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SHIBA</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">SHIBA</h1>
+<p class="author"><em>Une application du GMRC: Groupe Méthodes en Recherche Clinique</em></p>
+<p class="date"><em>2023-08-03</em></p>
+</div>
+<div id="principes-généraux-de-shiba" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Principes généraux de SHIBA<a href="principes-généraux-de-shiba.html#principes-généraux-de-shiba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>SHIBA est une application créée par le Groupe Méthodes en Recherche Clinique (GMRC) des hôpitaux universitaires de Strasbourg et les membres de l’équipe IMAGES – RaDoScauba du laboratoire iCUBE (CNRS UMR 7357). Elle est entièrement gratuite, sous licence CC-by-nc 4.0.</p>
+<p>SHIBA est une interface graphique permettant de réaliser des analyses bayésiennes via le logiciel de statistiques R et les packages de statistiques bayésiennes associés sans avoir à coder les instructions nécessaires pour obtenir ces analyses. Tout fonctionne par des glisser-déposer ou en cliquant sur les éléments dont vous avez besoin.</p>
+<p>L’utilisation de SHIBA implique cependant de connaître un minimum de notions sur les probabilités et sur ce que sont les méthodes bayésiennes. La présente page d’aide est là pour vous apporter les connaissances nécessaires pour utiliser correctement l’outil.</p>
+<p><strong>Cet outil est proposé sans aucune garantie de validité sur les résultats</strong>.
+<strong>Si vous utilisez cet outil pour traiter des données médicales et a fortiori relevant de la recherche médicale, vous devez le faire dans le respect de la réglementation en vigueur. Les concepteurs de cet outil ne sont pas responsables de ce que vous en faites.</strong></p>
+<hr />
+<p><strong>Citation</strong></p>
+<p>L’équipe vous remercie de bien vouloir la citer dans votre bibliographie lorsque vous aurez utilisé SHIBA pour vos travaux scientifiques. La référence est la suivante : Fabacher et toute sa bande de potes, SHIBA, un logiciel qui a du chien. <em>Journal de statistique canine bayésienne</em>. 2023;1(1):1-200.</p>
+<hr />
+<p>Cet outil est mis à votre disposition sous licence CC BY-NC 4.0, c’est-à-dire : Pas d’Utilisation Commerciale 4.0 International.</p>
+<p><strong>Vous êtes autorisé à</strong> :</p>
+<ul>
+<li>Partager — copier, distribuer et communiquer le matériel par tous moyens et sous tous formats</li>
+<li>Adapter — remixer, transformer et créer à partir du matériel</li>
+<li>L’Offrant ne peut retirer les autorisations concédées par la licence tant que vous appliquez les termes de cette licence.</li>
+</ul>
+<p><strong>selon les conditions suivantes</strong> :</p>
+<ul>
+<li><p>Attribution — Vous devez créditer l’Œuvre, intégrer un lien vers la licence et indiquer si des modifications ont été effectuées à l’Œuvre Vous devez indiquer ces informations par tous les moyens raisonnables, sans toutefois suggérer que l’Offrant vous soutient ou soutient la façon dont vous avez utilisé son Oeuvre.</p></li>
+<li><p>Pas d’Utilisation Commerciale — Vous n’êtes pas autorisé à faire un usage commercial de cette Œuvre, tout ou partie du matériel la composant.</p></li>
+<li><p>Pas de restrictions complémentaires — Vous n’êtes pas autorisé à appliquer des conditions légales ou des mesures techniques qui restreindraient légalement autrui à utiliser l’Œuvre dans les conditions décrites par la licence.</p></li>
+</ul>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="fonctionnement-général-de-shiba.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
