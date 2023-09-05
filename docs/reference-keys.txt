@@ -1,3 +1,4 @@
+test
 principes-généraux-de-shiba
 principes-de-la-statistique-bayésienne
 notion-dhypothèse-scientifique-et-dhypothèse-statistique.
