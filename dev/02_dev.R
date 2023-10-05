@@ -45,6 +45,8 @@ golem::add_fct("shibaGlmTable")
 
 golem::add_fct("prop_comp")
 
+golem::add_fct("infe_moy")
+
 
 
 
