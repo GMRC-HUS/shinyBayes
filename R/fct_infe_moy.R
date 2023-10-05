@@ -178,5 +178,4 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   
 }
 
-compare_moy_gibbs(X = x,Y = y,mu0 = mu0,s_m0 = t20,s0 = s0,n_s0 = n_s0,
-                                       IC =0.9 )
+

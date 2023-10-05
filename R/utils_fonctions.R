@@ -394,6 +394,7 @@ arrondi_echelle_inf <- function(x){
 ggfst_lst_label_bld <- function(ggp){
   
   labels <- ggplot_build(ggp)$layout$panel_params[[1]]$x$get_labels()
+  labels <- labels[!is.na(labels)]
   color<- rep("black", length(labels))
   color[c(1, length(color))] <- "#FF2424"
   face<- rep("plain", length(labels))
