@@ -115,3 +115,24 @@ ShiBA:::shibaGlmTable(fit2,type_glm = "binom")
 ShiBA:::diag_convergence(fit2)
 ```
 
+
+```{r fig.height=100, fig.width=120}
+library(ggplot2)
+ggfst_lst_label_bld <- function(ggp){
+  
+  labels <- ggplot_build(ggp)$layout$panel_params[[1]]$x$get_labels()
+  color<- rep("black", length(labels))
+  color[c(1, length(color))] <- "#FF2424"
+  face<- rep("plain", length(labels))
+  face[c(1, length(face))] <- "bold"
+  return(ggp+theme(
+    
+    axis.text.x= element_text(face = face,
+                              color =color)
+  ) )
+}
+
+print(ggfst_lst_label_bld(ggplot(mtcars, aes(x=cyl, y=mpg))+geom_point()))
+```
+
+

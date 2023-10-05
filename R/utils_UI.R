@@ -135,7 +135,10 @@ ui_ggplot_prior_norm <-  function(i, input, noms) {
     (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
        stat_function(fun = dnorm, args = list(mean = input[[paste(noms[i], "_mu_0", sep = "")]], sd = input[[paste(noms[i], "_sigma_0", sep = "")]])) +
        theme_light() +
-       xlim(c(
+      
+     
+                                                                                              
+       scale_x_continuous(limits=c(
          arrondi_echelle_inf(input[[paste(noms[i], "_mu_0", sep = "")]] - 3 * input[[paste(noms[i], "_sigma_0", sep = "")]]),
          arrondi_echelle_sup(input[[paste(noms[i], "_mu_0", sep = "")]] + 3 * input[[paste(noms[i], "_sigma_0", sep = "")]])
        )) +
