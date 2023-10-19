@@ -270,7 +270,7 @@ ui_choix_prior_norm2 <-  function(i, ns, width = 4, height_figure = 100, width_f
   
   
   
-  box( title = i$nom,width=width,
+  box( title = paste(i$nom,"mu"),width=width,
        plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe", sep = "")))%>% withSpinner(),
        numericInput(ns(paste(i$nom, "_mu", sep = "")), "A priori  mu : ",
                     value = i$mu[1], step = 0.1, min=0
@@ -288,8 +288,9 @@ ui_ggplot_prior_norm2 <-  function(i, input) {
     (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
        stat_function(fun = dnorm, args = list(mean = input[[paste0(i$nom, "_mu")]], sd = input[[paste0(i$nom, "_sd")]])) +
        theme_light() +
-       xlim(c(
-         0,1
+       scale_x_continuous(limits=c(
+         arrondi_echelle_inf(input[[paste0(i$nom, "_mu")]] - 3 * input[[paste0(i$nom, "_sd")]]),
+         arrondi_echelle_sup(input[[paste0(i$nom, "_mu")]] + 3 * input[[paste0(i$nom, "_sd")]])
        )) +
        theme(
          axis.text.y = element_blank(),
