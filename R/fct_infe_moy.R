@@ -7,11 +7,11 @@
 #' @noRd
 
 
-estim_moy_gibbs<-  function(x,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL, n_sample =100000 ) {
+estim_moy_gibbs<-  function(x,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL, n_sample =1000 ) {
   
   moy_data = mean(x,na.rm=T)
   var_data = var(x,na.rm = T)
-  
+  n = length(x)
   PHI<-matrix (nrow=n_sample, ncol=2)
   PHI[1,] <- phi <- c(moy_data,1/var_data)
   ###
