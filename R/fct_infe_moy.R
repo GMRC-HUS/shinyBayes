@@ -99,6 +99,8 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   resprior<-resprior%>%mutate_all(function(i){round(i,arr)})
   
   # print(c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") ))
+  print(res)
+  print(noms.tab)
   colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
   rownames(resprior)<-c(noms.tab)
   # print(resprior)
@@ -112,6 +114,7 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   res<-res%>%mutate_all(function(i){round(i,arr)})
   
   colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+ 
   rownames(res)<-c(noms.tab)
   
   

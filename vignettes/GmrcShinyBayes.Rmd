@@ -134,3 +134,181 @@ compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,500), rep(0,500)),c(0,0),c(1,1),c(1,1
 compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,1000)),c(0),c(1),c(1),c(1),type="seuil",plusieurs =F,seuil_global = 0)
 ```
 
+
+```{r}
+x= c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 
+17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 33.9, 21.5, 
+15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, 15, 21.4)
+y=c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 
+    4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4)
+priors =data.frame(mu_mu=c(20.090625, 20.090625, 
+    20.090625),
+    mu_sd = c(6.0269480520891, 6.0269480520891, 6.0269480520891
+    ),
+    sd_shape = c(1, 1, 1),
+    sd_rate = c(1, 1, 1))
+seuil_comp_moy = list(type= NULL, plusieurs = NULL, seuil_global = NULL)
+
+library(data.table)
+library(tidyverse)
+
+
+```
+```{r}
+compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
+                              type =  NULL, plusieurs = NULL, seuild=NULL, twit=NULL,seuil_global = NULL,
+                              n_sample =100000,IC=0.95, arr=3) {
+  Y = as.factor(Y)
+  noms = levels(Y)
+  Ngroup=nlevels(Y)
+  pourcent_IC2 = (1-IC)/2
+  long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
+  
+  if(is.null(type)){
+    
+  }else{
+    if((!is.null(type)) &  "seuil" %in%type){
+      
+      if(!plusieurs & !is.null(seuil_global)){
+        seuild = rep(seuil_global,long)
+        
+      }else{
+        
+        seuild = unlist(seuild%>%unlist%>%na.omit()%>%as.vector())
+        
+        
+      }
+    }
+    
+  }
+  
+  if(length(mu0) != Ngroup) stop('Prior mu0 n\' as pas la même nombre de groupe que la variable Y')
+  if(length(s_m0) != Ngroup) stop('Prior s_m0 n\' as pas la même nombre de groupe que la variable Y')
+  if(length(s0) != Ngroup) stop('Prior s0 n\' as pas la même nombre de groupe que la variable Y')
+  if(length(n_s0) != Ngroup) stop('Prior n_s0 n\' as pas la même nombre de groupe que la variable Y')
+  
+  descriptif<-function(x, probs=c(pourcent_IC2,0.5, 1-pourcent_IC2 )){
+    return(c(list(mean(x)),quantile(x,probs=probs)))
+  }
+  res_infe<-lapply(1:Ngroup, function(x) estim_moy_gibbs(X[which(Y==levels(Y)[x])],
+                                                         mu0[x],s_m0[x],s0[x],n_s0[x], n_sample =n_sample
+  ))
+  res_prior<- lapply(1:Ngroup, function(x) rnorm(n_sample,
+                                                 mu0[x],s0[x]
+  ))
+
+  diffprior<-diffpost<-diff<- list()
+  
+  for(i in 1:Ngroup){
+    for(j in 2:Ngroup){
+      if(j<=i)next
+      diffprior[[i]]<-descriptif(res_prior[[i]]-res_prior[[j]])
+      nomsdiff<-c(paste0("Diff Moy(groupe=",noms[i],")-Moy(Groupe=",noms[j],")"))
+      diff[[i]]<-res_infe[[i]][,1]-res_infe[[j]][,1]
+      diffpost[[i]]<-descriptif(res_infe[[i]][,1]-res_infe[[j]][,1])
+    }
+  }
+  
+  
+  
+  nomsx<-paste0("Moy groupe =",noms)
+  noms.tab<-c(nomsx,nomsdiff)
+  
+  
+  resprior<-c(lapply(res_prior,descriptif),diffprior)
+    dput(resprior)
+  # resprior<-unlist(resprior,recursive=F)
+  # resprior<-lapply(resprior,function(i){round(i,4)})
+  resprior<-data.table::rbindlist(resprior)
+  print(resprior)
+  resprior<-resprior%>%mutate_all(function(i){round(i,arr)})
+  print(resprior)
+  # print(c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") ))
+  print(resprior)
+  print(noms.tab)
+  colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(resprior)<-c(noms.tab)
+  # print(resprior)
+  
+  res<-c(lapply(res_infe,descriptif),diffpost)
+  
+  
+  
+  res<-rbindlist(res)
+  
+  res<-res%>%mutate_all(function(i){round(i,arr)})
+  
+  colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+ 
+  rownames(res)<-c(noms.tab)
+  
+  
+  
+  
+  
+  if(is.null(type)){
+  }else if(type =="seuil"){
+    seuils<-c(seuild)
+    tests<-NULL
+    for(i in 1:length(diff)){
+      tests<-c(tests,round(mean(diff[[i]]>seuils[i]),arr))
+    }
+    
+    res$seuils<-c(rep(NA,Ngroup),seuils)
+    res[,"Pr(X>seuil|D)"]<-c(rep(NA,Ngroup),tests)
+    
+    
+  }else{
+    
+    sel<-which(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() ==twit$var )
+    print(twit$var)
+    print(sel)
+    print(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() )
+    lequel <- ceiling(sel/2)
+    signe = 1-sel%%2
+    data=twit$data
+    data$`Pr Ha` = c(round(mean(between(diff[[lequel]][,1]* ifelse_perso(signe==1, 1, -1),data["Diff","minHa"],data["Diff","maxHa"])),arr))
+    
+    
+    data$`Pr Hr` =  c(round(mean(between(diff[[lequel]][,1]* ifelse_perso(signe==1, 1, -1),data["Diff","minHr"],data["Diff","maxHr"])),arr))              
+    
+    
+    
+    
+  }
+  
+  # prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1,] , "Parametre beta" = priors[2,],row.names = paste("Groupe",noms), check.names = F)
+  
+  
+  
+  laliste<-list(
+    # prior
+    resprior,res)
+  names(laliste) <- c(#"prior",
+    "Valeurs a priori","Valeurs a posteriori" )
+  if(is.null(type)){
+    
+  }else if(type =="twit" & !is.null(type)){
+    res_twit= list(TwoIt = data)
+    names(res_twit) = twit$var
+    laliste<-append(laliste,res_twit)
+  }
+  
+  
+  
+  return(laliste)
+  
+  res_infe
+  
+  
+  
+  
+  
+}
+
+compare_moy_gibbs(x,y,priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
+                           seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs)
+      
+      
+```
+

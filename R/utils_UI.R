@@ -235,10 +235,10 @@ ui_choix_prior_dgamma <-  function(i, ns, width = 4, height_figure = 100, width_
   box( title = paste(i$nom,"sd"),width=width,
        plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe_gamma", sep = "")))%>% withSpinner(),
        numericInput(ns(paste(i$nom, "_alpha", sep = "")), "A priori parametre alpha : ",
-                    value = i$sd[1], step = 0.1, min=0
+                    value = i$sd_shape, step = 0.1, min=0
        ),
        numericInput(ns(paste(i$nom, "_beta", sep = "")), "A priori parametre beta : ",
-                    step = 0.1, value = i$sd[2], min=0
+                    step = 0.1, value = i$sd_rate, min=0
        )
   )
   
