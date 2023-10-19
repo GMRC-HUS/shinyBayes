@@ -95,10 +95,10 @@ ui_choix_prior_norm <-  function(i,variables, ns,prior_beta_location_def,prior_b
   
   box( title = x,
        plotOutput(width = "100%", height = 150, ns(paste(x, "_courbe", sep = ""))),
-       numericInput(ns(paste(x, "_mu_0", sep = "")), "A priori mu beta: ",
+       numericInput(ns(paste(x, "_mu_0", sep = "")), "A priori mu : ",
                     value = prior_beta_location_def_i, step = 0.1
        ),
-       numericInput(ns(paste(x, "_sigma_0", sep = "")), "A priori écart-type beta : ",
+       numericInput(ns(paste(x, "_sigma_0", sep = "")), "A priori écart-type  : ",
                     step = 0.1, value = prior_beta_scale_def_i, min=00.0001
        )
   )
@@ -224,3 +224,80 @@ ui_ggplot_prior_dbeta <-  function(i, input) {
        xlab(i$nom)) %>% ggfst_lst_label_bld
   })
 }
+
+
+
+
+ui_choix_prior_dgamma <-  function(i, ns, width = 4, height_figure = 100, width_figure ="100%") {
+  
+  
+  
+  box( title = paste(i$nom,"sd"),width=width,
+       plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe_gamma", sep = "")))%>% withSpinner(),
+       numericInput(ns(paste(i$nom, "_alpha", sep = "")), "A priori parametre alpha : ",
+                    value = i$sd[1], step = 0.1, min=0
+       ),
+       numericInput(ns(paste(i$nom, "_beta", sep = "")), "A priori parametre beta : ",
+                    step = 0.1, value = i$sd[2], min=0
+       )
+  )
+  
+}
+
+
+ui_ggplot_prior_dgamma <-  function(i, input) {
+  renderPlot({
+    (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
+       stat_function(fun = dgamma, args = list(shape = input[[paste0(i$nom, "_alpha")]], rate = input[[paste0(i$nom, "_beta")]])) +
+       theme_light() +
+       xlim(c(
+         0,1
+       )) +
+       theme(
+         axis.text.y = element_blank(),
+         axis.ticks.y = element_blank(),
+         axis.ticks.x = element_blank()
+       ) +
+       ylab("") +
+       xlab(i$nom)) %>% ggfst_lst_label_bld
+  })
+}
+
+
+
+
+ui_choix_prior_norm2 <-  function(i, ns, width = 4, height_figure = 100, width_figure ="100%") {
+  
+  
+  
+  box( title = i$nom,width=width,
+       plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe", sep = "")))%>% withSpinner(),
+       numericInput(ns(paste(i$nom, "_mu", sep = "")), "A priori  mu : ",
+                    value = i$mu[1], step = 0.1, min=0
+       ),
+       numericInput(ns(paste(i$nom, "_sd", sep = "")), "A priori sd : ",
+                    step = 0.1, value = i$mu[2], min=0
+       )
+  )
+  
+}
+
+
+ui_ggplot_prior_norm2 <-  function(i, input) {
+  renderPlot({
+    (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
+       stat_function(fun = dnorm, args = list(mean = input[[paste0(i$nom, "_mu")]], sd = input[[paste0(i$nom, "_sd")]])) +
+       theme_light() +
+       xlim(c(
+         0,1
+       )) +
+       theme(
+         axis.text.y = element_blank(),
+         axis.ticks.y = element_blank(),
+         axis.ticks.x = element_blank()
+       ) +
+       ylab("") +
+       xlab(i$nom)) %>% ggfst_lst_label_bld
+  })
+}
+

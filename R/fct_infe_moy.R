@@ -33,7 +33,7 @@ estim_moy_gibbs<-  function(x,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL, n_sample 
 
 
 compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
-                              type =  NULL, plusieurs = NULL, seuild=NULL, twit=NULL,
+                              type =  NULL, plusieurs = NULL, seuild=NULL, twit=NULL,seuil_global = NULL,
                               n_sample =100000,IC=0.95, arr=3) {
   Y = as.factor(Y)
   noms = levels(Y)
@@ -47,12 +47,12 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     if((!is.null(type)) &  "seuil" %in%type){
       
       if(!plusieurs & !is.null(seuil_global)){
-        seuild = rep(seuil_global["Diff","seuil"],long)
-
+        seuild = rep(seuil_global,long)
+        
       }else{
         
         seuild = unlist(seuild%>%unlist%>%na.omit()%>%as.vector())
-
+        
         
       }
     }
@@ -68,10 +68,10 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     return(c(list(mean(x)),quantile(x,probs=probs)))
   }
   res_infe<-lapply(1:Ngroup, function(x) estim_moy_gibbs(X[which(Y==levels(Y)[x])],
-                                                             mu0[x],s_m0[x],s0[x],n_s0[x], n_sample =n_sample
+                                                         mu0[x],s_m0[x],s0[x],n_s0[x], n_sample =n_sample
   ))
   res_prior<- lapply(1:Ngroup, function(x) rnorm(n_sample,
-                                                   mu0[x],s0[x]
+                                                 mu0[x],s0[x]
   ))
   
   diffprior<-diffpost<-diff<- list()
@@ -86,29 +86,29 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     }
   }
   
-
+  
   
   nomsx<-paste0("Moy groupe =",noms)
   noms.tab<-c(nomsx,nomsdiff)
   
   
   resprior<-c(lapply(res_prior,descriptif),diffprior)
-   # resprior<-unlist(resprior,recursive=F)
+  # resprior<-unlist(resprior,recursive=F)
   # resprior<-lapply(resprior,function(i){round(i,4)})
   resprior<-rbindlist(resprior)
   resprior<-resprior%>%mutate_all(function(i){round(i,arr)})
-
-  print(c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") ))
+  
+  # print(c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") ))
   colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
   rownames(resprior)<-c(noms.tab)
-  print(resprior)
+  # print(resprior)
   
   res<-c(lapply(res_infe,descriptif),diffpost)
-
-
-
+  
+  
+  
   res<-rbindlist(res)
-
+  
   res<-res%>%mutate_all(function(i){round(i,arr)})
   
   colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
@@ -117,13 +117,13 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   
   
   
-
+  
   if(is.null(type)){
   }else if(type =="seuil"){
     seuils<-c(seuild)
     tests<-NULL
     for(i in 1:length(diff)){
-      tests<-c(tests,round(mean(diff[[i]][,1]>seuils[i]),arr))
+      tests<-c(tests,round(mean(diff[[i]]>seuils[i]),arr))
     }
     
     res$seuils<-c(rep(NA,Ngroup),seuils)
@@ -140,7 +140,7 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     signe = 1-sel%%2
     data=twit$data
     data$`Pr Ha` = c(round(mean(between(diff[[lequel]][,1]* ifelse_perso(signe==1, 1, -1),data["Diff","minHa"],data["Diff","maxHa"])),arr))
-                   
+    
     
     data$`Pr Hr` =  c(round(mean(between(diff[[lequel]][,1]* ifelse_perso(signe==1, 1, -1),data["Diff","minHr"],data["Diff","maxHr"])),arr))              
     
@@ -155,9 +155,9 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   
   laliste<-list(
     # prior
-                resprior,res)
+    resprior,res)
   names(laliste) <- c(#"prior",
-                      "Valeurs a priori","Valeurs a posteriori" )
+    "Valeurs a priori","Valeurs a posteriori" )
   if(is.null(type)){
     
   }else if(type =="twit" & !is.null(type)){
@@ -172,8 +172,8 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   
   res_infe
   
-
-    
+  
+  
   
   
 }
