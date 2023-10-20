@@ -531,3 +531,169 @@ twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour ) {
     }
   )
 }
+
+
+# Module server function
+twitServer_moy <- function(id, twit, seuil_unique,seuil_diff,group,seuil_comp_retour ) {
+  moduleServer(
+    id,
+    
+    
+    ## Below is the module function
+    function(input, output, session) {
+      ns <- session$ns
+      observeEvent(input$choix_seuil_2it, {
+        
+        
+        output$seuil_ou_two_it_ui <- renderUI({
+          
+          
+          choix_var<- apply(utils::combn(group, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector()
+          print(input$choix_seuil_2it)
+          if (input$choix_seuil_2it) {
+            
+            
+            tagList(
+              h2("Choix des seuils"),
+              awesomeRadio(
+                inputId = ns("plusieur_seuils"),
+                label = "Le même seuil pour l'ensemble des covariables",
+                choices = c("Oui", "Non"),
+                selected = "Non",
+                inline = TRUE,
+                status = "success",
+                checkbox = TRUE
+              ),
+              uiOutput(ns("choix_seuils"))
+            )
+          } else {
+            tagList(
+              h2("Choix des Bornes du Two It"),
+              pickerInput(
+                inputId = ns("var_sel"),
+                label = "Variable à monitorer",
+                choices =choix_var ,
+                options = list(
+                  size = 5
+                )
+              ),
+              
+              box("Définition du twit", table_interact_UI(ns("twit_choix")))
+              
+            )
+            
+          }
+          
+        })
+        
+        if (!input$choix_seuil_2it) {
+          twit$var <- input$var_sel 
+          twit$data <-data.frame(Type= c("Diff"), 
+                                 minHa = c(0), 
+                                 maxHa = c(0), 
+                                 minHr = c(0), 
+                                 maxHr = c(0), row.names = "Type"
+          )
+          
+          
+          
+          seuil_comp_retour$type <-"twit"
+          
+        }else{
+          
+          twit$data <- NULL
+          seuil_comp_retour$type <-"seuil"
+        }
+        
+      })
+      
+      
+      
+      
+      
+      observeEvent(input$plusieur_seuils, {  
+        if (input$choix_seuil_2it) {
+          seuil_comp_retour$data$seuil <- "seuil"
+          print(input$plusieur_seuils4)
+          print(names(input))
+          if( input$plusieur_seuils == "Oui"){
+            seuil_unique$data <-  data.frame(Type= c("Diff"), seuil = c(0),row.names = "Type")
+            seuil_diff$data = NULL
+            
+            seuil_comp_retour$plusieurs = F
+          }else{
+            seuil_comp_retour$plusieurs = T
+            group<- as.character(group)
+            diff_moy<-data.frame(row.names= group[-1])
+            diff_moy[,group[-length(group)]]<-0
+            
+            for(i in 1:dim(diff_moy)[1]){
+              for(j in min(2,dim(diff_moy)[2]) :dim(diff_moy)[2]){
+                if(j>=i+1){
+                  
+                  diff_moy[i,j]<-NA
+                }
+              }
+            }
+            seuil_diff$data = diff_moy
+            
+            seuil_unique$data <-  NULL
+            
+          }
+          
+          print(seuil_unique$data)
+          
+          twit$data<- NULL 
+        }else{
+          
+        }
+        
+      })
+      
+      output$choix_seuils <- renderUI({
+        if (input$plusieur_seuils == "Non") {
+          tagList(
+            box("Seuils sur la différence",table_interact_UI(ns("seuil_diff"))),
+  
+            
+          )
+        } else {
+          
+          print(seuil_unique$data)
+          tagList(table_interact_UI(ns("test"))
+          )
+        }
+      })
+      
+      table_interact_server("test",seuil_unique,F)
+      
+      
+      table_interact_server("seuil_diff",seuil_diff)
+      
+      table_interact_server("twit_choix",twit,F)
+      
+      
+      myreturn <- reactiveValues()
+      observeEvent(input$ok_seuil, {
+        if (input$choix_seuil_2it) {
+          seuil_comp_retour$type <-"seuil"
+          if( input$plusieur_seuils == "Oui"){
+            seuil_comp_retour$plusieurs = F
+          }else{
+            seuil_comp_retour$plusieurs = T
+          }
+        }else{
+          
+          seuil_comp_retour$type <-"twit"
+          twit$var <- input$var_sel 
+          
+        }
+        
+        removeModal()
+        
+      })
+      
+      
+    }
+  )
+}

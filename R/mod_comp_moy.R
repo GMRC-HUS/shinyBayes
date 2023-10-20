@@ -181,8 +181,10 @@ mod_comp_moy_server <- function(id,r){
     
     prior_moy$prior<-  lapply( prior_moy$prior, function(i) {
       list(nom = i$nom,
-           mu = c(input[[paste(i$nom, "mu", sep = "_")]],input[[paste(i$nom, "sd", sep = "_")]]),
-           sd = c(input[[paste(i$nom, "alpha", sep = "_")]],input[[paste(i$nom, "alpha", sep = "_")]])
+           mu_mu = input[[paste(i$nom, "mu", sep = "_")]],
+          mu_sd = input[[paste(i$nom, "sd", sep = "_")]],
+           sd_shape = input[[paste(i$nom, "alpha", sep = "_")]],
+          sd_rate=        input[[paste(i$nom, "alpha", sep = "_")]]
            )
     })
     removeModal()
@@ -204,7 +206,7 @@ mod_comp_moy_server <- function(id,r){
     output$twit_ui <- renderUI({
       ui_twit("seuil_2it", ns)
     })
-    
+   
     if (is.null(prior_moy$prior)) {
       var_grp <- r$BDD[,input$var_grp]
       moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
@@ -215,9 +217,10 @@ mod_comp_moy_server <- function(id,r){
     
     var <- sapply(prior_moy$prior, function(x) x$nom)
     #seuil_twoit(twitServer_prop("id_i", var))
-    twitServer_prop("twit_seuil",twit_react,
-                    seuil_react,seuil_react_diff,seuil_react_OR,seuil_react_RR, group=levels(as.factor(r$BDD[,input$var_grp])),
-                    seuil_comp_moy)
+
+    twitServer_moy("twit_seuil",twit_react,
+                   seuil_react,seuil_react_diff,group=levels(as.factor(r$BDD[,input$var_grp])),
+                   seuil_comp_moy)
   })
   
   
@@ -245,36 +248,25 @@ mod_comp_moy_server <- function(id,r){
   twit_react <- reactiveValues(data = { 
     NULL
   }, var = NULL)
-  
-  seuil_react <- reactiveValues(data = { 
-    NULL
-  })
   seuil_react_diff<- reactiveValues(data = { 
     NULL
   })
-  seuil_react_OR<-reactiveValues(data = { 
+  seuil_react <- reactiveValues(data = { 
     NULL
   })
-  
-  seuil_react_RR<-reactiveValues(data = { 
-    NULL
-  })
+
   seuil_comp_moy<-reactiveValues(type = { 
     NULL
   },
   plusieurs = {NULL})
   
-  
-  
-  
-  
-  
-  
-  ##### Analyse ####
+    ##### Analyse ####
   
   observeEvent(input$go,{
-    print(twit_react$var)
-    print(seuil_comp_moy$type)
+    dput(list(twit_react$data, twit_react$var))
+    dput(list(seuil_comp_moy$type))
+    dput(seuil_react$data)
+    
     
     if (is.null(prior_moy$prior)) {
       var_grp <- r$BDD[,input$var_grp]
@@ -286,16 +278,17 @@ mod_comp_moy_server <- function(id,r){
     
     priors =  prior_moy$prior%>%rbindlist()
    
-    dput(list(r$BDD[,input$var_moy],  r$BDD[,input$var_grp],priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
-              seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs,seuil_global = seuil_react$data))
+
     
-    
+    print(seuil_react_diff$data)
     res<-compare_moy_gibbs(r$BDD[,input$var_moy],  r$BDD[,input$var_grp],priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
-                           seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs,seuil_global = seuil_react$data)
+                           seuil_global=seuil_react$data, type = seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs,seuild = seuil_react_diff$data,twit = twit_react)
       
       print(res)
       
-      
+      # function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
+      #          type =  NULL, plusieurs = NULL, seuild=NULL, twit=NULL,seuil_global = NULL,
+      #          n_sample =100000,IC=0.95, arr=3)
 
     lapply(1:length(res), function(x) print(names(res)[x]))
     output$res_crois_moy<- renderUI({tagList(

@@ -47,7 +47,8 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     if((!is.null(type)) &  "seuil" %in%type){
       
       if(!plusieurs & !is.null(seuil_global)){
-        seuild = rep(seuil_global,long)
+        
+        seuild = rep(seuil_global["Diff","seuil"],long)
         
       }else{
         
@@ -74,15 +75,18 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
                                                  mu0[x],s0[x]
   ))
   
-  diffprior<-diffpost<-diff<- list()
-  
+  diffprior<-diffpost<-diff<-list()
+  nomsdiff<- NULL
   for(i in 1:Ngroup){
     for(j in 2:Ngroup){
       if(j<=i)next
-      diffprior[[i]]<-descriptif(res_prior[[i]]-res_prior[[j]])
-      nomsdiff<-c(paste0("Diff Moy(groupe=",noms[i],")-Moy(Groupe=",noms[j],")"))
-      diff[[i]]<-res_infe[[i]][,1]-res_infe[[j]][,1]
-      diffpost[[i]]<-descriptif(res_infe[[i]][,1]-res_infe[[j]][,1])
+      # dput(diffprior[[i]])
+      # dput(descriptif(res_prior[[i]]-res_prior[[j]]))
+      diffprior<-append(diffprior,list(descriptif(res_prior[[i]]-res_prior[[j]])))
+      nomsdiff<-c(nomsdiff,paste0("Diff Moy(groupe=",noms[i],")-Moy(Groupe=",noms[j],")"))
+      diff<-append( diff,list(res_infe[[i]][,1]-res_infe[[j]][,1]))
+      
+      diffpost<- append(diffpost,list(descriptif(res_infe[[i]][,1]-res_infe[[j]][,1])))
     }
   }
   
@@ -93,13 +97,16 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   
   
   resprior<-c(lapply(res_prior,descriptif),diffprior)
+  dput(diffprior)
+  dput(lapply(res_prior,descriptif))
   # resprior<-unlist(resprior,recursive=F)
   # resprior<-lapply(resprior,function(i){round(i,4)})
-  resprior<-rbindlist(resprior)
+  resprior<-data.table::rbindlist(resprior)
+  print(resprior)
   resprior<-resprior%>%mutate_all(function(i){round(i,arr)})
-  
+  print(resprior)
   # print(c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") ))
-  print(res)
+  print(resprior)
   print(noms.tab)
   colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
   rownames(resprior)<-c(noms.tab)
@@ -114,7 +121,7 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   res<-res%>%mutate_all(function(i){round(i,arr)})
   
   colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
- 
+  
   rownames(res)<-c(noms.tab)
   
   
@@ -125,6 +132,8 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   }else if(type =="seuil"){
     seuils<-c(seuild)
     tests<-NULL
+    print("a regarder")
+    print(length(diff))
     for(i in 1:length(diff)){
       tests<-c(tests,round(mean(diff[[i]]>seuils[i]),arr))
     }
@@ -136,21 +145,23 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   }else{
     
     sel<-which(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() ==twit$var )
-    print(twit$var)
-    print(sel)
-    print(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() )
+    
     lequel <- ceiling(sel/2)
     signe = 1-sel%%2
     data=twit$data
-    data$`Pr Ha` = c(round(mean(between(diff[[lequel]][,1]* ifelse_perso(signe==1, 1, -1),data["Diff","minHa"],data["Diff","maxHa"])),arr))
+    print(diff[[lequel]]* ifelse_perso(signe==1, 1, -1))
+    print(data["minHa"])
+    data$`Pr Ha` = c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["minHa"]%>%unlist,data["maxHa"]%>%unlist)),arr))
     
     
-    data$`Pr Hr` =  c(round(mean(between(diff[[lequel]][,1]* ifelse_perso(signe==1, 1, -1),data["Diff","minHr"],data["Diff","maxHr"])),arr))              
+    data$`Pr Hr` =  c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["minHr"]%>%unlist,data["maxHr"]%>%unlist)),arr))              
     
     
     
     
   }
+  
+  
   
   # prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1,] , "Parametre beta" = priors[2,],row.names = paste("Groupe",noms), check.names = F)
   
