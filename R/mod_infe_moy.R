@@ -147,8 +147,10 @@ mod_infe_moy_server <- function(id,r){
     observeEvent(c(input$var_moy), {
       
       var_moy <- r$BDD[,input$var_moy]
-      prior_moy$prior<-list(nom=input$var_moy, alpha=0.5,beta=0.5)
-      output[[paste(input$var_moy, "_courbe", sep = "")]] <- ui_ggplot_prior_dbeta(prior_moy$prior,input)
+      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
+      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
+      output[[paste(input$var_moy, "_courbe", sep = "")]] <-ui_ggplot_prior_norm2(prior_moy,input)
       
     })
     
@@ -158,7 +160,7 @@ mod_infe_moy_server <- function(id,r){
       
       
       tagList(fluidRow(
-        ui_choix_prior_dbeta( prior_moy$prior, ns, width = 12)
+        ui_choix_prior_norm2( prior_moy$prior, ns, width = 12)
       )
       )
       
@@ -169,8 +171,12 @@ mod_infe_moy_server <- function(id,r){
       prior_moy$prior<-list(nom=input$var_moy, alpha=0.5,beta=0.5)
       
       
-      updateNumericInput(session, paste0(input$var_moy, "_alpha"), value =  prior_moy$prior$alpha)
-      updateNumericInput(session, paste0(input$var_moy, "_beta"), value =  prior_moy$prior$beta)
+
+      updateNumericInput(session, paste0(input$var_moy, "_mu"), value = prior_moy$mu_mu)
+      updateNumericInput(session, paste0(input$var_moy, "_sd"), value = prior_moy$mu_sd)
+      
+      updateNumericInput(session, paste0(input$var_moy, "_alpha"), value = prior_moy$sd_shape)
+      updateNumericInput(session, paste0(input$var_moy, "_beta"), value = prior_moy$sd_rate)
       
       
     })
@@ -197,9 +203,15 @@ mod_infe_moy_server <- function(id,r){
       
       var <-input$var_moy
       #seuil_twoit(twitServer_moy("id_i", var))
+      
+      
+      #### A faire ici 
       twitServer_moy_infe("twit_seuil",twit_react,
                            seuil_react,
                            seuil_comp_moy)
+      
+      
+      
     })
     
     
@@ -218,7 +230,7 @@ mod_infe_moy_server <- function(id,r){
         
       })
       
-      
+      ###  a faire
       twitUi_moy_infe(ns("twit_seuil"))
       
     })
