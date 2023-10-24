@@ -134,3 +134,32 @@ compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,500), rep(0,500)),c(0,0),c(1,1),c(1,1
 compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,1000)),c(0),c(1),c(1),c(1),type="seuil",plusieurs =F,seuil_global = 0)
 ```
 
+
+```{r}
+x= c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 
+17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 33.9, 21.5, 
+15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, 15, 21.4)
+y=c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 
+    4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4)
+priors =data.frame(mu_mu=c(20.090625, 20.090625, 
+    20.090625),
+    mu_sd = c(6.0269480520891, 6.0269480520891, 6.0269480520891
+    ),
+    sd_shape = c(1, 1, 1),
+    sd_rate = c(1, 1, 1))
+seuil_comp_moy = list(type= NULL, plusieurs = NULL, seuil_global = NULL)
+
+library(data.table)
+library(tidyverse)
+
+
+```
+```{r}
+
+
+compare_moy_gibbs(x,y,priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
+                           seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs)
+      
+      
+```
+

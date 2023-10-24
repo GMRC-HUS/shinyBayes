@@ -271,6 +271,7 @@ mod_comp_pour_server <- function(id,r){
     
     priors =  prior_prop$prior%>%rbindlist()%>%dplyr::select(alpha, beta)%>%t
     print(r$BDD[,input$var_grp])
+    
     res<-(Cpmultprop2IT(Y = r$BDD[,input$var_prop], Gr = r$BDD[,input$var_grp],priors = priors,
                         seuil_global = seuil_react$data,
                         seuild=seuil_react_diff$data,seuilr=seuil_react_RR$data, seuilo=seuil_react_OR$data, 
