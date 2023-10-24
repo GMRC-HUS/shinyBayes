@@ -273,10 +273,10 @@ ui_choix_prior_norm2 <-  function(i, ns, width = 4, height_figure = 100, width_f
   box( title = paste(i$nom,"mu"),width=width,
        plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe", sep = "")))%>% withSpinner(),
        numericInput(ns(paste(i$nom, "_mu", sep = "")), "A priori  mu : ",
-                    value = i$mu[1], step = 0.1, min=0
+                    value = i$mu_mu, step = 0.1, min=0
        ),
        numericInput(ns(paste(i$nom, "_sd", sep = "")), "A priori sd : ",
-                    step = 0.1, value = i$mu[2], min=0
+                    step = 0.1, value = i$mu_sd, min=0
        )
   )
   
