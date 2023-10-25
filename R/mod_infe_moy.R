@@ -206,9 +206,9 @@ mod_infe_moy_server <- function(id,r){
       
       
       #### A faire ici 
-      twitServer_moy_infe("twit_seuil",twit_react,
+      twitServer_prop_infe("twit_seuil",twit_react,
                            seuil_react,
-                           seuil_comp_moy)
+                           seuil_comp_moy,prop=F)
       
       
       
@@ -231,7 +231,7 @@ mod_infe_moy_server <- function(id,r){
       })
       
       ###  a faire
-      twitUi_moy_infe(ns("twit_seuil"))
+      twitUi_prop_infe(ns("twit_seuil"))
       
     })
     

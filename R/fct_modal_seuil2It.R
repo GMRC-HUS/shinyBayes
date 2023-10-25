@@ -423,7 +423,7 @@ twitUi_prop_infe <- function(id) {
 }
 
 # Module server function
-twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour ) {
+twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour,prop=T ) {
   moduleServer(
     id,
     
@@ -460,7 +460,7 @@ twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour ) {
         })
         
         if (!input$choix_seuil_2it) {
-
+if(prop){
           twit$data <-data.frame(
                                  minHa = c(0), 
                                  maxHa = c(0.5), 
@@ -468,7 +468,15 @@ twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour ) {
                                  maxHr = c(1), row.names = c("Seuil")
           )
           
-          
+}else{
+  twit$data <-data.frame(
+    minHa = c(0), 
+    maxHa = c(0), 
+    minHr = c(0), 
+    maxHr = c(0), row.names = c("Seuil")
+  )
+  
+}
           
           seuil_comp_retour$type <-"twit"
           
@@ -478,7 +486,8 @@ twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour ) {
           print(input$plusieur_seuils4)
           print(names(input))
           
-          seuil_unique$data <-  data.frame( seuil = c(0.5),row.names = "Seuil")
+          seuil_unique$data <-  ifelse_perso(prop,data.frame( seuil = c(0.5),row.names = "Seuil"),
+                                             data.frame( seuil = c(0),row.names = "Seuil"))
           
           seuil_comp_retour$plusieurs = F
           
