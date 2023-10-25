@@ -34,7 +34,7 @@ estim_moy_gibbs<-  function(x,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL, n_sample 
 
 compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
                               type =  NULL, plusieurs = NULL, seuild=NULL, twit=NULL,seuil_global = NULL,
-                              n_sample =100000,IC=0.95, arr=3) {
+                              n_sample =10000,IC=0.95, arr=3) {
   Y = as.factor(Y)
   noms = levels(Y)
   Ngroup=nlevels(Y)
@@ -191,5 +191,139 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   
   
 }
+
+
+
+Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL, 
+                      arr=3,M=10000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
+  
+  pourcent_IC2 = (1-IC)/2
+  
+  posteriors<-estim_moy_gibbs(Y,priors[1],priors[2],priors[3],priors[4],n_sample=M)
+  posterior_mu <- posteriors[,1]
+  posterior_sd <- posteriors[,2]
+  
+  
+  descriptif<-function(x, probs=c(pourcent_IC2,0.5, 1-pourcent_IC2 )){
+    return(c(mean(x),quantile(x,probs=probs)))
+  }
+  
+  
+  
+  # a priori 
+  
+  xxprior_mu<-rnorm(M,priors[1],priors[2])
+  xxprior_sd <- rgamma(M,priors[1],priors[2])
+  descrxxprior_mu<-descriptif(xxprior_mu, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))%>%round(arr)
+  descrxxprior_sd<-descriptif(xxprior_sd, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))%>%round(arr)
+  
+  descrxxpost_mu<-descriptif(posterior_mu, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))%>%round(arr)
+  descrxxpost_sd<-descriptif(posterior_sd, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))%>%round(arr)
+  
+  
+  res_df_mu = data.frame(prior = xxprior_mu,posterior=posterior_mu)%>%pivot_longer(cols = everything(),names_to = "type",values_to = "x")
+  res_df_sd=data.frame(prior = xxprior_sd,posterior=posterior_sd  )%>%pivot_longer(cols = everything(),names_to = "type",values_to = "x")
+  
+  
+  p<- list(
+    res_df_mu%>%ggplot(aes(x,fill=type))+geom_histogram(alpha=0.7)+theme_light() +
+      theme(
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.ticks.x = element_blank()
+      )+ ylab("") +
+      scale_fill_manual(name = "Distribution",
+                        breaks = c("prior", "posterior"),
+                        values = c("prior" = color_3, "posterior" = color_4) )
+    
+    ,
+    res_df_sd%>%ggplot(aes(x,fill=type))+geom_histogram(alpha=0.7)+theme_light() +
+      theme(
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.ticks.x = element_blank()
+      )+ ylab("") +
+      scale_fill_manual(name = "Distribution",
+                        breaks = c("prior", "posterior"),
+                        values = c("prior" = color_3, "posterior" = color_4) )
+  )
+  
+  
+  
+  
+  
+  
+  resprior<-rbind(descrxxprior_mu,descrxxprior_sd)
+  
+  colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(resprior)<-c("mu","sd")
+  
+  
+  respost<-rbind(descrxxpost_mu,descrxxpost_sd)%>%as.data.frame()
+  
+  colnames(respost)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
+  rownames(respost)<-c("mu","sd")
+  
+  
+  
+  
+  
+  
+  
+  if(is.null(type)){
+  }else if(type =="seuil"){
+    
+    tests <- round(mean(posterior_mu>seuil),arr)
+    
+    
+    print(seuil)
+    print(tests)
+    respost$seuils<-c(seuil,NA)
+    respost$`Pr(X>seuil|D)`<-c(tests,NA)
+    print(respost)
+    
+    p[[1]]<-  p[[1]]+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
+  }else{
+    
+    
+    data=twit$data
+    data$`Pr Ha` = round(mean(between(posterior_mu,data[,"minHa"],data[,"maxHa"])),arr)
+    
+    
+    data$`Pr Hr` =  round(mean(between(posterior_mu,data[,"minHr"],data[,"maxHr"])),arr)
+    
+    
+    p[[1]]<-  p[[1]]+geom_rect( mapping= aes( xmin = data[,"minHa"],xmax = data[,"maxHa"], ymin = -Inf,
+                                              ymax = Inf, x=0, y=0,fill ="Acceptée" ), alpha = 0.2 )+
+      geom_rect(aes( xmin = data[,"minHr"],
+                     xmax = data[,"maxHr"], ymin = -Inf,
+                     ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
+      scale_fill_manual(name = "Hypothèse",
+                        breaks = c("Acceptée", "Rejetée"),
+                        values = c("Acceptée" = color_2, "Rejetée" = color_1))
+    
+    
+  }
+  
+  prior<-  data.frame(Loi = "Beta", "Parametre mu" =paste(priors[1],priors[2], sep = ";") ,
+                      "Parametre beta" =paste(priors[3],priors[4], sep = ";"),row.names = ("Prior"), check.names = F)
+  
+  
+  
+  df<-list(prior,resprior,respost)
+  names(df) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
+  if(is.null(type)){
+    
+  }else if(type =="twit" & !is.null(type)){
+    res_twit= list(TwoIt = data)
+    names(res_twit) = twit$var
+    df<-append(df,res_twit)
+  }
+  
+  
+  
+  return(list(df=df, graph = p))
+}
+
 
 

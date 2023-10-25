@@ -34,14 +34,14 @@ golem::detach_all_attached()
 #undebug(golem::document_and_reload)
 golem::document_and_reload()
 
+library(tidyverse)
 
 
-
-ui <- shiny::fluidPage(ShiBA:::mod_comp_moy_ui(1))
+ui <- shiny::fluidPage(ShiBA:::mod_infe_moy_ui(1))
 
 server <- function(input, output, session) {
   
-  ShiBA:::mod_comp_moy_server(1,r=r)
+  ShiBA:::mod_infe_moy_server(1,r=r)
 }
 
 

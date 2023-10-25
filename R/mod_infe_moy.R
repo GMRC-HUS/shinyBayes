@@ -150,7 +150,8 @@ mod_infe_moy_server <- function(id,r){
       moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
       sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
       prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
-      output[[paste(input$var_moy, "_courbe", sep = "")]] <-ui_ggplot_prior_norm2(prior_moy,input)
+      output[[paste(input$var_moy, "_courbe", sep = "")]] <-ui_ggplot_prior_norm2(prior_moy$prior,input)
+      output[[paste(input$var_moy, "_courbe_gamma", sep = "")]] <- ui_ggplot_prior_dgamma(prior_moy$prior,input)
       
     })
     
@@ -160,7 +161,8 @@ mod_infe_moy_server <- function(id,r){
       
       
       tagList(fluidRow(
-        ui_choix_prior_norm2( prior_moy$prior, ns, width = 12)
+        ui_choix_prior_norm2( prior_moy$prior, ns, width = 12),
+        ui_choix_prior_dgamma(prior_moy$prior, ns, width = 12)
       )
       )
       
@@ -168,15 +170,17 @@ mod_infe_moy_server <- function(id,r){
     observeEvent(input$defaut, {
       
       var_moy <- r$BDD[,input$var_moy]
-      prior_moy$prior<-list(nom=input$var_moy, alpha=0.5,beta=0.5)
+      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
+      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
       
       
 
-      updateNumericInput(session, paste0(input$var_moy, "_mu"), value = prior_moy$mu_mu)
-      updateNumericInput(session, paste0(input$var_moy, "_sd"), value = prior_moy$mu_sd)
+      updateNumericInput(session, paste0(input$var_moy, "_mu"), value = prior_moy$prior$mu_mu)
+      updateNumericInput(session, paste0(input$var_moy, "_sd"), value = prior_moy$prior$mu_sd)
       
-      updateNumericInput(session, paste0(input$var_moy, "_alpha"), value = prior_moy$sd_shape)
-      updateNumericInput(session, paste0(input$var_moy, "_beta"), value = prior_moy$sd_rate)
+      updateNumericInput(session, paste0(input$var_moy, "_alpha"), value = prior_moy$prior$sd_shape)
+      updateNumericInput(session, paste0(input$var_moy, "_beta"), value = prior_moy$prior$sd_rate)
       
       
     })
@@ -262,20 +266,25 @@ mod_infe_moy_server <- function(id,r){
     res_infe <- reactiveVal(value = NULL)
     observeEvent(input$go,{
       
+      
+      print(input)
       prior_moy<- list(nom = "nom",
-                        alpha = input[[paste(prior_moy$prior$nom, "alpha", sep = "_")]],
-                        beta = input[[paste(prior_moy$prior$nom, "beta", sep = "_")]])
+                        mu_mu = input[[paste(prior_moy$prior$nom, "mu", sep = "_")]],
+                       mu_sd = input[[paste(input$var_moy, "sd", sep = "_")]],
+                       sd_shape = input[[paste(input$var_moy, "alpha", sep = "_")]],
+                        sd_rate = input[[paste(input$var_moy, "beta", sep = "_")]])
       print(prior_moy)
       print(r$BDD[,input$var_moy])
       
       
-      
+
       res_infe(Infe_moy2IT(r$BDD[,input$var_moy],
-                            c(prior_moy$alpha, prior_moy$beta),
+                           c(prior_moy$mu_mu,prior_moy$mu_sd,
+                             prior_moy$sd_shape, prior_moy$sd_rate),
                             seuil_react$data$seuil,
                             twit_react,IC= input$IC/100,
                             type= seuil_comp_moy$type ))
-      
+print("cest ok")
       res<-res_infe()
       
       output$res_infe_moy<- renderUI({tagList(
@@ -303,7 +312,7 @@ mod_infe_moy_server <- function(id,r){
       if (is.null(res_infe())) {
         return()
       }
-      p <- res_infe()$graph
+      p <- res_infe()$graph[[1]]
       
       p<- p +
         scale_color_manual(name = "Distribution",
@@ -314,17 +323,17 @@ mod_infe_moy_server <- function(id,r){
                           values = c("Acceptée" =  input$col2, "Rejetée" =  input$col1))
       
       
-      p$layers[[1]]$aes_params$linewidth = input$line_size
-      p$layers[[2]]$aes_params$linewidth = input$line_size
-      if(input$Seuil_plot=="Non") {
-        if(length(p$layers)>=3){
-          for(i in length(p$layers):3){
-            p$layers[[i]]<-NULL
-          }
-          
-        }
-      }
-      if( input$prior_plot=="Non"){p$layers[[1]]<-NULL}
+      # # p$layers[[1]]$aes_params$linewidth = input$line_size
+      # # p$layers[[2]]$aes_params$linewidth = input$line_size
+      # if(input$Seuil_plot=="Non") {
+      #   if(length(p$layers)>=3){
+      #     for(i in length(p$layers):3){
+      #       p$layers[[i]]<-NULL
+      #     }
+      #     
+      #   }
+      # }
+      # if( input$prior_plot=="Non"){p$layers[[1]]<-NULL}
       
       
       
@@ -350,6 +359,9 @@ mod_infe_moy_server <- function(id,r){
   })
 }
     
+
+
+
 ## To be copied in the UI
 # mod_infe_moy_ui("infe_moy_1")
     
