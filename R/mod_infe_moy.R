@@ -7,43 +7,12 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_infe_moy_ui <- function(id){
-  ns <- NS(id)
-  tagList(
-    fluidPage(
-      titlePanel(fluidRow("Inférence univarié", text_aide("Texte Aide sur Inférence univarié "))),
-      sidebarLayout(
-        sidebarPanel(
-          width = 4,
-          uiOutput(ns("propositions")),
-          radioButtons(
-            ns("qualiquanti"), "Nature de la variable",
-            c(Quantitative = "quant", Qualitative = "qual"), "quant"
-          ),
-          uiOutput(ns("apriori")),
-          h2("Two IT ?", text_aide("Texte Aide sur le two it ")),
-          shinyWidgets::materialSwitch(ns("twit"), "", value = FALSE, status = "success", right = T),
-          uiOutput(ns("twit_ui")),
-          actionButton(ns("go"), "Go :")
-        ),
-        mainPanel(
-          tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          fluidRow(
-            h2(textOutput(ns("nameVariable"))),
-            # column(6,
-            uiOutput(ns("inferenceUni")), br() # ,  #tableOutput(ns("descvar"))
-            #                                                            ),
-            ,
-            column(
-              6,
-              plotOutput(ns("plotinferenceUni"))
-            )
-          ) # fin fluid row du main panel
-        ) # fin MainPanel
-      ) # fin sidebarlayout
-    ) # fin fluidpage
-  )
-}
+mod_infe_moy_ui <- function(id){  ns <- NS(id)
+tagList(
+  uiOutput(ns('mod_inf_moy'))
+  
+  # fin fluidpage
+)}
     
 #' infe_moy Server Functions
 #'
@@ -54,189 +23,345 @@ mod_infe_moy_server <- function(id,r){
     
     
     
+    
+    mod_inf_moy<- fluidPage(
+      titlePanel(fluidRow("Inférence univarié, pour une moyenne", text_aide("Texte Aide sur Inférence univarié "))),
+      sidebarLayout(
+        sidebarPanel(
+          width = 4,
+          h2("Variable moyenne d'interêt :"),
+          uiOutput(ns("vbl_moy")), 
+          h3("Choix des priors"),
+          uiOutput(ns("apriori")),
+          actionButton(ns("defaut"), "Défaut"),
+          sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 80,max = 100,step = 1,animate = F,post = " %",value = 95),
+          h3("Seuils/Two IT ?"), text_aide("Texte Aide Two IT multivarié "),
+          # shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
+          uiOutput(ns("twit_ui")),
+          br(),
+          actionButton(ns("go"), "Go :")
+          
+        ),
+        mainPanel(
+          tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
+          fluidPage(
+            fluidRow( uiOutput(ns("res_infe_moy"))),
+            br(),
+            fluidRow(dropdownButton(
+              
+              
+              fluidPage(
+                
+                awesomeRadio(
+                  inputId = ns("prior_plot"),
+                  label = "Afficher Prior :", 
+                  choices = c("Oui", "Non"),
+                  selected = "Oui",
+                  inline = TRUE
+                ),
+                
+                awesomeRadio(
+                  inputId = ns("Seuil_plot"),
+                  label = "Afficher Seuil ou Two It :", 
+                  choices = c("Oui", "Non"),
+                  selected = "Oui",
+                  inline = TRUE
+                ),
+                
+                
+                sliderInput(ns("line_size"), "Largeur des lignes",min = 0,max = 10,value = 1,step = 0.1),
+                
+                
+                colourInput(
+                  ns("col1"), "Couleur 1", "#DE3163",
+                  showColour = "background"),
+                
+                colourInput(
+                  ns("col2"),  "Couleur 2", "#40E0D0",
+                  showColour = "background"),
+                colourInput(
+                  ns("col3"),  "Couleur 3", "#EBC341",
+                  showColour = "background"),
+                colourInput(
+                  ns("col4"),  "Couleur 4", "#9242A6",
+                  showColour = "background")),
+              
+              
+              circle = TRUE,
+              status = "primary",
+              icon = icon("gear"), width = "300px",
+              tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
+            ),br(),
+            plotOutput(ns("graph_inde_moy"))
+            )
+          ) # fin fluid row du main panel
+        ) # fin MainPanel
+      ) # fin sidebarlayout
+    )
+    
+    pasDeBase <- pasDeBase_ui()
+    
+    
+    
+    
+    observe({
+      output$mod_inf_moy <- renderUI({
+        if (!r$BASEchargee) {
+          do.call(tabPanel, pasDeBase)
+        } else if(length(r$BDD%>%apply(2, function(x) (is.numeric(x) & length(unique(x))>10))%>%which()%>%names)==0){
+          do.call(tabPanel, pasDeBase_ui("Pas de variable de type quantitative"))
+          
+          
+        }else {
+          do.call(tabPanel, mod_inf_moy)
+        }
+      })
+    })
+    
     ########################################################################################################################
     ####    OUTPUT : Inférence univarie
     ########################################################################################################################
     
     
-    output$propositions <- renderUI({
-      num <- r$noms[which(r$variableNum)] %>% as.list()
-      non_num <- r$noms[which(!r$variableNum)] %>% as.list()
-      # if(length(non_num)==1) non_num <- list(non_num)
-      if (length(num) > 0 & length(non_num) > 0) {
-        liste_choix <- list(
-          "numeric" = c(num),
-          "autre" = c(non_num)
+    output$vbl_moy <- renderUI({
+      choix_var <-r$BDD%>%apply(2, function(x) (is.numeric(x) & length(unique(x))>10))%>%which()%>%names
+      print(choix_var)
+      if(length(choix_var)==0){ return(h3("Pas de variable de type quantitative dans la base"))}
+      return(
+        pickerInput(
+          inputId = ns("var_moy"),
+          label = "", 
+          choices = choix_var
         )
-      } else if (length(num) > 0 & !length(non_num) > 0) {
-        liste_choix <- list("numeric" = c(num))
-      } else {
-        liste_choix <- list(
-          "autre" = c(non_num)
-        )
-      }
-      selectInput(ns("variable"), "Variable:",
-                  choices =
-                    liste_choix
+        
       )
+      
+      
     })
     
-    output$apriori <- renderUI({
-      x <- r$BDD[, input$variable]
-      x <- x[!is.na(x)]
-      min_x <- min(x)
-      max_x <- max(x)
-      fluidRow(
-        h2("Apriori sur la moyenne : ", text_aide("Texte Aide sur Apriori sur la moyenne ")),
-        splitLayout(
-          cellWidths = size_box,
-          numericInput(ns("mu0"), "µ0 : ",
-                       min = min_x - max_x, max = max_x * 2, value = round(mean(x))
-          ),
-          numericInput(ns("k0"), "Pseudo-Echantillon :",
-                       min = 0, max = length(x) * 4, value = 1
-          )
-        ),
-        plotOutput(width = 200, height = 100, ns("priorMean")),
-        h2("Apriori sur l'écart type : ", text_aide("Texte Aide sur Apriori écart type ")),
-        splitLayout(
-          cellWidths = size_box,
-          numericInput(ns("alpha_0"), "Alpha :",
-                       # min = min_x-max_x, max = max_x*2,
-                       value = 1,
-                       min = 1,
-                       max = Inf,
-          ),
-          numericInput(ns("beta_0"), "Beta :",
-                       min = 1, max = Inf, value = 1
-          )
-        ),
-        plotOutput(width = 200, height = 100, ns("priorSigma")), br(),
-        actionButton(ns("ellicitation"), "Aide ellicitation"), text_aide("Texte Aide surellicitation ")
-      )
+    
+    prior_moy <- reactiveValues(
+      prior=NULL
+    )
+    
+    observeEvent(c(input$var_moy), {
+      
+      var_moy <- r$BDD[,input$var_moy]
+      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
+      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
+      output[[paste(input$var_moy, "_courbe", sep = "")]] <-ui_ggplot_prior_norm2(prior_moy$prior,input)
+      output[[paste(input$var_moy, "_courbe_gamma", sep = "")]] <- ui_ggplot_prior_dgamma(prior_moy$prior,input)
+      
     })
+    
+    
+    output$apriori <- renderUI({
+      
+      
+      
+      tagList(fluidRow(
+        ui_choix_prior_norm2( prior_moy$prior, ns, width = 12),
+        ui_choix_prior_dgamma(prior_moy$prior, ns, width = 12)
+      )
+      )
+      
+    })
+    observeEvent(input$defaut, {
+      
+      var_moy <- r$BDD[,input$var_moy]
+      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
+      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
+      
+      
+
+      updateNumericInput(session, paste0(input$var_moy, "_mu"), value = prior_moy$prior$mu_mu)
+      updateNumericInput(session, paste0(input$var_moy, "_sd"), value = prior_moy$prior$mu_sd)
+      
+      updateNumericInput(session, paste0(input$var_moy, "_alpha"), value = prior_moy$prior$sd_shape)
+      updateNumericInput(session, paste0(input$var_moy, "_beta"), value = prior_moy$prior$sd_rate)
+      
+      
+    })
+    
+    
+    
+    ########## Seuil / Twit ########
+    
     
     
     output$twit_ui <- renderUI({
-      if (input$twit) {
-        
-        # twitUi("id_i")
-        twitUi(ns("id_i"))
-      }
+      ui_twit("seuil_2it", ns)
     })
+    #
     
-    seuil_twoit <- twitServer("id_i")
-    
-    fitInference <- reactive({
-      randomVals()
-      BDD <- isolate(r$BDD[, input$variable])
-      
-      isolate({
-        theta_P <- ifelse_perso(input$twit, c(input$theta_P_min, input$theta_P_max), NULL)
-        theta_A <- ifelse_perso(input$twit, c(input$theta_A_min, input$theta_A_max), NULL)
+    #
+    #   # var_input2
+    observeEvent(input$var_moy, {
+      output$twit_ui <- renderUI({
+        ui_twit("seuil_2it", ns)
       })
-      oneMeanEstim(BDD,
-                   alpha = 0.15, mu_0 = isolate(input$mu0), kappa_0 = isolate(input$k0),
-                   alpha_0 = isolate(input$alpha_0),
-                   beta_0 = isolate(input$beta_0), seuil = 3,
-                   theta_P = theta_P, theta_A = theta_A
-      )
-    })
-    
-    
-    output$nameVariable <- renderText({
-      randomVals()
       
-      isolate(input$variable)
+      
+      
+      var <-input$var_moy
+      #seuil_twoit(twitServer_moy("id_i", var))
+      
+      
+      #### A faire ici 
+      twitServer_prop_infe("twit_seuil",twit_react,
+                           seuil_react,
+                           seuil_comp_moy,prop=F)
+      
+      
+      
     })
-    randomVals <- eventReactive(input$go, {
-      alea <- runif(n = 1)
-      alea
+    
+    
+    
+    observeEvent(input$seuil_2it, {
+      
+      
+      output$twit_ui <- renderUI({
+        actionBttn(
+          inputId = ns("seuil_2it"),
+          label = "Définition Seuil ou Two It",
+          style = "gradient",
+          color = "success",
+          icon = icon("check")
+        )
+        
+      })
+      
+      ###  a faire
+      twitUi_prop_infe(ns("twit_seuil"))
+      
     })
-    observeEvent(randomVals(), {
-      if (tryCatch(length(fitInference()) > 0, error = function(cond) {
-        return(F)
-      })) {
-        output$inferenceUni <- renderUI({
-          noms <- names(fitInference())
-          tagList(
-            lapply(noms, function(x) {
-              if (is.null(fitInference()[[x]])) {
-                return()
-              }
-              list(
-                h3(x),
-                renderTable(as.data.frame.list(fitInference()[[x]]))
-              )
-            })
-          )
+    
+    
+    twit_react <- reactiveValues(data = { 
+      NULL
+    }, var = NULL)
+    
+    seuil_react <- reactiveValues(data = { 
+      NULL
+    })
+    
+    seuil_comp_moy<-reactiveValues(type = { 
+      NULL
+    },
+    plusieurs = {NULL})
+    
+    
+    ############ Go ############# 
+    
+    
+    
+    
+    
+    
+    
+    
+    res_infe <- reactiveVal(value = NULL)
+    observeEvent(input$go,{
+      
+      
+      print(input)
+      prior_moy<- list(nom = "nom",
+                        mu_mu = input[[paste(prior_moy$prior$nom, "mu", sep = "_")]],
+                       mu_sd = input[[paste(input$var_moy, "sd", sep = "_")]],
+                       sd_shape = input[[paste(input$var_moy, "alpha", sep = "_")]],
+                        sd_rate = input[[paste(input$var_moy, "beta", sep = "_")]])
+      print(prior_moy)
+      print(r$BDD[,input$var_moy])
+      
+      
+
+      res_infe(Infe_moy2IT(r$BDD[,input$var_moy],
+                           c(prior_moy$mu_mu,prior_moy$mu_sd,
+                             prior_moy$sd_shape, prior_moy$sd_rate),
+                            seuil_react$data$seuil,
+                            twit_react,IC= input$IC/100,
+                            type= seuil_comp_moy$type ))
+print("cest ok")
+      res<-res_infe()
+      
+      output$res_infe_moy<- renderUI({tagList(
+        lapply(1:length(res$df),function(x)  box(title = names(res$df)[x], DT::dataTableOutput(ns(make.names(names(res$df)[x]))))
+               
+        )
+      )})
+      
+      lapply(1:length(res$df), function(i) {
+        output[[make.names(names(res$df)[i]) ]] <- DT::renderDataTable({
+          DT::datatable(res$df[[i]],options = list(dom="t",ordering=F))
         })
+        
+        
+        
+      })
+      
+      
+      
+    })
+    
+    
+    output$graph_inde_moy <- renderPlot({
+      input$go
+      if (is.null(res_infe())) {
+        return()
       }
+      p <- res_infe()$graph[[1]]
+      
+      p<- p +
+        scale_color_manual(name = "Distribution",
+                           breaks = c("prior", "posterior"),
+                           values = c("prior" =  input$col3, "posterior" =  input$col4) )+
+        scale_fill_manual(name = "Hypothèse",
+                          breaks = c("Acceptée", "Rejetée"),
+                          values = c("Acceptée" =  input$col2, "Rejetée" =  input$col1))
+      
+      
+      # # p$layers[[1]]$aes_params$linewidth = input$line_size
+      # # p$layers[[2]]$aes_params$linewidth = input$line_size
+      # if(input$Seuil_plot=="Non") {
+      #   if(length(p$layers)>=3){
+      #     for(i in length(p$layers):3){
+      #       p$layers[[i]]<-NULL
+      #     }
+      #     
+      #   }
+      # }
+      # if( input$prior_plot=="Non"){p$layers[[1]]<-NULL}
+      
+      
+      
+      return(p)
     })
     
     
     
-    observeEvent(input$ellicitation, ignoreInit = T, {
-      mod_sd_prec_to_alph_beta_ui(ns("alpha_beta"))
-      mod_sd_prec_to_alph_beta_server(
-        "alpha_beta", (input$alpha_0), (input$beta_0), session,
-        "alpha_0", "beta_0"
-      )
-    })
-    
-    
-    output$plotinferenceUni <- renderPlot(plot(fitInference()))
-    
-    output$priorSigma <- renderPlot({
-      ggplot(data = data.frame(x = c(0, 1)), aes(x)) +
-        stat_function(fun = dgamma, n = 101, args = list(shape = input$alpha_0, rate = 1 / input$beta_0)) +
-        theme_light() +
-        theme(
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.ticks.x = element_blank()
-        ) +
-        ylab("") +
-        xlab("")
-    })
     
     
     
     
-    output$plotinferenceUni <- renderPlot(plot(fitInference()))
     
-    output$priorSigma <- renderPlot({
-      ggplot(data = data.frame(x = c(0, input$alpha_0 * 4)), aes(x)) +
-        stat_function(fun = dgamma, n = 101, args = list(shape = input$alpha_0, rate = input$beta_0)) +
-        theme_light() +
-        theme(
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.ticks.x = element_blank()
-        ) +
-        ylab("") +
-        xlab("")
-    })
     
-    output$priorMean <- renderPlot({
-      x <- r$BDD[, input$variable]
-      x <- x[!is.na(x)]
-      min_x <- min(x)
-      max_x <- max(x)
-      ggplot(data = data.frame(x = c(min_x - max_x, 2 * max_x)), aes(x)) +
-        stat_function(fun = dnorm, n = 101, args = list(mean = input$mu0, sd = 1 / input$k0)) +
-        theme_light() +
-        theme(
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.ticks.x = element_blank()
-        ) +
-        ylab("") +
-        xlab("")
-    })
+    
+    
+    
+    
+    
+    
+    
+    
   })
 }
     
+
+
+
 ## To be copied in the UI
 # mod_infe_moy_ui("infe_moy_1")
     

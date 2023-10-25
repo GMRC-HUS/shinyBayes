@@ -52,7 +52,24 @@ css <- "
              position:fixed;
              top: calc(50%);
              left: calc(50%);
-             }
+}
+             
+             
+.default-sortable .rank-list {
+  flex: 1 0 auto;
+  -webkit-border-radius: 3px;
+  border-radius: 5px;
+  background-color: white;
+  margin: 5px;
+  min-height: 45px;
+  overflow-y: scroll;
+  max-height: 200px;
+}
+
+.box-header .box-title {
+ 
+  font-weight: bold;
+}
 "
 
 js <- "
@@ -78,10 +95,10 @@ ui_choix_prior_norm <-  function(i,variables, ns,prior_beta_location_def,prior_b
   
   box( title = x,
        plotOutput(width = "100%", height = 150, ns(paste(x, "_courbe", sep = ""))),
-       numericInput(ns(paste(x, "_mu_0", sep = "")), "A priori mu beta: ",
+       numericInput(ns(paste(x, "_mu_0", sep = "")), "A priori mu : ",
                     value = prior_beta_location_def_i, step = 0.1
        ),
-       numericInput(ns(paste(x, "_sigma_0", sep = "")), "A priori écart-type beta : ",
+       numericInput(ns(paste(x, "_sigma_0", sep = "")), "A priori écart-type  : ",
                     step = 0.1, value = prior_beta_scale_def_i, min=00.0001
        )
   )
@@ -118,7 +135,10 @@ ui_ggplot_prior_norm <-  function(i, input, noms) {
     (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
        stat_function(fun = dnorm, args = list(mean = input[[paste(noms[i], "_mu_0", sep = "")]], sd = input[[paste(noms[i], "_sigma_0", sep = "")]])) +
        theme_light() +
-       xlim(c(
+      
+     
+                                                                                              
+       scale_x_continuous(limits=c(
          arrondi_echelle_inf(input[[paste(noms[i], "_mu_0", sep = "")]] - 3 * input[[paste(noms[i], "_sigma_0", sep = "")]]),
          arrondi_echelle_sup(input[[paste(noms[i], "_mu_0", sep = "")]] + 3 * input[[paste(noms[i], "_sigma_0", sep = "")]])
        )) +
@@ -204,3 +224,81 @@ ui_ggplot_prior_dbeta <-  function(i, input) {
        xlab(i$nom)) %>% ggfst_lst_label_bld
   })
 }
+
+
+
+
+ui_choix_prior_dgamma <-  function(i, ns, width = 4, height_figure = 100, width_figure ="100%") {
+  
+  
+  
+  box( title = paste(i$nom,"sd"),width=width,
+       plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe_gamma", sep = "")))%>% withSpinner(),
+       numericInput(ns(paste(i$nom, "_alpha", sep = "")), "A priori parametre alpha : ",
+                    value = i$sd_shape, step = 0.1, min=0
+       ),
+       numericInput(ns(paste(i$nom, "_beta", sep = "")), "A priori parametre beta : ",
+                    step = 0.1, value = i$sd_rate, min=0
+       )
+  )
+  
+}
+
+
+ui_ggplot_prior_dgamma <-  function(i, input) {
+  renderPlot({
+    (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
+       stat_function(fun = dgamma, args = list(shape = input[[paste0(i$nom, "_alpha")]], rate = input[[paste0(i$nom, "_beta")]])) +
+       theme_light() +
+       xlim(c(
+         0,1
+       )) +
+       theme(
+         axis.text.y = element_blank(),
+         axis.ticks.y = element_blank(),
+         axis.ticks.x = element_blank()
+       ) +
+       ylab("") +
+       xlab(i$nom)) %>% ggfst_lst_label_bld
+  })
+}
+
+
+
+
+ui_choix_prior_norm2 <-  function(i, ns, width = 4, height_figure = 100, width_figure ="100%") {
+  
+  
+  
+  box( title = paste(i$nom,"mu"),width=width,
+       plotOutput(width = width_figure,height = 150,  ns(paste(i$nom, "_courbe", sep = "")))%>% withSpinner(),
+       numericInput(ns(paste(i$nom, "_mu", sep = "")), "A priori  mu : ",
+                    value = i$mu_mu, step = 0.1, min=0
+       ),
+       numericInput(ns(paste(i$nom, "_sd", sep = "")), "A priori sd : ",
+                    step = 0.1, value = i$mu_sd, min=0
+       )
+  )
+  
+}
+
+
+ui_ggplot_prior_norm2 <-  function(i, input) {
+  renderPlot({
+    (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
+       stat_function(fun = dnorm, args = list(mean = input[[paste0(i$nom, "_mu")]], sd = input[[paste0(i$nom, "_sd")]])) +
+       theme_light() +
+       scale_x_continuous(limits=c(
+         arrondi_echelle_inf(input[[paste0(i$nom, "_mu")]] - 3 * input[[paste0(i$nom, "_sd")]]),
+         arrondi_echelle_sup(input[[paste0(i$nom, "_mu")]] + 3 * input[[paste0(i$nom, "_sd")]])
+       )) +
+       theme(
+         axis.text.y = element_blank(),
+         axis.ticks.y = element_blank(),
+         axis.ticks.x = element_blank()
+       ) +
+       ylab("") +
+       xlab(i$nom)) %>% ggfst_lst_label_bld
+  })
+}
+

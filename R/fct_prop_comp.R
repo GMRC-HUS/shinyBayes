@@ -217,11 +217,6 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   
   
-  
-  
-  
-  
-  
   posteriors<-c(length(Y), sum(Y==0))
   
   
@@ -335,4 +330,8 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
   
   return(list(df=df, graph = p))
 }
+
+
+
+
 
