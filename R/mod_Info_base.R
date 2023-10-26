@@ -62,7 +62,7 @@ mod_Info_base_server <- function(id,r){
           tableOutput(ns("tableNAbase2")))
         ),
         tabPanel(
-          "Données manquantes cumulées par sujet",
+          "Données manquantes cumulées par Ligne",
           fluidRow(
             splitLayout(
               cellWidths = c("30%", "70%"),
@@ -71,8 +71,8 @@ mod_Info_base_server <- function(id,r){
           ), # finFluidRow
           br(),
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          h4("Descriptif cumulé des données manquantes par sujet", align = "center"),
-          p("On représente ci-dessous les données manquantes en proportions par sujet d'étude."),
+          h4("Descriptif cumulé des données manquantes par ligne", align = "center"),
+          p("On représente ci-dessous les données manquantes en proportions par ligne."),
           plotOutput(ns("plotNAbase3")),br(),
           tableOutput(ns("tableNAbase3"))
         )

@@ -177,7 +177,7 @@ app_ui <- function(request) {
                        
                        
        
-              menuItem("Inférence univarié",
+              menuItem("Inférence univariée",
                        tabName = "infUni" , icon = icon("fas fa-calculator",verify_fa = FALSE),
                        startExpanded = F,
                        menuSubItem("Moyennes",

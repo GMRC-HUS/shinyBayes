@@ -187,6 +187,7 @@ usethis::use_package("shinyalert" )
 usethis::use_package("waiter" )
 usethis::use_package("shinycssloaders" )
 usethis::use_package("colourpicker" )
+usethis::use_package("datamods" )
 
 usethis::use_package("data.table" )
 usethis::use_package("plotly" )
