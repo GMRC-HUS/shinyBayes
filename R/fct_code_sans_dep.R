@@ -571,7 +571,7 @@ descd <- function(D) {
   RES3[3, 1] <- n.txt
   RES3[4, 1] <- n.autres
   colnames(RES3) <- ""
-  rownames(RES3) <- c("Nombre de Var. Quantitatives", "Nombre de Var. Qualitatives", "Nombre de Var. Textuelles", "Nombre de Var. Nature Autre")
+  rownames(RES3) <- c("Nombre de variables Quantitatives", "Nombre de variables Qualitatives", "Nombre de variables Textuelles", "Nombre de variables d’un autre type ")
 
   RES <- list("Dim" = RES1, "Données manquantes" = RES2, Nature = RES3)
 

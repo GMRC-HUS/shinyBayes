@@ -25,7 +25,7 @@ mod_infe_moy_server <- function(id,r){
     
     
     mod_inf_moy<- fluidPage(
-      titlePanel(fluidRow("Inférence univarié, pour une moyenne", text_aide("Texte Aide sur Inférence univarié "))),
+      titlePanel(fluidRow("Inférence univariée, pour une moyenne", text_aide("Texte Aide sur Inférence univarié "))),
       sidebarLayout(
         sidebarPanel(
           width = 4,

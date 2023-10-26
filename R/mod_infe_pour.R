@@ -27,7 +27,7 @@ mod_infe_pour_server <-  function(id,r){
     
     
     mod_inf_pour<- fluidPage(
-      titlePanel(fluidRow("Inférence univarié, pour un pourcentage", text_aide("Texte Aide sur Inférence univarié "))),
+      titlePanel(fluidRow("Inférence univariée, pour un pourcentage", text_aide("Texte Aide sur Inférence univarié "))),
       sidebarLayout(
         sidebarPanel(
           width = 4,

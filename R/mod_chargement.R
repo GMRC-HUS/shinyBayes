@@ -8,70 +8,32 @@
 #'
 #' @importFrom shiny NS tagList
 #' @import shinyFiles
+#' @import datamods
 mod_chargement_ui <- function(id) {
   ns <- NS(id)
   tagList(
     h1("Hello chargement !")
   )
-  fluidPage(br(),br(),
-    sidebarLayout(
-      sidebarPanel(h2("Chargement d'une base de données"),
-      
-        tags$hr(),
-        checkboxInput(ns("header"), "Titre       (Votre fichier contient-il des titres de colonnes ?)", TRUE),
-        radioButtons(
-          ns("sep"), "Séparateur",
-          c(
-            Virgule = ",",
-            `Point Virgule` = ";",
-            Tabulation = "\t"
-          ),
-          ";"
+  fluidPage(
+    # Try with different Bootstrap version
+    # theme = bslib::bs_theme(version = 4),
+    fluidRow(
+      column(
+        width = 4,
+        checkboxGroupInput(
+          inputId = ns("from"),
+          label = "From",
+          choices = c("env", "file", "copypaste", "googlesheets", "url"),
+          selected = c("file", "copypaste")
         ),
-        radioButtons(
-          ns("manquants"), "Manquants (Quel symbole est utilisé pour les données manquantes ?)",
-          c(
-            Slash = "/",
-            Etoile = "*",
-            `Lettres NA` = "NA"
-          ),
-          "*"
-        ),
-        radioButtons(
-          ns("decimale"), "Symbole de décimale",
-          c(
-            Virgule = ",",
-            Point = "."
-          ),
-          ","
-        ),
-        tags$br(),
-        # actionButton(ns("upload"), "Charger/actualiser la base",class = "btn-success") ,
-        radioButtons(
-          ns("encodage"), "Si vous avez des problèmes d'import de la base de données, potentiellement liés à l'encodage",
-          c(
-            `Windows/Excel` = "windows-1252",
-            `Linux/LibreOffice` = "utf-8"
-          ),
-          "windows-1252"
-        ),
-        fileInput(ns("file1"), "Choisir un fichier Csv",
-                  accept = c(
-                    "text/csv",
-                    "text/comma-separated-values,text/plain",
-                    ".csv"
-                  )
-        ),
-        tags$br(), tags$br(), tags$br(),
-        "Les lignes entièrement vides seront retirées pour la suite des analyses."
+        actionButton(ns("launch_modal"), "Launch modal window")
       ),
-      mainPanel(br(),fluidRow(align="center",
-        
-                              box(title = "Base de données :", width =12,status = "primary", solidHeader = TRUE,
-                                  fluidRow(align="center",   div(style = 'overflow-x: scroll; width:95%',DT::dataTableOutput( ns("contents")))
-                                  )
-                              )
-      ))
+      column(
+        width = 8,
+        tags$b("Imported data:"),
+        verbatimTextOutput(outputId = ns("name")),
+        verbatimTextOutput(outputId = ns("data"))
+      )
     )
   )
 }
@@ -83,34 +45,37 @@ mod_chargement_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
-    output$contents <- renderDT({
-
-     
-
-      if (is.null( r$BDD)) {
-        return(NULL)
-      }
-
-      DD <-  r$BDD 
-        lignesVides <- apply(DD, 1, function(x) {
-        sum(is.na(x))
-      }) == dim(DD)[2]
-      DD <- DD[!lignesVides, ]
-      DD
+    observeEvent(input$launch_modal, {
+      req(input$from)
+      import_modal(
+        id = ns("myid"),
+        from = input$from,
+        title = "Import data to be used in application"
+      )
+    })
+    
+    imported <- import_server("myid", return_class = "tbl_df")
+    
+    output$name <- renderPrint({
+      req(imported$name())
+      imported$name()
+    })
+    
+    output$data <- renderPrint({
+      req(imported$data())
+      imported$data()
     })
 
- 
 
-
-    observeEvent(input$file1, ignoreInit = T, {
-      inFile <- input$file1
-      DD <- read.csv(inFile$datapath, header = input$header, sep = input$sep, na.string = c("", input$manquants), dec = input$decimale)
+    observeEvent(imported$data(), {
+  
+      DD <- imported$data()
       lignesVides <- apply(DD, 1, function(x) {
         sum(is.na(x))
       }) == dim(DD)[2]
       DD <- DD[!lignesVides, ]
-      r$BDD <- DD
+      r$BDD <- DD%>%as.data.frame()
+      print(str(DD))
       r$contentInput <- DD
     })
 
@@ -125,7 +90,7 @@ mod_chargement_server <- function(id, r) {
 
     observeEvent(r$BDD, ignoreInit = T, {
       r$noms <- colnames(r$BDD)
-      r$nbSujet <- dim(r$contentInput)[1]
+      r$nbSujet <- dim(r$BDD)[1]
       D <- r$BDD
       Y <- as.data.frame(lapply(D, factor))
       z <- as.numeric(lapply(Y, nlevels))
