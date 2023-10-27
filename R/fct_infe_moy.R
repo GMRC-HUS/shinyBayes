@@ -305,8 +305,8 @@ Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL,
     
   }
   
-  prior<-  data.frame(Loi = "Beta", "Parametre mu" =paste(priors[1],priors[2], sep = ";") ,
-                      "Parametre beta" =paste(priors[3],priors[4], sep = ";"),row.names = ("Prior"), check.names = F)
+  prior<-  data.frame(Loi = "Beta", "Paramètre mu" =paste(priors[1],priors[2], sep = ";") ,
+                      "Paramètre beta" =paste(priors[3],priors[4], sep = ";"),row.names = ("Prior"), check.names = F)
   
   
   

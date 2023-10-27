@@ -37,11 +37,11 @@ golem::document_and_reload()
 library(tidyverse)
 
 
-ui <- shiny::fluidPage(ShiBA:::mod_infe_moy_ui(1))
+ui <- shiny::fluidPage(ShiBA:::mod_chargement2_ui(1))
 
 server <- function(input, output, session) {
   
-  ShiBA:::mod_infe_moy_server(1,r=r)
+  ShiBA:::mod_chargement2_server(1,r=r)
 }
 
 
