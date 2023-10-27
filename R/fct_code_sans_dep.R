@@ -23,10 +23,10 @@ descr1 <- function(Y, Tap = FALSE) {
   library(moments)
   aze <- matrix(NA, ncol = 1, nrow = 24)
   rownames(aze) <- c(
-    "Effectifs presents", "Proportions de presents %", "Effectifs manquants", "Proportions de manquants %",
+    "Effectifs présents", "Proportions de présents %", "Effectifs manquants", "Proportions de manquants %",
     "Moyenne", "Ecart-type", "Variance", "Erreur standard (s.e.m)", "Minimum", "Maximum", "Percentile 2,5", "Percentile 5", "Q1 ",
-    "Mediane", "Q3", "Percentile 95", "Percentile 97,5", "Ecart inter-quartiles", "IC valeurs borne inf", "IC valeurs borne sup",
-    "IC moyenne borne inf", "IC moyenne borne sup", "coefficient d'asymetrie", "Kurtosis"
+    "Mediane", "Q3", "Percentile 95", "Percentile 97,5", "Écart interquartiles", "IC valeurs borne inf", "IC valeurs borne sup",
+    "IC moyenne borne inf", "IC moyenne borne sup", "coefficient d'asymétrie", "Kurtosis"
   )
 
 
@@ -134,10 +134,10 @@ descr3 <- function(Y, X, Tap = FALSE, nom = NULL, nomY = NULL, latex = 0) {
 
   aze <- matrix(NA, ncol = 1 + nbnv, nrow = 27)
   rownames(aze) <- c(
-    "Effectifs presents", "Proportions de presents", "Effectifs manquants", "Proportions de manquants",
+    "Effectifs présents", "Proportions de présents", "Effectifs manquants", "Proportions de manquants",
     "Moyenne", "Ecart-type", "Variance", "Erreur standard (s.e.m)", "Err. Std (basee sur l'ANOVA)", "Minimum", "Maximum", "Percentile 2,5", "Percentile 5", "Q1 ", "Mediane", "Q3",
-    "Percentile 95", "Percentile 97,5", "Ecart inter-quartiles", "IC valeurs borne inf", "IC valeurs borne sup", "IC moyenne borne inf",
-    "IC moyenne borne sup", "IC moyenne borne inf (ANOVA)", "IC moyenne borne sup (ANOVA)", "coefficient d'asymetrie", "Kurtosis"
+    "Percentile 95", "Percentile 97,5", "Écart interquartiles", "IC valeurs borne inf", "IC valeurs borne sup", "IC moyenne borne inf",
+    "IC moyenne borne sup", "IC moyenne borne inf (ANOVA)", "IC moyenne borne sup (ANOVA)", "coefficient d'asymétrie", "Kurtosis"
   )
 
 
@@ -370,7 +370,7 @@ descr3 <- function(Y, X, Tap = FALSE, nom = NULL, nomY = NULL, latex = 0) {
 desc1 <- function(x, modmax = 7) {
   # modmax<-7  # passe en argument
   if (length(table(as.factor(x))) == 1) {
-    res <- paste("Variable n'ayant qu'une seule modalite", levels(as.factor(x)), sep = "  :  ")
+    res <- paste("Variable n'ayant qu'une seule modalité", levels(as.factor(x)), sep = "  :  ")
   } else {
     if (is.character(x)) {
       nature.variable <- 0
@@ -554,7 +554,7 @@ descd <- function(D) {
   RES1[2, 1] <- n.lignes
   RES1[3, 1] <- N
   colnames(RES1) <- ""
-  rownames(RES1) <- c("Nombre de colonnes", "Nombre de lignes", "Nombre de donnees")
+  rownames(RES1) <- c("Nombre de colonnes", "Nombre de lignes", "Nombre de données")
 
   RES2 <- matrix(NA, nrow = 4, ncol = 1)
   RES2[1, 1] <- col.vides
@@ -563,7 +563,7 @@ descd <- function(D) {
   RES2[4, 1] <- sub.comp
 
   colnames(RES2) <- ""
-  rownames(RES2) <- c("Nombre de colonnes vides", "Nombre de lignes vides", "Nombre de donnees manquantes", "Dimensions ss-groupe complet")
+  rownames(RES2) <- c("Nombre de colonnes vides", "Nombre de lignes vides", "Nombre de données manquantes", "Dimensions ss-groupe complet")
 
   RES3 <- matrix(NA, nrow = 4, ncol = 1)
   RES3[1, 1] <- n.quanti
