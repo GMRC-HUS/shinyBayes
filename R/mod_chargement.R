@@ -11,30 +11,17 @@
 #' @import datamods
 mod_chargement_ui <- function(id) {
   ns <- NS(id)
+  set_i18n("fr")
   tagList(
     h1("Hello chargement !")
   )
   fluidPage(
     # Try with different Bootstrap version
     # theme = bslib::bs_theme(version = 4),
-    fluidRow(
-      column(
-        width = 4,
-        checkboxGroupInput(
-          inputId = ns("from"),
-          label = "From",
-          choices = c("env", "file", "copypaste", "googlesheets", "url"),
-          selected = c("file", "copypaste")
-        ),
-        actionButton(ns("launch_modal"), "Launch modal window")
-      ),
-      column(
-        width = 8,
-        tags$b("Imported data:"),
-        verbatimTextOutput(outputId = ns("name")),
-        verbatimTextOutput(outputId = ns("data"))
-      )
-    )
+  
+    import_ui(ns("import"),from =c( "file", "copypaste", "googlesheets", "url"))
+    
+    
   )
 }
 
@@ -45,16 +32,9 @@ mod_chargement_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    observeEvent(input$launch_modal, {
-      req(input$from)
-      import_modal(
-        id = ns("myid"),
-        from = input$from,
-        title = "Import data to be used in application"
-      )
-    })
-    
-    imported <- import_server("myid", return_class = "tbl_df")
+
+    imported <- import_server("import",
+                              return_class = "data.frame")
     
     output$name <- renderPrint({
       req(imported$name())
