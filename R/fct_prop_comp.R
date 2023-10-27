@@ -312,7 +312,7 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
     
   }
   
-  prior<-  data.frame(Loi = "Beta", "Parametre alpha" =priors[1] , "Parametre beta" = priors[2],row.names = ("Prior"), check.names = F)
+  prior<-  data.frame(Loi = "Beta", "Paramètre alpha" =priors[1] , "Paramètre beta" = priors[2],row.names = ("Prior"), check.names = F)
   
   
   
