@@ -364,6 +364,15 @@ mod_Multivarie_server <- function(id, r) {
       list_quanti <- isolate(input$list_quanti)
       list_quali <- isolate(input$list_quali)
       y <- isolate(input$variable)
+      
+      if( input$type_glm=="poiss"){
+        
+        y=as.numeric(y)
+        }else if( input$type_glm=="binom"){
+          y=as.factor(y)
+        }else{
+          y=as.numeric(y)}
+      
       data <- r$BDD %>% select(y, list_quanti, list_quali)
 
       if (length(list_quanti) > 0) data <- data %>% mutate_at(list_quanti, ~ as.numeric(as.character(.)))

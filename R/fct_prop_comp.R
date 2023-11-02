@@ -11,7 +11,7 @@ Cpmultprop2IT<-function(Y,Gr,priors,seuil_global = NULL,
                         seuild=NULL,seuilr=NULL,seuilo=NULL, twit=NULL, 
                         arr=3,M=100000, IC=0.95, type =  NULL, plusieurs = NULL){
   pourcent_IC2 = (1-IC)/2
-  
+  Gr <- as.factor(Gr)
   Ngroup<-nlevels(as.factor(Gr))
   print(Ngroup)
   noms<-levels(as.factor(Gr))
