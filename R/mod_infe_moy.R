@@ -108,7 +108,7 @@ mod_infe_moy_server <- function(id,r){
       output$mod_inf_moy <- renderUI({
         if (!r$BASEchargee) {
           do.call(tabPanel, pasDeBase)
-        } else if(length(r$BDD%>%apply(2, function(x) (is.numeric(x) & length(unique(x))>10))%>%which()%>%names)==0){
+        } else if(length(r$BDD%>%sapply( function(x) (is.numeric(x) & (length(unique(x))>10)))%>%which()%>%names)==0){
           do.call(tabPanel, pasDeBase_ui("Pas de variable de type quantitative"))
           
           
@@ -124,7 +124,7 @@ mod_infe_moy_server <- function(id,r){
     
     
     output$vbl_moy <- renderUI({
-      choix_var <-r$BDD%>%apply(2, function(x) (is.numeric(x) & length(unique(x))>10))%>%which()%>%names
+      choix_var <-r$BDD%>%sapply( function(x) (is.numeric(x) & (length(unique(x))>10)))%>%which()%>%names
       print(choix_var)
       if(length(choix_var)==0){ return(h3("Pas de variable de type quantitative dans la base"))}
       return(

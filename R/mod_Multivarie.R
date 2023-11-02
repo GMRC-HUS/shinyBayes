@@ -364,8 +364,19 @@ mod_Multivarie_server <- function(id, r) {
       list_quanti <- isolate(input$list_quanti)
       list_quali <- isolate(input$list_quali)
       y <- isolate(input$variable)
-      data <- r$BDD %>% select(y, list_quanti, list_quali)
 
+      
+      data <- r$BDD %>% select(y, list_quanti, list_quali)
+      print("la")
+      
+      if( input$type_glm=="poiss"){
+        
+        data[,y]=as.numeric(data[,y])
+      }else if( input$type_glm=="binom"){
+        data[,y]=as.factor(data[,y])
+      }else{
+        data[,y]=as.numeric(data[,y])}
+      print("ou la")
       if (length(list_quanti) > 0) data <- data %>% mutate_at(list_quanti, ~ as.numeric(as.character(.)))
 
       if (length(list_quali) > 0) data <- data %>% mutate_at(list_quali, as.factor)
@@ -379,7 +390,7 @@ mod_Multivarie_server <- function(id, r) {
         prior = list(scale = prior_glm$prior_beta_scale, location = prior_glm$prior_beta_location),
         type = input$type_glm
       )
-       
+       print("ou encore la")
         
       model_2(NULL)
       

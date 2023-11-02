@@ -176,6 +176,8 @@ usethis::use_package("utils" )
 usethis::use_package("desctable" )
 usethis::use_package("moments" )
 usethis::use_package("sortable" )
+usethis::use_package("tidyr" )
+
 usethis::use_package("broom.mixed" )
 usethis::use_package("rstanarm" )
 usethis::use_package("bslib" )

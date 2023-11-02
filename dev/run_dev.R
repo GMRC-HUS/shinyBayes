@@ -11,6 +11,6 @@ golem::document_and_reload()
 
 
 # Run the application
-ShiBA::run_app(BDD=mtcars,options = list(launch.browser = TRUE))
+ShiBA::run_app(options = list(launch.browser = TRUE))
 
 

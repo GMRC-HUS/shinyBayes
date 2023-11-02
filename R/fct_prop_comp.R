@@ -11,7 +11,9 @@ Cpmultprop2IT<-function(Y,Gr,priors,seuil_global = NULL,
                         seuild=NULL,seuilr=NULL,seuilo=NULL, twit=NULL, 
                         arr=3,M=100000, IC=0.95, type =  NULL, plusieurs = NULL){
   pourcent_IC2 = (1-IC)/2
-  
+  Gr <- as.factor(Gr)
+  Y= as.factor(Y)
+  levels_y = levels(Y)
   Ngroup<-nlevels(as.factor(Gr))
   print(Ngroup)
   noms<-levels(as.factor(Gr))
@@ -43,8 +45,8 @@ if(is.null(type)){
   posteriors<-matrix(0,ncol=Ngroup,nrow=2)
   
   for(j in 1:Ngroup){
-    posteriors[1,j]<-sum(Y[Gr==noms[j]])
-    posteriors[2,j]<-sum(Y[Gr==noms[j]]==0)
+    posteriors[1,j]<-length(Y[Gr==noms[j]])
+    posteriors[2,j]<-sum(Y[Gr==noms[j]]==levels_y[1])
   }
   
   table(Y,Gr)
@@ -217,8 +219,10 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   
   
-  posteriors<-c(length(Y), sum(Y==0))
+  Y=as.factor(Y)
   
+  levels_Y= levels(Y)
+  posteriors<-c(length(Y), sum(Y==levels_Y[1]))
   
   
   

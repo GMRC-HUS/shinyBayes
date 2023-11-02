@@ -101,7 +101,7 @@ mod_comp_moy_server <- function(id,r){
   })
   #
   output$vbl_moy <- renderUI({
-    choix_var <-r$BDD%>%apply(2, function(x) (is.numeric(x) & length(unique(x))>10))%>%which()%>%names
+    choix_var <-r$BDD%>%sapply( function(x) (is.numeric(x) & (length(unique(x))>10)))%>%which()%>%names
     print(choix_var)
     if(length(choix_var)==0){ return(h3("Pas de variables numérique"))}
     return(
