@@ -147,8 +147,8 @@ mod_infe_moy_server <- function(id,r){
     observeEvent(c(input$var_moy), {
       
       var_moy <- r$BDD[,input$var_moy]
-      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
-      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      moy_tot = round(mean(r$BDD[,input$var_moy],na.rm=T),2)
+      sd_tot = round(sd(r$BDD[,input$var_moy],na.rm=T),2)
       prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
       output[[paste(input$var_moy, "_courbe", sep = "")]] <-ui_ggplot_prior_norm2(prior_moy$prior,input)
       output[[paste(input$var_moy, "_courbe_gamma", sep = "")]] <- ui_ggplot_prior_dgamma(prior_moy$prior,input)
@@ -170,8 +170,8 @@ mod_infe_moy_server <- function(id,r){
     observeEvent(input$defaut, {
       
       var_moy <- r$BDD[,input$var_moy]
-      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
-      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      moy_tot = round(mean(r$BDD[,input$var_moy],na.rm=T),2)
+      sd_tot = round(sd(r$BDD[,input$var_moy],na.rm=T),2)
       prior_moy$prior<-list(nom=input$var_moy,mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1)
       
       
@@ -284,7 +284,7 @@ mod_infe_moy_server <- function(id,r){
                             seuil_react$data$seuil,
                             twit_react,IC= input$IC/100,
                             type= seuil_comp_moy$type ))
-print("cest ok")
+
       res<-res_infe()
       
       output$res_infe_moy<- renderUI({tagList(
@@ -317,9 +317,11 @@ print("cest ok")
       p<- p +
         scale_color_manual(name = "Distribution",
                            breaks = c("prior", "posterior"),
+                           
                            values = c("prior" =  input$col3, "posterior" =  input$col4) )+
         scale_fill_manual(name = "Hypothèse",
                           breaks = c("Acceptée", "Rejetée"),
+                          labels =c("P : effet présent ","A : Effet absent"),
                           values = c("Acceptée" =  input$col2, "Rejetée" =  input$col1))
       
       

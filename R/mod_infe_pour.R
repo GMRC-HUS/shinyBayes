@@ -130,7 +130,7 @@ mod_infe_pour_server <-  function(id,r){
       print(choix_var)
       if(length(choix_var)==0){ return(h3("Pas de variables avec 2 à 4 groupes dans la base"))}
       return(
-        pickerInput(
+        selectInput(
           inputId = ns("var_prop"),
           label = "", 
           choices = choix_var
@@ -301,6 +301,7 @@ p<- p +
                          values = c("prior" =  input$col3, "posterior" =  input$col4) )+
   scale_fill_manual(name = "Hypothèse",
                     breaks = c("Acceptée", "Rejetée"),
+                    labels =c("P : effet présent ","A : Effet absent"),
                     values = c("Acceptée" =  input$col2, "Rejetée" =  input$col1))
     
 

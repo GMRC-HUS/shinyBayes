@@ -250,9 +250,12 @@ ui_ggplot_prior_dgamma <-  function(i, input) {
     (ggplot(data = data.frame(x = c(0,1)), aes(x)) +
        stat_function(fun = dgamma, args = list(shape = input[[paste0(i$nom, "_alpha")]], rate = input[[paste0(i$nom, "_beta")]])) +
        theme_light() +
-       xlim(c(
-         0,1
-       )) +
+# Regarder pour mettre des echelles plus adapté
+  scale_x_continuous(limits=c(
+   0,
+    arrondi_echelle_sup(input[[paste0(i$nom, "_alpha")]]/input[[paste0(i$nom, "_beta")]] + 
+                          2 * (input[[paste0(i$nom, "_alpha")]]/input[[paste0(i$nom, "_beta")]] )^2)
+  ))+
        theme(
          axis.text.y = element_blank(),
          axis.ticks.y = element_blank(),

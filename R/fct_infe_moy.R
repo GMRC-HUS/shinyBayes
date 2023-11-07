@@ -34,7 +34,7 @@ estim_moy_gibbs<-  function(x,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL, n_sample 
 
 compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
                               type =  NULL, plusieurs = NULL, seuild=NULL, twit=NULL,seuil_global = NULL,
-                              n_sample =10000,IC=0.95, arr=3) {
+                              n_sample =1000,IC=0.95, arr=3) {
   Y = as.factor(Y)
   noms = levels(Y)
   Ngroup=nlevels(Y)
@@ -102,12 +102,9 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   # resprior<-unlist(resprior,recursive=F)
   # resprior<-lapply(resprior,function(i){round(i,4)})
   resprior<-data.table::rbindlist(resprior)
-  print(resprior)
   resprior<-resprior%>%mutate_all(function(i){round(i,arr)})
-  print(resprior)
-  # print(c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") ))
-  print(resprior)
-  print(noms.tab)
+
+
   colnames(resprior)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
   rownames(resprior)<-c(noms.tab)
   # print(resprior)
@@ -195,7 +192,7 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
 
 
 Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL, 
-                      arr=3,M=10000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
+                      arr=3,M=1000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
   
   pourcent_IC2 = (1-IC)/2
   
@@ -299,6 +296,7 @@ Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL,
                      xmax = data[,"maxHr"], ymin = -Inf,
                      ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
       scale_fill_manual(name = "Hypothèse",
+                        labels =c("P : effet présent ","A : Effet absent"),
                         breaks = c("Acceptée", "Rejetée"),
                         values = c("Acceptée" = color_2, "Rejetée" = color_1))
     

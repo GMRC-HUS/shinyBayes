@@ -47,6 +47,7 @@ twitServer <- function(id, list_var, type_glm) {
     ## Below is the module function
     function(input, output, session) {
       ns <- session$ns
+      print(list_var)
       observeEvent(input$choix_seuil_2it, {
         output$seuil_ou_two_it_ui <- renderUI({
           if (length(list_var) == 0) {
@@ -79,7 +80,7 @@ twitServer <- function(id, list_var, type_glm) {
               ),
               splitLayout(
                 cellWidths = c("50%", "50%"),
-                h3("Présence d'effet :"), h3("Absence d'effet : ")
+                h3("P : effet présent "), h3("A : Effet absent")
               ),
               splitLayout(
                 cellWidths = c("25%", "25%", "25%", "25%"),
@@ -236,7 +237,7 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
 
           
           choix_var<- apply(utils::combn(group, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector()
-          print(input$choix_seuil_2it)
+         
           if (input$choix_seuil_2it) {
   
             
@@ -301,8 +302,7 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
         observeEvent(input$plusieur_seuils, {  
         if (input$choix_seuil_2it) {
           seuil_comp_retour$data$seuil <- "seuil"
-          print(input$plusieur_seuils4)
-          print(names(input))
+
   if( input$plusieur_seuils == "Oui"){
     seuil_unique$data <-  data.frame(Type= c("Diff", "RR","OR"), seuil = c(0,1,1),row.names = "Type")
     seuil_diff$data = NULL
@@ -332,8 +332,7 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
 
   }
            
-        print(seuil_unique$data)
-        
+
          twit$data<- NULL 
         }else{
          
@@ -438,7 +437,7 @@ twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour,prop=T
           
           
         
-          print(input$choix_seuil_2it)
+
           if (input$choix_seuil_2it) {
             
             
@@ -483,8 +482,7 @@ if(prop){
         }else{
           
           seuil_comp_retour$data$seuil <- "seuil"
-          print(input$plusieur_seuils4)
-          print(names(input))
+
           
           seuil_unique$data <-  ifelse_perso(prop,data.frame( seuil = c(0.5),row.names = "Seuil"),
                                              data.frame( seuil = c(0),row.names = "Seuil"))
@@ -506,8 +504,7 @@ if(prop){
       
       output$choix_seuils <- renderUI({
 
-          
-          print(seuil_unique$data)
+
           tagList(table_interact_UI(ns("seuil_unique"))
           )
         
@@ -668,7 +665,7 @@ twitServer_moy <- function(id, twit, seuil_unique,seuil_diff,group,seuil_comp_re
           )
         } else {
           
-          print(seuil_unique$data)
+  
           tagList(table_interact_UI(ns("test"))
           )
         }
