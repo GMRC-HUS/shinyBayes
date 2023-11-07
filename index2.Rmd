@@ -1,0 +1,27 @@
+--- 
+title: "SHIBA"
+author: 'Une application du GMRC: Groupe Méthodes en Recherche Clinique'
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  word_document: default
+description: blabla
+site: bookdown::bookdown_site
+documentclass: book
+---
+
+# Préface {-}
+ 
+SHIBA : Un outil combinant R, Shiny et STAN pour faciliter la réalisation des analyses statistiques Bayésiennes. C'est trop d'la balle. 
+
+
+
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+

@@ -5,3 +5,10 @@ notion-de-probabilité.
 fonctionnement-général-de-shiba
 vocabulaire-de-base
 les-différents-types-de-variables
+note
+descriptif
+inférence-univariée
+pour-lestimation-dune-moyenne
+pour-lestimation-dune-proportion
+multivarié
+base-de-données

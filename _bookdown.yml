@@ -3,5 +3,6 @@ language:
   ui:
     chapter_name: "Chapitre "
 rmd_files: 
-  html: ["index.Rmd","01.Rmd", "03.Rmd","02.Rmd"]
+  html: ["01_Base_de_donnees.Rmd","02_Descriptif.Rmd",
+  "03_Inference_univariee.Rmd","04_Multivarie.Rmd"]
 output_dir: "docs"

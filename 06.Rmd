@@ -1,4 +1,0 @@
-# Les résultats
-
-SHIBA produit automatiquement un certain nombre de résultats. 
-D'autres résultats ne sont affichés que lorsque certaines analyses ont été demandées par l'utilisateur (**lister les cas**)

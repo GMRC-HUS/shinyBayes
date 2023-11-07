@@ -1,9 +1,0 @@
-# Les graphiques
-SHIBA produit par défaut tous les graphiques dont vous aurez besoin pour valider le modèle réalisé. Ces graphiques ne s'affichent que si vous demandez à les visualiser. Pour cela, il suffit de cliquer sur le bouton en forme de tarte aux pommes. 
-
-## Diagrammes de convergence
-bebaba
-
-## Diagrammes d'autocorrélation
-blebleble
-

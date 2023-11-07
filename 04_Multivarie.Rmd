@@ -1,0 +1,17 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+# Multivarié
+
+Généralités
+
+Régression linéaire
+
+Régression de Poisson
+
+Régression logistique
+
