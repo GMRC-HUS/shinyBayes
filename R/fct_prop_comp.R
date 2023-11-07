@@ -311,6 +311,7 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
                                                                  ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
       scale_fill_manual(name = "Hypothèse",
                         breaks = c("Acceptée", "Rejetée"),
+                        labels =c("P : effet présent ","A : Effet absent"),
                         values = c("Acceptée" = color_2, "Rejetée" = color_1))
     
     

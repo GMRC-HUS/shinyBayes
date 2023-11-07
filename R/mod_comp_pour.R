@@ -92,7 +92,7 @@ mod_comp_pour_server <- function(id,r){
       choix_var <-r$BDD%>%apply(2, function(x) between(nlevels(as.factor(x)),2,4))%>%which()%>%names
       if(length(choix_var)==0){ return(h3("Pas de variables avec 2 à 4 groupes dans la base"))}
       return(
-        pickerInput(
+        selectInput(
           inputId = ns("var_grp"),
           label = "", 
           choices = choix_var
@@ -107,7 +107,7 @@ mod_comp_pour_server <- function(id,r){
         print(choix_var)
         if(length(choix_var)==0){ return(h3("Pas de variables avec 2 à 4 groupes dans la base"))}
         return(
-          pickerInput(
+          selectInput(
             inputId = ns("var_prop"),
             label = "", 
             choices = choix_var

@@ -90,7 +90,7 @@ mod_comp_moy_server <- function(id,r){
     choix_var <-r$BDD%>%apply(2, function(x) between(nlevels(as.factor(x)),2,4))%>%which()%>%names
     if(length(choix_var)==0){ return(h3("Pas de variables avec 2 à 4 groupes dans la base"))}
     return(
-      pickerInput(
+      selectInput(
         inputId = ns("var_grp"),
         label = "", 
         choices = choix_var
@@ -105,7 +105,7 @@ mod_comp_moy_server <- function(id,r){
     print(choix_var)
     if(length(choix_var)==0){ return(h3("Pas de variables numérique"))}
     return(
-      pickerInput(
+      selectInput(
         inputId = ns("var_moy"),
         label = "", 
         choices = choix_var
@@ -133,8 +133,8 @@ mod_comp_moy_server <- function(id,r){
     
     if (is.null(prior_moy$prior)) {
       var_grp <- r$BDD[,input$var_grp]
-      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
-      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      moy_tot = round(mean(r$BDD[,input$var_moy],na.rm=T),2)
+      sd_tot = round(sd(r$BDD[,input$var_moy],na.rm=T),2)
       prior_moy$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), 
                                                                            mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1))
     }
@@ -163,8 +163,8 @@ mod_comp_moy_server <- function(id,r){
   observeEvent(input$defaut, {
     
     var_grp <- r$BDD[,input$var_grp]
-    moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
-    sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+    moy_tot = round(mean(r$BDD[,input$var_moy],na.rm=T),2)
+    sd_tot = round(sd(r$BDD[,input$var_moy],na.rm=T),2)
     prior_moy$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"),mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1))
     
     for (x in prior_moy$prior) {
@@ -209,8 +209,8 @@ mod_comp_moy_server <- function(id,r){
    
     if (is.null(prior_moy$prior)) {
       var_grp <- r$BDD[,input$var_grp]
-      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
-      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      moy_tot = round(mean(r$BDD[,input$var_moy],na.rm=T),2)
+      sd_tot = round(sd(r$BDD[,input$var_moy],na.rm=T),2)
       prior_moy$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1))
       
     }
@@ -270,8 +270,8 @@ mod_comp_moy_server <- function(id,r){
     
     if (is.null(prior_moy$prior)) {
       var_grp <- r$BDD[,input$var_grp]
-      moy_tot = mean(r$BDD[,input$var_moy],na.rm=T)
-      sd_tot = sd(r$BDD[,input$var_moy],na.rm=T)
+      moy_tot = round(mean(r$BDD[,input$var_moy],na.rm=T),2)
+      sd_tot = round(sd(r$BDD[,input$var_moy],na.rm=T),2)
       prior_moy$prior<-lapply(levels(as.factor(var_grp)), function(x) list(nom=paste(input$var_grp,x, sep="_"), mu_mu = moy_tot, mu_sd = sd_tot,sd_shape = 1, sd_rate = 1))
       
     }
@@ -281,8 +281,10 @@ mod_comp_moy_server <- function(id,r){
 
     
     print(seuil_react_diff$data)
-    res<-compare_moy_gibbs(r$BDD[,input$var_moy],  r$BDD[,input$var_grp],priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
-                           seuil_global=seuil_react$data, type = seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs,seuild = seuil_react_diff$data,twit = twit_react)
+    res<-compare_moy_gibbs(r$BDD[,input$var_moy],  r$BDD[,input$var_grp],priors$mu_mu,priors$mu_sd,
+                           priors$sd_shape,priors$sd_rate,
+                           seuil_global=seuil_react$data, type = seuil_comp_moy$type, 
+                           plusieurs = seuil_comp_moy$plusieurs,seuild = seuil_react_diff$data,twit = twit_react)
       
       print(res)
       
