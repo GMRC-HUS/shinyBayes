@@ -8,7 +8,7 @@
 Dans cet onglet vous pourrez procéder à l’import de votre base de données et vous obtiendrez une visualisation de son contenu. Pour l’importation, il faut spécifier : 
 
 - Le type de séparateur utilisé dans votre base : Virgule, point-virgule ou tabulation
-- Le code utilisé pour les manquants : une oblique (slash), un astérisque, ou les lettres NA (qui doivent être les seuls éléments contenus dans la case). Nous vous conseillons d’utiliser un astérisque mais les deux autres choix sont valides.  Il vous faudra aussi au préalable, veillez à ce que toutes les données manquantes de votre fichier soit codées de la même manière. Par exemple, SHIBA n’interprétera pas correctement des données manquantes qui seraient codées NA pour certaines et ND pour d’autres.
+- Le code utilisé pour les manquants : une oblique (slash), un astérisque, ou les lettres NA (qui doivent être les seuls éléments contenus dans la case). Nous vous conseillons d’utiliser un astérisque mais les deux autres choix sont valides.  Il vous faudra aussi au préalable, veillez à ce que toutes les données manquantes de votre fichier soit codées de la même manière. Par exemple, SHIBA n’interprétera pas correctement des données manquantes qui seraient codées *NA* pour certaines et ND pour d’autres.
 - Le symbole utilisé pour la décimale : Virgule (ou décimale française), point (ou décimale anglo-saxonne)
 - Le logiciel ayant été utilisé pour enregistrer les données Excel pour Windows, ou Libre Office pour Linux 
 
