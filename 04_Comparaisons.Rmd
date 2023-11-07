@@ -1,4 +1,4 @@
-﻿Onglet comparaison
+# comparaison
 
 Comparaisons de moyennes
 
