@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapitre 3 Inférence univariée | SHIBA</title>
+  <meta name="description" content="blabla" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapitre 3 Inférence univariée | SHIBA" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="blabla" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapitre 3 Inférence univariée | SHIBA" />
+  
+  <meta name="twitter:description" content="blabla" />
+  
+
+<meta name="author" content="Une application du GMRC: Groupe Méthodes en Recherche Clinique" />
+
+
+<meta name="date" content="2023-11-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="descriptif.html"/>
+<link rel="next" href="multivarié.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Aide SHIBA</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#quest-ce-que-shiba"><i class="fa fa-check"></i><b>0.1</b> <strong><em>Qu’est-ce que SHIBA ?</em></strong></a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#fonctionnement-général-de-shiba"><i class="fa fa-check"></i><b>0.2</b> <strong><em>Fonctionnement général de SHIBA</em></strong></a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#vocabulaire-de-base"><i class="fa fa-check"></i><b>0.3</b> <strong><em>Vocabulaire de base</em></strong></a></li>
+<li class="chapter" data-level="0.4" data-path="index.html"><a href="index.html#principes-de-la-statistique-bayésienne"><i class="fa fa-check"></i><b>0.4</b> <strong><em>Principes de la statistique Bayésienne</em></strong></a>
+<ul>
+<li class="chapter" data-level="0.4.1" data-path="index.html"><a href="index.html#notion-dhypothèse-scientifique-et-dhypothèse-statistique."><i class="fa fa-check"></i><b>0.4.1</b> <em>Notion d’hypothèse scientifique et d’hypothèse statistique.</em></a></li>
+<li class="chapter" data-level="0.4.2" data-path="index.html"><a href="index.html#notion-de-probabilité."><i class="fa fa-check"></i><b>0.4.2</b> <em>Notion de probabilité.</em></a></li>
+<li class="chapter" data-level="0.4.3" data-path="index.html"><a href="index.html#les-trois-éléments-dune-analyse-bayésiennes-sont-donc"><i class="fa fa-check"></i><b>0.4.3</b> <strong><em>Les trois éléments d’une analyse bayésiennes sont donc :</em></strong></a></li>
+<li class="chapter" data-level="0.4.4" data-path="index.html"><a href="index.html#notion-de-test-sur-le-paramètre-test-par-rapport-à-un-seuil-et-test-à-deux-intervalles-2it."><i class="fa fa-check"></i><b>0.4.4</b> <em>Notion de test sur le paramètre : test par rapport à un seuil et test à deux intervalles (2IT).</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="base-de-données.html"><a href="base-de-données.html"><i class="fa fa-check"></i><b>1</b> Base de données</a></li>
+<li class="chapter" data-level="2" data-path="descriptif.html"><a href="descriptif.html"><i class="fa fa-check"></i><b>2</b> Descriptif</a></li>
+<li class="chapter" data-level="3" data-path="inférence-univariée.html"><a href="inférence-univariée.html"><i class="fa fa-check"></i><b>3</b> Inférence univariée</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="inférence-univariée.html"><a href="inférence-univariée.html#pour-lestimation-dune-moyenne"><i class="fa fa-check"></i><b>3.1</b> <strong>Pour l’estimation d’une moyenne :</strong></a></li>
+<li class="chapter" data-level="3.2" data-path="inférence-univariée.html"><a href="inférence-univariée.html#pour-lestimation-dune-proportion"><i class="fa fa-check"></i><b>3.2</b> <strong>Pour l’estimation d’une proportion :</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="multivarié.html"><a href="multivarié.html"><i class="fa fa-check"></i><b>4</b> Multivarié</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SHIBA</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inférence-univariée" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapitre 3</span> Inférence univariée<a href="inférence-univariée.html#inférence-univariée" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>L’onglet « Inférence univariée » contient deux sous-onglets. Le premier est consacré à l’estimation d’une moyenne et le second à l’estimation d’une proportion.</p>
+<div id="pour-lestimation-dune-moyenne" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> <strong>Pour l’estimation d’une moyenne :</strong><a href="inférence-univariée.html#pour-lestimation-dune-moyenne" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Une boite à menu déroulant « Variable » vous permet de choisir la variable pour laquelle vous voulez estimer la moyenne. Précisez ensuite les paramètres des lois a priori sur la moyenne et sur l’écart-type du paramètre.</p>
+<ul>
+<li>Pour l’a priori sur la moyenne, dans la case mu0, indiquant la moyenne a priori. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie.</li>
+<li>Pour l’a priori sur l’écart-type : la loi a priori est une loi gamma, ayant deux paramètres. Le paramètre alpha est un paramètre de position et le paramètre Beta est un paramètre de précision.</li>
+</ul>
+<p>Dans les 4 boites des paramètres, vous pouvez soit choisir une valeur en utilisant les flèches situées au bout de la boite soit en tapant directement la valeur choisie dans la boite. Les valeurs non-entières sont possibles pour les 4 paramètres.</p>
+<p>Un bouton « Aide à l’élicitation » ouvre un menu pop-up.</p>
+<p>Un bouton « Two-It » ouvre un menu pop-up permettant de spécifier les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
+<p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
+</div>
+<div id="pour-lestimation-dune-proportion" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> <strong>Pour l’estimation d’une proportion :</strong><a href="inférence-univariée.html#pour-lestimation-dune-proportion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Spécifier la variable à utiliser pour estimer une proportion en indiquant son nom dans la liste déroulante « Variable proportion d’intérêt ».</p>
+<p>La spécification de la loi a priori se fait en indiquant la valeur des paramètres alpha et beta de la loi a priori Beta dans les boites correspondantes : « A priori paramètre alpha » et « A priori paramètre alpha ». Un graphique s’adapte en temps réel pour vous permettre de visualiser la loi a priori que vous aurez spécifiée.</p>
+<p>Vous pouvez ensuite choisir la largeur de l’intervalle de crédibilité a posteriori à présenter dans les résultats.</p>
+<p>Un menu pop-up vous permets de spécifier les bornes des deux intervalles pour le 2IT ainsi qu’une valeur seuil pour réaliser un test si besoin.</p>
+<p>(rajouter ensuite la description des résultats)</p>
+<p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="descriptif.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multivarié.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03_Inference_univariee.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
