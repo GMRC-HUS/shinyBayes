@@ -48,6 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }} # https://github.com/settings/tokens
        with:
           BUILD_DIR: docs/  
-          branch: gh   # "_site/" by default
+          branch: gh-pages   # "_site/" by default
     
  
