@@ -118,7 +118,14 @@
             <section class="normal" id="section-">
 <div id="base-de-données" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapitre 2</span> Base de données<a href="base-de-données.html#base-de-données" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Dans cet onglet vous pourrez procéder à l’import de votre base de données et vous obtiendrez une visualisation de son contenu. Pour l’importation, il faut spécifier :</p>
+<p>Dans cet onglet vous pourrez procéder à l’import de votre base de données et vous obtiendrez une visualisation de son contenu.</p>
+<p>Vous pouvez importer les données de différentes manières :
+- en important un fichier de données enregistré dans l’un des formats suivants : .csv, .txt, .xls, .xlsx, .rds, .fst, .sas7bdat, .sav
+- en faisant un copier/coller, ce qui est plus intéressant pour de très petites bases de données
+- en important des données contenues dans une Googlesheets
+- en indiquant une URL pointant vers un fichier.</p>
+<p>Dans tous les cas, vos données devront respecter les techniques de base en matière d’enregistrement des données. Les outils d’importation des données permettent dans une certaine mesure de préciser les modalités d’importation mais il est plus simple que la base respectent d’emblée les régles usuelles de formattage des données. Notamment, les données manquantes devront être signalées par un “NA” (sans les guillemets). Ce NA doit être le seul élément de la case.</p>
+<p>Pour l’importation, il faut spécifier :</p>
 <ul>
 <li>Le type de séparateur utilisé dans votre base : Virgule, point-virgule ou tabulation</li>
 <li>Le code utilisé pour les manquants : une oblique (slash), un astérisque, ou les lettres NA (qui doivent être les seuls éléments contenus dans la case). Nous vous conseillons d’utiliser un astérisque mais les deux autres choix sont valides. Il vous faudra aussi au préalable, veillez à ce que toutes les données manquantes de votre fichier soit codées de la même manière. Par exemple, SHIBA n’interprétera pas correctement des données manquantes qui seraient codées <em>NA</em> pour certaines et ND pour d’autres.</li>
