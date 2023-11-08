@@ -6,7 +6,7 @@ date: "`r Sys.Date()`"
 
 <!-- bookdown::render_book(output_dir ="docs")-->
 
-# Préface 
+# Préface test
 
 Un outil combinant R, Shiny et STAN
 
