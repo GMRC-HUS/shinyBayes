@@ -1,9 +1,22 @@
 # comparaison
 
-Comparaisons de moyennes
+## Comparaisons de moyennes
+Indiquez à l'aide des listes déroulantes la variable de groupe et la variable quantitative dont il faut comparer les moyennes entre les groupes. 
+
+Indiquez ensuite la loi a priori pour la moyenne et l'écart-type de la variable quantitative dans chaque groupe à l'aide des zones de saisie de valeur ou à l'aide des flèches situées sur la droite de ces zones de saisie. 
+
+Cliquez sur OK pour valider ces choix. 
+
+Préciser le niveau de risque pour l'intervalle de crédibilité à l'aide du curseur. 
+
+Si vous le souhaitez, SHIBA vous permets de réaliser un test sur la comparaison de moyennes. Si vous voulez faire un test par rapport à un seuil, précisez la valeur de ce seuil. Si vous souhaitez réaliser un test à deux intervalles, spécifier les bornes hautes et basses de chaque intervalle du test (A : effet absent et P : effet présent).  
 
 
-Comparaisons de proportions
+Une fois l'ensemble des ces éléments spécifiés, vous pouvez cliquer sur le bouton "Go :" et les résultats s'afficheront dans la fenêtre de droite. 
+
+## Description des résultats. 
+
+## Comparaisons de proportions
 
 
 
