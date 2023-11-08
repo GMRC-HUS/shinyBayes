@@ -3,11 +3,30 @@
 
 # Multivarié
 
-Généralités
+## Généralités
+Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix entre une régression linéaire, une régression logistique et une régression de Poisson. Le fonctionnement de SHIBA est le même pour ces trois modèles. 
+Après avoir préciser le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d'intérêt (à prédire, Y) puis l'ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu'à chacune des listes "variables quantitatives" et "variables qualitatives". Vous pouvez spécifier plusieurs variables de chaque type. 
 
-Régression linéaire
+## Régression linéaire
 
-Régression de Poisson
+## Régression logistique
 
-Régression logistique
+## Régression de Poisson
+
+## Sélection des modalités de référence
+
+## Choix des lois a priori ("priors")
+
+## Seuils et Test à 2 intervalles
+
+
+## Résultats affichés
+SHIBA fournit différents types de résultats.
+
+- rappel du modèle
+- liste des lois a priori
+- une analyse de la convergence (faite systématiquement mais son affichage ne se fait qu'à la demande de l'utilisateur)
+- les résultats 
+- youpi, en fait ça marche pas mal !!!
+
 
