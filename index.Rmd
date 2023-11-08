@@ -3,10 +3,16 @@ title: "SHIBA"
 author: 'Une application du GMRC: Groupe Méthodes en Recherche Clinique'
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
-  word_document: default
-description: blabla
-site: bookdown::bookdown_site
+  bookdown::gitbook:
+    lib_dir: assets
+    split_by: section
+    config:
+      toolbar:
+        position: static
+  bookdown::pdf_book:
+    keep_tex: true
+  bookdown::html_book:
+    css: toc.css
 documentclass: book
 ---
 
