@@ -1,8 +1,11 @@
+metadata: 
+  title: "SHIBA"
+  author: 'Une application du GMRC: Groupe Méthodes en Recherche Clinique'
 delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapitre "
 rmd_files: 
-  html: ["index.Rmd","01_Base_de_donnees.Rmd","02_Descriptif.Rmd",
+  html: ["00_intro.Rmd","01_Base_de_donnees.Rmd","02_Descriptif.Rmd",
   "03_Inference_univariee.Rmd","04_Comparaisons.Rmd","05_Multivarie.Rmd"]
 output_dir: "docs"

@@ -2,14 +2,29 @@ bookdown::gitbook:
   css: style.css
   config:
     toc:
+       collapse: subsection
       before: |
         <li><a href="./">Aide SHIBA</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
     download: ["pdf", "epub"]
+    sharing:
+      facebook: true
+      github: true
+      twitter: true
+      linkedin: true
+      weibo: false
+      instapaper: false
+      vk: false
+      whatsapp: false
+      all: ['url']
+    info: true
 bookdown::pdf_book:
   keep_tex: true
 bookdown::epub_book: default
+metadata: 
+  title: "SHIBA"
+  author: 'Une application du GMRC: Groupe Méthodes en Recherche Clinique'
 
 

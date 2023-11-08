@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapitre 2 Base de données | SHIBA</title>
-  <meta name="description" content="Chapitre 2 Base de données | SHIBA" />
+  <title>Chapitre 5 comparaison | SHIBA</title>
+  <meta name="description" content="Chapitre 5 comparaison | SHIBA" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapitre 2 Base de données | SHIBA" />
+  <meta property="og:title" content="Chapitre 5 comparaison | SHIBA" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapitre 2 Base de données | SHIBA" />
+  <meta name="twitter:title" content="Chapitre 5 comparaison | SHIBA" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="préface.html"/>
-<link rel="next" href="descriptif.html"/>
+<link rel="prev" href="inférence-univariée.html"/>
+<link rel="next" href="multivarié.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -118,40 +118,10 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="base-de-données" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapitre 2</span> Base de données<a href="base-de-données.html#base-de-données" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Dans cet onglet vous pourrez procéder à l’import de votre base de données et vous obtiendrez une visualisation de son contenu. Pour l’importation, il faut spécifier :</p>
-<ul>
-<li>Le type de séparateur utilisé dans votre base : Virgule, point-virgule ou tabulation</li>
-<li>Le code utilisé pour les manquants : une oblique (slash), un astérisque, ou les lettres NA (qui doivent être les seuls éléments contenus dans la case). Nous vous conseillons d’utiliser un astérisque mais les deux autres choix sont valides. Il vous faudra aussi au préalable, veillez à ce que toutes les données manquantes de votre fichier soit codées de la même manière. Par exemple, SHIBA n’interprétera pas correctement des données manquantes qui seraient codées <em>NA</em> pour certaines et ND pour d’autres.</li>
-<li>Le symbole utilisé pour la décimale : Virgule (ou décimale française), point (ou décimale anglo-saxonne)</li>
-<li>Le logiciel ayant été utilisé pour enregistrer les données Excel pour Windows, ou Libre Office pour Linux</li>
-</ul>
-<p>Vous pouvez également utiliser un fichier au format csv.</p>
-<p>Parcourez ensuite l’arborescence de vos fichiers pour sélectionner votre base de données.</p>
-<p>La partie droite de l’onglet affichera une prévisualisation de votre base de données.</p>
-<!-- \* Un exemple de fichier au format .CSV adéquat est téléchargeable en cliquant sur : [ Télécharger Exemple de base de données](http://127.0.0.1:3450/session/01148853f4c46e5f2042e6bc11e735e3/download/Accueil_1-DLcsv?w=) -->
-<p><img src="images/tableau.png" /></p>
-<p>Note</p>
-<p>Cette application n’enregistre ni votre activité, ni vos données. A la fermeture de l’application, vous ne pourrez pas revenir ou récupérer les analyses effectuées. Il vous faudra recharger la base et recommencer les manipulations.</p>
-<p>Note</p>
-<p>Vous êtes responsable de la conformité réglementaire et de la sécurité des données que vous exploitez au travers de l’application « SHIBA ». L’application doit donc être utilisée conformément aux règles de sécurité établies par votre structure. Pour toute mise en œuvre d’une base de données directement ou indirectement nominative, il convient de se mettre en conformité avec la loi « Informatique et Libertés ».</p>
-<p>Dans la partie « Visualisation de la base », SHIBA vous donne quelques informations sur la structure de votre base de données. Cette description est fournie dans trois sous-onglets :</p>
-<ol style="list-style-type: decimal">
-<li>Informations brutes</li>
-<li>Données manquantes cumulées par variable</li>
-<li>Données manquantes cumulées par sujet</li>
-</ol>
-<p>Dans les « Informations brutes », SHIBA vous indique :</p>
-<ul>
-<li>les dimensions de la base (nombre de lignes et de colonnes, nombre de données)</li>
-<li>Une description rapide des données manquantes : le nombre de lignes et de colonnes vides, le nombre et le pourcentage de données manquantes.</li>
-<li>Le type de variable : quantitative, qualitative, textuelle, ou d’une autre nature.</li>
-<li>Un graphique donne une cartographie des valeurs manquantes</li>
-</ul>
-<p>Dans les « Données manquantes cumulées par variable » vous obtenez une description graphique et numérique du nombre de valeurs manquantes de chaque variable de votre base de données.</p>
-<p>Dans les « Données manquantes cumulées par sujet » vous obtenez une description graphique et numérique du nombre de valeurs manquantes pour chaque ligne de votre base de données.</p>
-<p>En cliquant sur le bouton « instructions formatage » vous avez accès à un document décrivant les règles essentielles de constitution d’une base de données pour que celle-ci soit lisible avec un minimum d’erreur.</p>
+<div id="comparaison" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapitre 5</span> comparaison<a href="comparaison.html#comparaison" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Comparaisons de moyennes</p>
+<p>Comparaisons de proportions</p>
 
 </div>
             </section>
@@ -159,8 +129,8 @@
           </div>
         </div>
       </div>
-<a href="préface.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="descriptif.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="inférence-univariée.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multivarié.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -191,7 +161,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01_Base_de_donnees.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04_Comparaisons.Rmd",
 "text": "Edit"
 },
 "history": {

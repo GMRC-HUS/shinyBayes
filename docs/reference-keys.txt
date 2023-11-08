@@ -1,3 +1,4 @@
+préface
 quest-ce-que-shiba
 fonctionnement-général-de-shiba
 note
@@ -12,4 +13,5 @@ descriptif
 inférence-univariée
 pour-lestimation-dune-moyenne
 pour-lestimation-dune-proportion
+comparaison
 multivarié
