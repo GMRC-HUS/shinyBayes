@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapitre 4 comparaison | SHIBA</title>
+  <title>Chapitre 3 Inférence univariée | SHIBA</title>
   <meta name="description" content="blabla" />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapitre 4 comparaison | SHIBA" />
+  <meta property="og:title" content="Chapitre 3 Inférence univariée | SHIBA" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="blabla" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapitre 4 comparaison | SHIBA" />
+  <meta name="twitter:title" content="Chapitre 3 Inférence univariée | SHIBA" />
   
   <meta name="twitter:description" content="blabla" />
   
@@ -23,14 +23,14 @@
 <meta name="author" content="Une application du GMRC: Groupe Méthodes en Recherche Clinique" />
 
 
-<meta name="date" content="2023-11-08" />
+<meta name="date" content="2023-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="inférence-univariée.html"/>
+<link rel="prev" href="descriptif.html"/>
 <link rel="next" href="multivarié.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -55,10 +55,6 @@
 
 
 
-<style type="text/css">
-  
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -96,8 +92,7 @@
 <li class="chapter" data-level="3.1" data-path="inférence-univariée.html"><a href="inférence-univariée.html#pour-lestimation-dune-moyenne"><i class="fa fa-check"></i><b>3.1</b> <strong>Pour l’estimation d’une moyenne :</strong></a></li>
 <li class="chapter" data-level="3.2" data-path="inférence-univariée.html"><a href="inférence-univariée.html#pour-lestimation-dune-proportion"><i class="fa fa-check"></i><b>3.2</b> <strong>Pour l’estimation d’une proportion :</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="comparaison.html"><a href="comparaison.html"><i class="fa fa-check"></i><b>4</b> comparaison</a></li>
-<li class="chapter" data-level="5" data-path="multivarié.html"><a href="multivarié.html"><i class="fa fa-check"></i><b>5</b> Multivarié</a></li>
+<li class="chapter" data-level="4" data-path="multivarié.html"><a href="multivarié.html"><i class="fa fa-check"></i><b>4</b> Multivarié</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -118,18 +113,38 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="comparaison" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapitre 4</span> comparaison<a href="comparaison.html#comparaison" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Comparaisons de moyennes</p>
-<p>Comparaisons de proportions</p>
+<div id="inférence-univariée" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapitre 3</span> Inférence univariée<a href="inférence-univariée.html#inférence-univariée" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>L’onglet « Inférence univariée » contient deux sous-onglets. Le premier est consacré à l’estimation d’une moyenne et le second à l’estimation d’une proportion.</p>
+<div id="pour-lestimation-dune-moyenne" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> <strong>Pour l’estimation d’une moyenne :</strong><a href="inférence-univariée.html#pour-lestimation-dune-moyenne" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Une boite à menu déroulant « Variable » vous permet de choisir la variable pour laquelle vous voulez estimer la moyenne. Précisez ensuite les paramètres des lois a priori sur la moyenne et sur l’écart-type du paramètre.</p>
+<ul>
+<li>Pour l’a priori sur la moyenne, dans la case mu0, indiquant la moyenne a priori. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie.</li>
+<li>Pour l’a priori sur l’écart-type : la loi a priori est une loi gamma, ayant deux paramètres. Le paramètre alpha est un paramètre de position et le paramètre Beta est un paramètre de précision.</li>
+</ul>
+<p>Dans les 4 boites des paramètres, vous pouvez soit choisir une valeur en utilisant les flèches situées au bout de la boite soit en tapant directement la valeur choisie dans la boite. Les valeurs non-entières sont possibles pour les 4 paramètres.</p>
+<p>Un bouton « Aide à l’élicitation » ouvre un menu pop-up.</p>
+<p>Un bouton « Two-It » ouvre un menu pop-up permettant de spécifier les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
+<p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
+</div>
+<div id="pour-lestimation-dune-proportion" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> <strong>Pour l’estimation d’une proportion :</strong><a href="inférence-univariée.html#pour-lestimation-dune-proportion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Spécifier la variable à utiliser pour estimer une proportion en indiquant son nom dans la liste déroulante « Variable proportion d’intérêt ».</p>
+<p>La spécification de la loi a priori se fait en indiquant la valeur des paramètres alpha et beta de la loi a priori Beta dans les boites correspondantes : « A priori paramètre alpha » et « A priori paramètre alpha ». Un graphique s’adapte en temps réel pour vous permettre de visualiser la loi a priori que vous aurez spécifiée.</p>
+<p>Vous pouvez ensuite choisir la largeur de l’intervalle de crédibilité a posteriori à présenter dans les résultats.</p>
+<p>Un menu pop-up vous permets de spécifier les bornes des deux intervalles pour le 2IT ainsi qu’une valeur seuil pour réaliser un test si besoin.</p>
+<p>(rajouter ensuite la description des résultats)</p>
+<p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="inférence-univariée.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="descriptif.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="multivarié.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -161,7 +176,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04_Comparaisons.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03_Inference_univariee.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -1,0 +1,13 @@
+
+
+
+# Multivarié
+
+Généralités
+
+Régression linéaire
+
+Régression de Poisson
+
+Régression logistique
+
