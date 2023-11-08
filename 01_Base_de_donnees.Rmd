@@ -24,7 +24,9 @@ Pour l’importation, il faut spécifier :
 
 Parcourez ensuite l’arborescence de vos fichiers pour sélectionner votre base de données. 
 
-La partie droite de l’onglet affichera une prévisualisation de votre base de données. 
+L'onglet central affichera une prévisualisation de votre base de données. 
+
+L'onglet de droite vous permettra de modifier, variable par variable, le type de données si la détection automatique du type de la variable n'a pas donné le résultat escompté. 
 
 <!-- \* Un exemple de fichier au format .CSV adéquat est téléchargeable en cliquant sur : [ Télécharger Exemple de base de données](http://127.0.0.1:3450/session/01148853f4c46e5f2042e6bc11e735e3/download/Accueil_1-DLcsv?w=) -->
 
