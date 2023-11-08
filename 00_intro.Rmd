@@ -2,7 +2,6 @@
 title: "SHIBA"
 author: 'Une application du GMRC: Groupe Méthodes en Recherche Clinique'
 date: "`r Sys.Date()`"
-
 ---
 
 <!-- bookdown::render_book(output_dir ="docs")-->

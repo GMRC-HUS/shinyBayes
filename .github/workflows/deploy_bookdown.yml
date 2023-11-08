@@ -3,8 +3,6 @@ on:
      branches:
        - gh
 
-  
-
 name: renderbook
 
 jobs:

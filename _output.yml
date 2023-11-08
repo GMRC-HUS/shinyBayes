@@ -2,7 +2,7 @@ bookdown::gitbook:
   css: style.css
   config:
     toc:
-       collapse: subsection
+      collapse: subsection
       before: |
         <li><a href="./">Aide SHIBA</a></li>
       after: |
