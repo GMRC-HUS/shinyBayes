@@ -7,7 +7,7 @@ L’onglet « Inférence univariée » contient deux sous-onglets. Le premier 
 
 Une boite à menu déroulant « Variable » vous permet de choisir la variable pour laquelle vous voulez estimer la moyenne. Précisez ensuite les paramètres des lois a priori sur la moyenne et sur l’écart-type du paramètre. 
 
-- Pour l’a priori sur la moyenne, dans la case mu0, indiquant la moyenne a priori. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie. 
+- Pour l’a priori sur la moyenne, dans la case mu0, indiquez la moyenne a priori. Une valeur par défaut vous est proposée mais il est pertinent de la modifié chaque fois que nécessaire. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie. 
 - Pour l’a priori sur l’écart-type : la loi a priori est une loi gamma, ayant deux paramètres. Le paramètre alpha est un paramètre de position et le paramètre Beta est un paramètre de précision. 
 
 Dans les 4 boites des paramètres, vous pouvez soit choisir une valeur en utilisant les flèches situées au bout de la boite soit en tapant directement la valeur choisie dans la boite. Les valeurs non-entières sont possibles pour les 4 paramètres. 
