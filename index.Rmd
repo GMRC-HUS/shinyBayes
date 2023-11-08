@@ -12,7 +12,7 @@ documentclass: book
 
 <!-- bookdown::render_book(output_dir ="docs")-->
 
-# Préface {.unnumbered}
+# Préface 
 
 Un outil combinant R, Shiny et STAN
 
