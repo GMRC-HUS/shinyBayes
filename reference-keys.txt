@@ -1,4 +1,4 @@
-préface-test
+intro
 quest-ce-que-shiba
 fonctionnement-général-de-shiba
 note
