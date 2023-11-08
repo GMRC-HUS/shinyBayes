@@ -14,4 +14,7 @@ inférence-univariée
 pour-lestimation-dune-moyenne
 pour-lestimation-dune-proportion
 comparaison
+comparaisons-de-moyennes
+description-des-résultats.
+comparaisons-de-proportions
 multivarié
