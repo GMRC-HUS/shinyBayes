@@ -16,5 +16,5 @@ pour-lestimation-dune-proportion
 comparaison
 comparaisons-de-moyennes
 description-des-résultats.
-comparaisons-de-proportions
+comparaisons-de-pourcentages
 multivarié
