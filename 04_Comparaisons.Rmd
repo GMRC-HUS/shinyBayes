@@ -16,7 +16,21 @@ Une fois l'ensemble des ces éléments spécifiés, vous pouvez cliquer sur le b
 
 ## Description des résultats. 
 
-## Comparaisons de proportions
+## Comparaisons de pourcentages
+
+Indiquez à l'aide des listes déroulantes la variable de groupe et la variable qualitative dont il faut comparer les proportions entre les groupes. 
+
+Indiquez ensuite la loi a priori de la variable qualitative dans chaque groupe à l'aide des zones de saisie de valeur ou à l'aide des flèches situées sur la droite de ces zones de saisie. Une loi a priori de Jeffreys par défaut est proposée mais il est pertinent d'adapter ces valeurs à chaque analyse. 
+
+Cliquez sur OK pour valider ces choix. 
+
+Préciser le niveau de risque pour l'intervalle de crédibilité à l'aide du curseur. 
+
+Si vous le souhaitez, SHIBA vous permets de réaliser un test sur la comparaison de proportions. Si vous voulez faire un test par rapport à un seuil, précisez la valeur de ce seuil. Si vous souhaitez réaliser un test à deux intervalles, spécifier les bornes hautes et basses de chaque intervalle du test (A : effet absent et P : effet présent).  
+
+
+Une fois l'ensemble des ces éléments spécifiés, vous pouvez cliquer sur le bouton "Go :" et les résultats s'afficheront dans la fenêtre de droite. 
+
 
 
 
