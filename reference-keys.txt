@@ -18,3 +18,11 @@ comparaisons-de-moyennes
 description-des-résultats.
 comparaisons-de-pourcentages
 multivarié
+généralités
+régression-linéaire
+régression-logistique
+régression-de-poisson
+sélection-des-modalités-de-référence
+choix-des-lois-a-priori-priors
+seuils-et-test-à-2-intervalles
+résultats-affichés

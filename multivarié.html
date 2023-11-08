@@ -103,7 +103,17 @@
 <li class="chapter" data-level="5.2" data-path="comparaison.html"><a href="comparaison.html#description-des-résultats."><i class="fa fa-check"></i><b>5.2</b> Description des résultats.</a></li>
 <li class="chapter" data-level="5.3" data-path="comparaison.html"><a href="comparaison.html#comparaisons-de-pourcentages"><i class="fa fa-check"></i><b>5.3</b> Comparaisons de pourcentages</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="multivarié.html"><a href="multivarié.html"><i class="fa fa-check"></i><b>6</b> Multivarié</a></li>
+<li class="chapter" data-level="6" data-path="multivarié.html"><a href="multivarié.html"><i class="fa fa-check"></i><b>6</b> Multivarié</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="multivarié.html"><a href="multivarié.html#généralités"><i class="fa fa-check"></i><b>6.1</b> Généralités</a></li>
+<li class="chapter" data-level="6.2" data-path="multivarié.html"><a href="multivarié.html#régression-linéaire"><i class="fa fa-check"></i><b>6.2</b> Régression linéaire</a></li>
+<li class="chapter" data-level="6.3" data-path="multivarié.html"><a href="multivarié.html#régression-logistique"><i class="fa fa-check"></i><b>6.3</b> Régression logistique</a></li>
+<li class="chapter" data-level="6.4" data-path="multivarié.html"><a href="multivarié.html#régression-de-poisson"><i class="fa fa-check"></i><b>6.4</b> Régression de Poisson</a></li>
+<li class="chapter" data-level="6.5" data-path="multivarié.html"><a href="multivarié.html#sélection-des-modalités-de-référence"><i class="fa fa-check"></i><b>6.5</b> Sélection des modalités de référence</a></li>
+<li class="chapter" data-level="6.6" data-path="multivarié.html"><a href="multivarié.html#choix-des-lois-a-priori-priors"><i class="fa fa-check"></i><b>6.6</b> Choix des lois a priori (“priors”)</a></li>
+<li class="chapter" data-level="6.7" data-path="multivarié.html"><a href="multivarié.html#seuils-et-test-à-2-intervalles"><i class="fa fa-check"></i><b>6.7</b> Seuils et Test à 2 intervalles</a></li>
+<li class="chapter" data-level="6.8" data-path="multivarié.html"><a href="multivarié.html#résultats-affichés"><i class="fa fa-check"></i><b>6.8</b> Résultats affichés</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -123,11 +133,41 @@
             <section class="normal" id="section-">
 <div id="multivarié" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapitre 6</span> Multivarié<a href="multivarié.html#multivarié" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Généralités</p>
-<p>Régression linéaire</p>
-<p>Régression de Poisson</p>
-<p>Régression logistique</p>
+<div id="généralités" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Généralités<a href="multivarié.html#généralités" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix entre une régression linéaire, une régression logistique et une régression de Poisson. Le fonctionnement de SHIBA est le même pour ces trois modèles.
+Après avoir préciser le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d’intérêt (à prédire, Y) puis l’ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu’à chacune des listes “variables quantitatives” et “variables qualitatives”. Vous pouvez spécifier plusieurs variables de chaque type.</p>
+</div>
+<div id="régression-linéaire" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Régression linéaire<a href="multivarié.html#régression-linéaire" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="régression-logistique" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Régression logistique<a href="multivarié.html#régression-logistique" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="régression-de-poisson" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Régression de Poisson<a href="multivarié.html#régression-de-poisson" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="sélection-des-modalités-de-référence" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Sélection des modalités de référence<a href="multivarié.html#sélection-des-modalités-de-référence" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="choix-des-lois-a-priori-priors" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Choix des lois a priori (“priors”)<a href="multivarié.html#choix-des-lois-a-priori-priors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="seuils-et-test-à-2-intervalles" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> Seuils et Test à 2 intervalles<a href="multivarié.html#seuils-et-test-à-2-intervalles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="résultats-affichés" class="section level2 hasAnchor" number="6.8">
+<h2><span class="header-section-number">6.8</span> Résultats affichés<a href="multivarié.html#résultats-affichés" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>SHIBA fournit différents types de résultats.</p>
+<ul>
+<li>rappel du modèle</li>
+<li>liste des lois a priori</li>
+<li>une analyse de la convergence (faite systématiquement mais son affichage ne se fait qu’à la demande de l’utilisateur)</li>
+<li>les résultats</li>
+<li>youpi, en fait ça marche pas mal !!!</li>
+</ul>
 
+</div>
 </div>
 
 
