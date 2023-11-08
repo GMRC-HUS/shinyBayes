@@ -2,13 +2,10 @@ bookdown::gitbook:
   css: style.css
   config:
     toc:
+      scroll_highlight : true
       collapse: subsection
       before: |
         <li><a href="./">Aide SHIBA</a></li>
-      after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
-    download: ["pdf", "epub"]
     sharing:
       facebook: true
       github: true
