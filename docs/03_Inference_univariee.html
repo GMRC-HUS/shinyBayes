@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-09">
 
-<title>Aide application SHIBA</title>
+<title>Aide application SHIBA - 5&nbsp; Inférence univariée</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./00_intro.html" rel="next">
+<link href="./04_Comparaisons.html" rel="next">
+<link href="./02_Descriptif.html" rel="prev">
 <link href="./images/hex.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -75,7 +75,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Intoduction</a></li><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">***SHIBA***</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Base_de_donnees.html">Aide sur l’application</a></li><li class="breadcrumb-item"><a href="./03_Inference_univariee.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inférence univariée</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -117,14 +117,14 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><strong><em>SHIBA</em></strong></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./00_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Qu’est-ce que SHIBA ?</span></span></a>
   </div>
 </li>
       </ul>
@@ -152,7 +152,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03_Inference_univariee.html" class="sidebar-item-text sidebar-link">
+  <a href="./03_Inference_univariee.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inférence univariée</span></span></a>
   </div>
 </li>
@@ -197,20 +197,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#shiba" id="toc-shiba" class="nav-link active" data-scroll-target="#shiba"><span class="header-section-number">1</span> <strong><em>SHIBA</em></strong></a>
-  <ul class="collapse">
-  <li><a href="#fonctionnement-général-de-shiba" id="toc-fonctionnement-général-de-shiba" class="nav-link" data-scroll-target="#fonctionnement-général-de-shiba"><span class="header-section-number">1.1</span> <strong><em>Fonctionnement général de SHIBA</em></strong></a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><span class="header-section-number">1.2</span> License</a></li>
-  </ul></li>
+  <li><a href="#pour-lestimation-dune-moyenne" id="toc-pour-lestimation-dune-moyenne" class="nav-link active" data-scroll-target="#pour-lestimation-dune-moyenne"><span class="header-section-number">5.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></a></li>
+  <li><a href="#pour-lestimation-dune-proportion" id="toc-pour-lestimation-dune-proportion" class="nav-link" data-scroll-target="#pour-lestimation-dune-proportion"><span class="header-section-number">5.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GMRC-HUS/ShiBA/edit/gh/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/GMRC-HUS/ShiBA/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GMRC-HUS/ShiBA/edit/gh/03_Inference_univariee.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/GMRC-HUS/ShiBA/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Aide application SHIBA</h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inférence univariée</span></h1>
 </div>
 
 
@@ -218,12 +215,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 9, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -231,29 +222,29 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-
-<section id="shiba" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> <strong><em>SHIBA</em></strong></h1><p><img src="images/hex.png" title="Aide application SHIBA" class="quarto-cover-image img-fluid"></p>
-<p>Un outil combinant R <img src="images/logo.jpg" width="28" height="22">, Shiny <img src="images/shiny.png" class="img-fluid" width="19"> et STAN <img src="images/stan_logo.png" class="img-fluid" width="22"> pour faciliter la réalisation des analyses statistiques Bayésiennes.</p>
-<p><em>SHIBA (Shiny Bayesian Analysis</em>) est une application créée par les membres du <strong>Groupe Méthodes en Recherche Clinique</strong> (GMRC) des Hôpitaux Universitaires de Strasbourg et de l’équipe <strong>IMAGES – RaDoScauba</strong> du laboratoire iCUBE (CNRS UMR 7357) Université de Strasbourg.</p>
-<p>SHIBA est une interface graphique permettant de réaliser des analyses bayésiennes via le logiciel de statistiques R et les packages associés sans avoir à coder les instructions nécessaires pour obtenir ces analyses.</p>
-<p>Cet outil est proposé <strong>sans aucune garantie de validité sur les résultats.</strong></p>
-<p>Ce logiciel est mis à votre disposition gracieusement par les Hôpitaux Universitaires de Strasbourg (HUS) et l’Université de Strasbourg (Unistra). Ni les HUS ni l’Unistra ne pourront pas être tenus pour responsables des résultats produits par l’outil ainsi que de ses mésusages. Afin de se conformer à la règlementation nationale et européenne sur la protection des données à caractère personnel, nous vous demandons de n’utiliser que des données anonymisées.</p>
-<section id="fonctionnement-général-de-shiba" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="fonctionnement-général-de-shiba"><span class="header-section-number">1.1</span> <strong><em>Fonctionnement général de SHIBA</em></strong></h2>
-<p>SHIBA dispose de plusieurs onglets. Une fois la base de données importée et ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser : description des données puis inférence, uni- ou multivariée. Dans chaque onglet, en cliquant sur le bouton « AIDE et détails » vous accéderez à une aide spécifique de l’onglet.</p>
+<p>L’onglet «&nbsp;Inférence univariée&nbsp;» contient deux sous-onglets. Le premier est consacré à l’estimation d’une moyenne et le second à l’estimation d’une proportion.</p>
+<section id="pour-lestimation-dune-moyenne" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="pour-lestimation-dune-moyenne"><span class="header-section-number">5.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></h2>
+<p>Une boite à menu déroulant «&nbsp;Variable&nbsp;» vous permet de choisir la variable pour laquelle vous voulez estimer la moyenne. Précisez ensuite les paramètres des lois a priori sur la moyenne et sur l’écart-type du paramètre.</p>
+<ul>
+<li>Pour l’a priori sur la moyenne, dans la case mu0, indiquez la moyenne a priori. Une valeur par défaut vous est proposée mais il est pertinent de la modifié chaque fois que nécessaire. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie.</li>
+<li>Pour l’a priori sur l’écart-type&nbsp;: la loi a priori est une loi gamma, ayant deux paramètres. Le paramètre alpha est un paramètre de position et le paramètre Beta est un paramètre de précision.</li>
+</ul>
+<p>Dans les 4 boites des paramètres, vous pouvez soit choisir une valeur en utilisant les flèches situées au bout de la boite soit en tapant directement la valeur choisie dans la boite. Les valeurs non-entières sont possibles pour les 4 paramètres.</p>
+<p>Un bouton «&nbsp;Aide à l’élicitation&nbsp;» ouvre un menu pop-up.</p>
+<p>Un bouton «&nbsp;Two-It&nbsp;» ouvre un menu pop-up permettant de spécifier les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
+<p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
 </section>
-<section id="license" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="license"><span class="header-section-number">1.2</span> License</h2>
-<p>L’ensemble du contenu de la documentation est mis à disposition sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC-by-nc 4.0</a>.</p>
-<p>La licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC-by-nc 4.0</a> permet <strong>toute exploitation de l’œuvre</strong> (partager, copier, reproduire, distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous formats et sous toutes licences. Toutes les exploitations de l’œuvre ou des œuvres dérivées, <strong>sauf à des fins commerciales</strong>, sont possibles.</p>
-<p>Les obligations liées à la licence sont de :</p>
-<p>• <strong>créditer les créateurs de la paternité des œuvres originales</strong>, d’en indiquer les sources et d’indiquer si des modifications ont été effectuées aux œuvres (obligation d’attribution) ;</p>
-<p>• <strong>ne pas tirer profit</strong> (gain direct ou plus-value commerciale) de l’œuvre ou des œuvres dérivées.</p>
-<p><img src="images/by-nc.eu.png" class="img-fluid" width="108"></p>
+<section id="pour-lestimation-dune-proportion" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="pour-lestimation-dune-proportion"><span class="header-section-number">5.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></h2>
+<p>Spécifier la variable à utiliser pour estimer une proportion en indiquant son nom dans la liste déroulante «&nbsp;Variable proportion d’intérêt&nbsp;».</p>
+<p>La spécification de la loi a priori se fait en indiquant la valeur des paramètres alpha et beta de la loi a priori Beta dans les boites correspondantes&nbsp;: «&nbsp;A priori paramètre alpha&nbsp;» et «&nbsp;A priori paramètre alpha&nbsp;». Un graphique s’adapte en temps réel pour vous permettre de visualiser la loi a priori que vous aurez spécifiée.</p>
+<p>Vous pouvez ensuite choisir la largeur de l’intervalle de crédibilité a posteriori à présenter dans les résultats.</p>
+<p>Un menu pop-up vous permets de spécifier les bornes des deux intervalles pour le 2IT ainsi qu’une valeur seuil pour réaliser un test si besoin.</p>
+<p>(rajouter ensuite la description des résultats)</p>
+<p>En appuyant sur le bouton «&nbsp;Go&nbsp;» vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -492,10 +483,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./02_Descriptif.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Descriptif</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./00_intro.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./04_Comparaisons.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">comparaison</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

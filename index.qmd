@@ -1,6 +1,58 @@
 # ***SHIBA***
 
-Un outil combinant R![](images/logo.jpg), Shiny et STAN
+Un outil combinant R ![](images/logo.jpg){width="28" height="22"}, Shiny
+![](images/shiny.png){width="19"} et STAN
+![](images/stan_logo.png){width="22"} pour faciliter la réalisation des
+analyses statistiques Bayésiennes.
 
-pour faciliter la réalisation des analyses statistiques Bayésiennes
+*SHIBA (Shiny Bayesian Analysis*) est une application créée par les
+membres du **Groupe Méthodes en Recherche Clinique** (GMRC) des Hôpitaux
+Universitaires de Strasbourg et de l'équipe **IMAGES -- RaDoScauba** du
+laboratoire iCUBE (CNRS UMR 7357) Université de Strasbourg.
 
+SHIBA est une interface graphique permettant de réaliser des analyses
+bayésiennes via le logiciel de statistiques R et les packages associés
+sans avoir à coder les instructions nécessaires pour obtenir ces
+analyses.
+
+Cet outil est proposé **sans aucune garantie de validité sur les
+résultats.**
+
+Ce logiciel est mis à votre disposition gracieusement par les Hôpitaux
+Universitaires de Strasbourg (HUS) et l'Université de Strasbourg
+(Unistra). Ni les HUS ni l'Unistra ne pourront pas être tenus pour
+responsables des résultats produits par l'outil ainsi que de ses
+mésusages. Afin de se conformer à la règlementation nationale et
+européenne sur la protection des données à caractère personnel, nous
+vous demandons de n'utiliser que des données anonymisées.
+
+## ***Fonctionnement général de SHIBA***
+
+SHIBA dispose de plusieurs onglets. Une fois la base de données importée
+et ouverte dans SHIBA, vous pourrez choisir l'onglet correspondant aux
+analyses à réaliser : description des données puis inférence, uni- ou
+multivariée. Dans chaque onglet, en cliquant sur le bouton « AIDE et
+détails » vous accéderez à une aide spécifique de l'onglet.
+
+## License
+
+L'ensemble du contenu de la documentation est mis à disposition sous
+licence [CC-by-nc
+4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr).
+
+La licence [CC-by-nc
+4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr) permet
+**toute exploitation de l'œuvre** (partager, copier, reproduire,
+distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous
+formats et sous toutes licences. Toutes les exploitations de l'œuvre ou
+des œuvres dérivées, **sauf à des fins commerciales**, sont possibles.
+
+      
+Les obligations liées à la licence sont de :
+
+• **créditer les créateurs de la paternité des œuvres originales**, d'en indiquer les sources et d'indiquer si des modifications ont été effectuées aux œuvres (obligation d'attribution) ;
+
+• **ne pas tirer profit** (gain direct ou plus-value commerciale) de l'œuvre ou des œuvres dérivées.
+
+
+![](images/by-nc.eu.png){width="108"}

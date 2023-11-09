@@ -3,18 +3,45 @@ project:
   output-dir: docs
   
 book:
-  title: "Shiba"
+
+  title: "Aide application SHIBA"
   date: "2023-11-09"
+  page-navigation: true
   chapters:
-    - index.qmd
-    - 000_Accueil.qmd
-    - 00_intro.qmd
-    - 01_Base_de_donnees.qmd
-    - 02_Descriptif.qmd
-    - 03_Inference_univariee.qmd
-    - 04_Comparaisons.qmd
-    - 05_Multivarie.qmd
+    - part: "Intoduction"
+      chapters:
+      - index.qmd
+      - 00_intro.qmd
+    - part: "Aide sur l'application"
+      chapters:
+      - 01_Base_de_donnees.qmd
+      - 02_Descriptif.qmd
+      - 03_Inference_univariee.qmd
+      - 04_Comparaisons.qmd
+      - 05_Multivarie.qmd
+  appendices:
     - annexe_saisie.qmd
+    
+  page-footer:
+    right: |
+      <li><a href="https://github.com/GMRC-HUS/ShiBA.git" target="blank">Code source</a></li>
+    left: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  site-url: gmrc-hus.github.io/ShiBA/
+  repo-url: https://github.com/GMRC-HUS/ShiBA
+  repo-actions: [edit,issue]
+  repo-branch: gh
+  cover-image: images/hex.png
+  favicon: images/hex.png
+
+  # navbar:
+  #   search: true
+  #   logo: resources/logo-utilitr.png
+  #   background: white
+    
+  sidebar:
+    search: true
+    logo: images/hex.png
 format:
   html:
     theme: cosmo
