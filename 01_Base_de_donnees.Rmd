@@ -62,3 +62,6 @@ Dans les « Données manquantes cumulées par sujet » vous obtenez une descri
 En cliquant sur le bouton « instructions formatage » vous avez accès à un document décrivant les règles essentielles de constitution d’une base de données pour que celle-ci soit lisible avec un minimum d’erreur. 
 
 
+
+
+

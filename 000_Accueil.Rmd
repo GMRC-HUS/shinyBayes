@@ -1,10 +1,5 @@
-# ***SHIBA*** 
 
-Un outil combinant R, Shiny et STAN
-
-pour faciliter la réalisation des analyses statistiques Bayésiennes
-
-## ***Qu'est-ce que SHIBA ?***
+# ***Qu'est-ce que SHIBA ?***
 
 SHIBA est une application créée par les membres du Groupe Méthodes en Recherche Clinique (GMRC) des Hôpitaux Universitaires de Strasbourg et de l'équipe IMAGES -- RaDoScauba du laboratoire iCUBE (CNRS UMR 7357) Université de Strasbourg. Elle est entièrement gratuite, sous licence CC-by-nc 4.0[^1].
 

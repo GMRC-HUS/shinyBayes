@@ -4,4 +4,8 @@ author: 'Une application du GMRC: Groupe Méthodes en Recherche Clinique'
 date: "`r Sys.Date()`"
 ---
 
-# Preface {-}
+# ***SHIBA*** 
+
+Un outil combinant R, Shiny et STAN
+
+pour faciliter la réalisation des analyses statistiques Bayésiennes
