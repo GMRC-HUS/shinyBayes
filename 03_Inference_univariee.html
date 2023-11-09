@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Shiba - 6&nbsp; Inférence univariée</title>
+<title>Aide application SHIBA - 5&nbsp; Inférence univariée</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,6 +32,7 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="./">
 <link href="./04_Comparaisons.html" rel="next">
 <link href="./02_Descriptif.html" rel="prev">
+<link href="./images/hex.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +75,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03_Inference_univariee.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Inférence univariée</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Base_de_donnees.html">Aide sur l’application</a></li><li class="breadcrumb-item"><a href="./03_Inference_univariee.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inférence univariée</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -87,9 +88,15 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./images/hex.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Shiba</a> 
+      <a href="./">Aide application SHIBA</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/GMRC-HUS/ShiBA" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -99,60 +106,87 @@ ul.task-list li input[type="checkbox"] {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Intoduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><strong><em>SHIBA</em></strong></span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./000_Accueil.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./00_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Qu’est-ce que SHIBA ?</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Aide sur l’application</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_Base_de_donnees.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Base de données</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Base de données</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_Descriptif.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descriptif</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Descriptif</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_Inference_univariee.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Inférence univariée</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inférence univariée</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04_Comparaisons.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">comparaison</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">comparaison</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05_Multivarie.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivarié</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Multivarié</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./annexe_saisie.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Annexe : Saisie des données</span></a>
   </div>
 </li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -163,17 +197,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#pour-lestimation-dune-moyenne" id="toc-pour-lestimation-dune-moyenne" class="nav-link active" data-scroll-target="#pour-lestimation-dune-moyenne"><span class="header-section-number">6.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></a></li>
-  <li><a href="#pour-lestimation-dune-proportion" id="toc-pour-lestimation-dune-proportion" class="nav-link" data-scroll-target="#pour-lestimation-dune-proportion"><span class="header-section-number">6.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></a></li>
+  <li><a href="#pour-lestimation-dune-moyenne" id="toc-pour-lestimation-dune-moyenne" class="nav-link active" data-scroll-target="#pour-lestimation-dune-moyenne"><span class="header-section-number">5.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></a></li>
+  <li><a href="#pour-lestimation-dune-proportion" id="toc-pour-lestimation-dune-proportion" class="nav-link" data-scroll-target="#pour-lestimation-dune-proportion"><span class="header-section-number">5.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></a></li>
   </ul>
-</nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GMRC-HUS/ShiBA/edit/gh/03_Inference_univariee.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/GMRC-HUS/ShiBA/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Inférence univariée</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inférence univariée</span></h1>
 </div>
 
 
@@ -189,8 +223,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p>L’onglet «&nbsp;Inférence univariée&nbsp;» contient deux sous-onglets. Le premier est consacré à l’estimation d’une moyenne et le second à l’estimation d’une proportion.</p>
-<section id="pour-lestimation-dune-moyenne" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="pour-lestimation-dune-moyenne"><span class="header-section-number">6.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></h2>
+<section id="pour-lestimation-dune-moyenne" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="pour-lestimation-dune-moyenne"><span class="header-section-number">5.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></h2>
 <p>Une boite à menu déroulant «&nbsp;Variable&nbsp;» vous permet de choisir la variable pour laquelle vous voulez estimer la moyenne. Précisez ensuite les paramètres des lois a priori sur la moyenne et sur l’écart-type du paramètre.</p>
 <ul>
 <li>Pour l’a priori sur la moyenne, dans la case mu0, indiquez la moyenne a priori. Une valeur par défaut vous est proposée mais il est pertinent de la modifié chaque fois que nécessaire. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie.</li>
@@ -201,8 +235,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Un bouton «&nbsp;Two-It&nbsp;» ouvre un menu pop-up permettant de spécifier les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
 <p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
 </section>
-<section id="pour-lestimation-dune-proportion" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="pour-lestimation-dune-proportion"><span class="header-section-number">6.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></h2>
+<section id="pour-lestimation-dune-proportion" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="pour-lestimation-dune-proportion"><span class="header-section-number">5.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></h2>
 <p>Spécifier la variable à utiliser pour estimer une proportion en indiquant son nom dans la liste déroulante «&nbsp;Variable proportion d’intérêt&nbsp;».</p>
 <p>La spécification de la loi a priori se fait en indiquant la valeur des paramètres alpha et beta de la loi a priori Beta dans les boites correspondantes&nbsp;: «&nbsp;A priori paramètre alpha&nbsp;» et «&nbsp;A priori paramètre alpha&nbsp;». Un graphique s’adapte en temps réel pour vous permettre de visualiser la loi a priori que vous aurez spécifiée.</p>
 <p>Vous pouvez ensuite choisir la largeur de l’intervalle de crédibilité a posteriori à présenter dans les résultats.</p>
@@ -450,16 +484,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./02_Descriptif.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descriptif</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Descriptif</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./04_Comparaisons.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">comparaison</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">comparaison</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right"></div>
+  </div>
+</footer>
 
 
 
