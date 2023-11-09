@@ -1,7 +1,10 @@
+# ***SHIBA***
 
-
-# ***SHIBA*** 
-
-Un outil combinant R, Shiny et STAN
+Un outil combinant R![](images/logo.jpg), Shiny et STAN
 
 pour faciliter la réalisation des analyses statistiques Bayésiennes
+
+```{r, include=FALSE}
+# copy the R logo to the current directory
+file.copy(file.path(R.home("doc"), "html", "logo.jpg"), '.')
+```
