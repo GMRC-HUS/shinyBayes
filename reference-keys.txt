@@ -1,7 +1,11 @@
-intro
+shiba
 quest-ce-que-shiba
 fonctionnement-général-de-shiba
 note
+intro
+quest-ce-que-shiba-1
+fonctionnement-général-de-shiba-1
+note-1
 vocabulaire-de-base
 principes-de-la-statistique-bayésienne
 notion-dhypothèse-scientifique-et-dhypothèse-statistique.
