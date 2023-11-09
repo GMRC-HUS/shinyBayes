@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Shiba - 3&nbsp; Intro</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./01_Base_de_donnees.html" rel="next">
+<link href="./000_Accueil.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00_intro.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Shiba</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><strong><em>SHIBA</em></strong></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./000_Accueil.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00_intro.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_Base_de_donnees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Base de données</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_Descriptif.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descriptif</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_Inference_univariee.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Inférence univariée</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_Comparaisons.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">comparaison</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_Multivarie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivarié</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./annexe_saisie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annexe : Saisie des données</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#quest-ce-que-shiba" id="toc-quest-ce-que-shiba" class="nav-link active" data-scroll-target="#quest-ce-que-shiba"><span class="header-section-number">3.1</span> <strong><em>Qu’est-ce que SHIBA ?</em></strong></a></li>
+  <li><a href="#fonctionnement-général-de-shiba" id="toc-fonctionnement-général-de-shiba" class="nav-link" data-scroll-target="#fonctionnement-général-de-shiba"><span class="header-section-number">3.2</span> <strong><em>Fonctionnement général de SHIBA</em></strong></a></li>
+  <li><a href="#vocabulaire-de-base" id="toc-vocabulaire-de-base" class="nav-link" data-scroll-target="#vocabulaire-de-base"><span class="header-section-number">3.3</span> <strong><em>Vocabulaire de base</em></strong></a></li>
+  <li><a href="#principes-de-la-statistique-bayésienne" id="toc-principes-de-la-statistique-bayésienne" class="nav-link" data-scroll-target="#principes-de-la-statistique-bayésienne"><span class="header-section-number">3.4</span> <strong><em>Principes de la statistique Bayésienne</em></strong></a>
+  <ul class="collapse">
+  <li><a href="#notion-dhypothèse-scientifique-et-dhypothèse-statistique." id="toc-notion-dhypothèse-scientifique-et-dhypothèse-statistique." class="nav-link" data-scroll-target="#notion-dhypothèse-scientifique-et-dhypothèse-statistique."><span class="header-section-number">3.4.1</span> <em>Notion d’hypothèse scientifique et d’hypothèse statistique.</em></a></li>
+  <li><a href="#notion-de-probabilité." id="toc-notion-de-probabilité." class="nav-link" data-scroll-target="#notion-de-probabilité."><span class="header-section-number">3.4.2</span> <em>Notion de probabilité.</em></a></li>
+  <li><a href="#les-trois-éléments-dune-analyse-bayésiennes-sont-donc" id="toc-les-trois-éléments-dune-analyse-bayésiennes-sont-donc" class="nav-link" data-scroll-target="#les-trois-éléments-dune-analyse-bayésiennes-sont-donc"><span class="header-section-number">3.4.3</span> <strong><em>Les trois éléments d’une analyse bayésiennes sont donc :</em></strong></a></li>
+  <li><a href="#notion-de-test-sur-le-paramètre-test-par-rapport-à-un-seuil-et-test-à-deux-intervalles-2it." id="toc-notion-de-test-sur-le-paramètre-test-par-rapport-à-un-seuil-et-test-à-deux-intervalles-2it." class="nav-link" data-scroll-target="#notion-de-test-sur-le-paramètre-test-par-rapport-à-un-seuil-et-test-à-deux-intervalles-2it."><span class="header-section-number">3.4.4</span> <em>Notion de test sur le paramètre&nbsp;: test par rapport à un seuil et test à deux intervalles (2IT).</em></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- bookdown::render_book(output_dir ="docs")-->
+<p>Un outil combinant R, Shiny et STAN</p>
+<p>pour faciliter la réalisation des analyses statistiques Bayésiennes</p>
+<section id="quest-ce-que-shiba" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="quest-ce-que-shiba"><span class="header-section-number">3.1</span> <strong><em>Qu’est-ce que SHIBA ?</em></strong></h2>
+<p>SHIBA est une application créée par les membres du Groupe Méthodes en Recherche Clinique (GMRC) des Hôpitaux Universitaires de Strasbourg et de l’équipe IMAGES – RaDoScauba du laboratoire iCUBE (CNRS UMR 7357) Université de Strasbourg. Elle est entièrement gratuite, sous licence CC-by-nc 4.0<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>SHIBA est une interface graphique permettant de réaliser des analyses bayésiennes via le logiciel de statistiques R et les packages associés sans avoir à coder les instructions nécessaires pour obtenir ces analyses.</p>
+<p>SHIBA nécessite cependant de connaître un minimum de notions sur ce que sont les méthodes bayésiennes. La présente page d’aide est là pour vous donner les connaissances nécessaires à une compréhension élémentaire de ces méthodes et à l’utilisation de SHIBA.</p>
+<p>Cet outil est p<strong>roposé sans aucune garantie de validité sur les résultats.</strong></p>
+<p>Ce logiciel est mis à votre disposition gracieusement par les Hôpitaux Universitaires de Strasbourg (HUS) et l’Université de Strasbourg (Unistra). Ni les HUS ni l’Unistra ne pourront pas être tenus pour responsables des résultats produits par l’outil ainsi que de ses mésusages. Afin de se conformer à la règlementation nationale et européenne sur la protection des données à caractère personnel, nous vous demandons de n’utiliser que des données anonymisées.</p>
+</section>
+<section id="fonctionnement-général-de-shiba" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="fonctionnement-général-de-shiba"><span class="header-section-number">3.2</span> <strong><em>Fonctionnement général de SHIBA</em></strong></h2>
+<p>SHIBA dispose de plusieurs onglets. Les onglets se répartissent en deux grandes catégories&nbsp;: ceux consacrés à la description des données et ceux consacrés à l’inférence bayésienne, univariée et multivariée.</p>
+<p>Le premier onglet est consacré à l’importation et à la lecture de la base de données. Une base de données saisie dans un tableau sous la forme d’un tableur avec comme extension&nbsp;: .xlsx, .ods, .txt ou .csv) devra être chargée à l’aide de ce premier onglet. Une fois la base de données ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser&nbsp;: descriptif puis inférence, uni- ou multivariée.</p>
+<p>Dans chaque onglet, en cliquant sur le bouton «&nbsp;AIDE et détails&nbsp;» vous accéderez à une aide spécifique de l’onglet.</p>
+<section id="note" class="level4" data-number="3.2.0.1">
+<h4 data-number="3.2.0.1" class="anchored" data-anchor-id="note"><span class="header-section-number">3.2.0.1</span> <strong><em>Note</em></strong></h4>
+<p>Cette application n’enregistre ni votre activité, ni vos données. A la fermeture de l’application, vous ne pourrez pas revenir ou récupérer les analyses effectuées. Il vous faudra recharger la base et recommencer les manipulations.</p>
+</section>
+</section>
+<section id="vocabulaire-de-base" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="vocabulaire-de-base"><span class="header-section-number">3.3</span> <strong><em>Vocabulaire de base</em></strong></h2>
+<p>La réalisation d’analyse statistique dans SHIBA suppose de connaître quelques éléments de vocabulaire statistique.</p>
+<ul>
+<li><strong><em>Paramètre</em></strong>&nbsp;: tout ce qui peut quantifier un effet et que l’on peut exprimer sous forme numérique&nbsp;: une proportion, une moyenne, un taux d’incidence, une différence de proportions ou de moyennes, un coefficient de corrélation, un odds ratio (OR) ou son logarithme, un risque relatif (RR), la pente d’une droite de régression, etc.</li>
+<li><strong><em>Population</em></strong>&nbsp;: une population est un ensemble exhaustif d’individus statistiques sur lequel on souhaite estimer la valeur d’un paramètre. En pratique, on ne connait jamais la valeur exacte de ce paramètre dans la population car celle-ci n’est pas connue dans sa totalité.&nbsp;La valeur du paramètre dans la population peut seulement être estimée statistiquement via une méthode d’inférence à partir d’un échantillon. SHIBA utilise exclusivement de l’inférence bayésienne dans laquelle le paramètre dans la population est estimé à partir des données observées sur un échantillon au cours d’une expérimentation et de la connaissance que vous aviez, avant de mener l’expérimentation, sur les valeurs de ce paramètre.</li>
+<li><strong><em>Echantillon</em></strong>&nbsp;: un échantillon est un ensemble de sujets extraits de la population étudiée, ensemble sur lequel on relève des données et que l’on utilise pour estimer la valeur du paramètre d’intérêt dans la population.</li>
+<li><strong><em>Données</em></strong>&nbsp;: on appelle <em>donnée</em> toute mesure réalisée et observée sur un échantillon au cours d’une expérimentation. Une donnée peut être qualitative ou quantitative.</li>
+</ul>
+</section>
+<section id="principes-de-la-statistique-bayésienne" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="principes-de-la-statistique-bayésienne"><span class="header-section-number">3.4</span> <strong><em>Principes de la statistique Bayésienne</em></strong></h2>
+<section id="notion-dhypothèse-scientifique-et-dhypothèse-statistique." class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="notion-dhypothèse-scientifique-et-dhypothèse-statistique."><span class="header-section-number">3.4.1</span> <em>Notion d’hypothèse scientifique et d’hypothèse statistique.</em></h3>
+<p>Une théorie sur un phénomène permet de formuler une hypothèse scientifique sur un paramètre d’intérêt q. Cette hypothèse scientifique sur le phénomène va être traduite en une hypothèse statistique sur la valeur du paramètre exprimant le phénomène. Cette valeur sera soumise à un test qui vise à valider ou invalider l’hypothèse scientifique. L’hypothèse scientifique est vraie ou fausse mais l’hypothèse statistique, elle, est associée à une probabilité d’être vraie. Le test statistique suppose le recueil de données (les «&nbsp;évènements&nbsp;» de la théorie des probabilités) qui permettront en retour d’estimer la probabilité que cette hypothèse statistique soit vraie. Lorsque cette probabilité est suffisamment élevée (basse) on pourra considérer que l’hypothèse scientifique est validée (invalidée).</p>
+</section>
+<section id="notion-de-probabilité." class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="notion-de-probabilité."><span class="header-section-number">3.4.2</span> <em>Notion de probabilité.</em></h3>
+<p>La définition la plus couramment utilisée de la probabilité est une définition dite fréquentiste dans laquelle la probabilité est définie comme un nombre de cas favorables sur un nombre de cas possibles, mesurés sur un échantillon. Par exemple, dans un échantillon de 100 sujets, 80 sont guéris et on dit que la probabilité de guérir est de 0,8 (valeur entre 0 et 1) car la fréquence de guérison observée est de 80/100.</p>
+<p>Cette définition ne permet cependant pas de connaitre la probabilité qu’une hypothèse sur le paramètre soit vraie car elle définit la probabilité de l’évènement E sachant une valeur hypothétique du paramètre dans la population et pas la probabilité du paramètre dans la population sachant les données observées. Scientifiquement, c’est la valeur du paramètre dans la population qui est l’objet d’intérêt. La valeur de ce paramètre n’est en général pas connue de manière imprécise puisque l’on cherche à l’estimer. La théorie bayésienne lui attribue alors une loi de probabilité dite a priori, traduisant le niveau de connaissance sur cette valeur ce qui constitue une définition épistémique de la probabilité où la probabilité est interprétée comme une quantité de connaissance dont on dispose sur une hypothèse sur le paramètre dans la population. La statistique bayésienne repose explicitement sur cette définition épistémique de la probabilité même si elle utilise également les définitions classiques au cours des calculs. La connaissance pré-expérimentale sur la valeur du paramètre est exprimée dans une loi de probabilité dite <em>a priori</em> car spécifiée en amont de l’acquisition de données expérimentales. Après acquisition de ces données expérimentales, la connaissance post-expérimentale sur la valeur du paramètre est mise à jour par le théorème de Bayes et cette connaissance est contenue dans la loi de probabilité dite <em>a posteriori</em> du paramètre. Cette loi <em>a posteriori</em>&nbsp;contient toute l’information disponible sur le paramètre d’intérêt.</p>
+<p>Le théorème de Bayes peut s’énoncer de la manière suivante&nbsp;: après l’expérimentation, la connaissance <em>a posteriori</em> sur le paramètre q est proportionnelle à la connaissance <em>a priori</em> sur q multipliée par la probabilité des données D&nbsp;:</p>
+<p>(q|D) Pr(q) \Pr(D| q)</p>
+<p>En synthèse, la statistique bayésienne permet la mise à jour d’une connaissance probabiliste sur un paramètre à l’aide d’observations.</p>
+</section>
+<section id="les-trois-éléments-dune-analyse-bayésiennes-sont-donc" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="les-trois-éléments-dune-analyse-bayésiennes-sont-donc"><span class="header-section-number">3.4.3</span> <strong><em>Les trois éléments d’une analyse bayésiennes sont donc :</em></strong></h3>
+<ol type="1">
+<li><p><strong><em>La loi a priori</em></strong>&nbsp;: c’est une loi de probabilité (par exemple une loi normale) qui exprime toute la connaissance dont on dispose sur le paramètre <strong><em>avant</em></strong> la collecte des données à pour chaque analyse, il faut spécifier les caractéristiques de la loi a priori (par exemple sa moyenne et sa variance dans le cas de la loi normale) exprimant la connaissance disponible sur q. C’est une étape très importante dans l’inférence bayésienne et SHIBA vous permettra de la passer assez facilement.</p></li>
+<li><p><strong><em>La vraisemblance</em></strong>&nbsp;: c’est la probabilité des données observées conditionnellement aux valeurs a priori du paramètre. Vous n’avez pas à vous souciez&nbsp;de la vraisemblance et elle n’apparait pas dans les résultats.</p></li>
+<li><p><strong><em>La loi a posteriori</em></strong>&nbsp;: c’est la loi de probabilité qui exprime toute la connaissance dont on dispose sur le paramètre q étudié <strong><em>après</em></strong> la collecte des données. Cette loi a posteriori est calculée et fournie par SHIBA. Elle permet de donner une estimation ponctuelle et par intervalle de q ainsi que de calculer la probabilité que q soit supérieur ou inférieur à un seuil ou contenu dans un intervalle spécifié en amont. Elle est également la base de test statistique sur la valeur de q.</p></li>
+</ol>
+<p>Dans le graphique suivant, la loi a priori est en bleu, la vraisemblance est en rouge, la loi a posteriori est en&nbsp;bleu vif.</p>
+<p>images/image_index.png.png)</p>
+<p>Le paramètre d’intérêt est parfois le paramètre d’une loi de probabilité. Par exemple, la moyenne est le paramètre de moyenne d’une loi normale. Mais il est parfois le résultat d’une transformation d’un autre paramètre. Lors de la comparaison de deux proportions, l’OR ne dispose pas d’une loi a priori propre&nbsp;: il n’est pas le paramètre d’une loi a priori. Sa loi a posteriori est en fait recalculée à partir de la loi a posteriori des proportions dans chaque groupe ou du paramètre d’une régression logistique. Dans tous les cas, la loi a priori du paramètre est mise à jour par les données pour fournir une loi a posteriori.</p>
+<p>Dans les différents onglets de SHIBA, la démarche statistique globale est à chaque fois la même. Pour un modèle donné (une proportion, une régression logistique, etc.), il faudra spécifier une loi a priori pour chacun des paramètres d’intérêt ou des éléments composant le paramètre d’intérêt (pour un risque relatif ou un odds-ratio par exemple). Dans les modèles multivariés, il faudra spécifier une loi a priori pour le paramètre de chaque variable incluse dans le modèle. SHIBA effectue le calcul de la loi a posteriori du ou des paramètres et permet de réaliser les tests que vous aurez éventuellement spécifié.</p>
+</section>
+<section id="notion-de-test-sur-le-paramètre-test-par-rapport-à-un-seuil-et-test-à-deux-intervalles-2it." class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="notion-de-test-sur-le-paramètre-test-par-rapport-à-un-seuil-et-test-à-deux-intervalles-2it."><span class="header-section-number">3.4.4</span> <em>Notion de test sur le paramètre&nbsp;: test par rapport à un seuil et test à deux intervalles (2IT).</em></h3>
+<p>La valeur d’un paramètre q est connue à travers sa loi a posteriori. Il est possible de tester la valeur de q par rapport à une valeur de référence, en calculant la probabilité que la valeur de q soit supérieure à une valeur seuil donnée. Dans les onglets des inférences univariée et multivariée vous pouvez spécifier une valeur pour chaque paramètre. Il est également possible de tester si la valeur de q est contenue dans un intervalle d’intérêt. Le principe du test à deux intervalles (voir <a href="https://arxiv.org/abs/2107.01271">ici</a>) consiste à spécifier deux intervalles d’intérêt pour la valeur de q&nbsp;: un intervalle dit H<sub>A</sub> spécifiant des valeurs de q pour lesquelles on considérera que l’effet est <em>absent</em> (A) ou au moins négligeable dans le contexte, et un intervalle H<sub>P</sub> spécifiant des valeurs de q pour lesquelles on considérera que l’effet est <em>présent</em> (P), confirmant l’hypothèse scientifique. Les pages d’inférence univariée et multivariée dispose de boutons et menus pop-up permettant de spécifier les bornes de chacun des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>La licence CC-by-nc 4.0 permet <strong>toute exploitation de l’œuvre</strong> (partager, copier, reproduire, distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous formats et sous toutes licences. Toutes les exploitations de l’œuvre ou des œuvres dérivées, <strong>sauf à des fins commerciales</strong>, sont possibles.</p>
+<p>Les obligations liées à la licence sont de :</p>
+<p>• <strong>créditer les créateurs de la paternité des œuvres originales</strong>, d’en indiquer les sources et d’indiquer si des modifications ont été effectuées aux œuvres (obligation d’attribution) ;</p>
+<p>• <strong>ne pas tirer profit</strong> (gain direct ou plus-value commerciale) de l’œuvre ou des œuvres dérivées.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./000_Accueil.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./01_Base_de_donnees.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Base de données</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

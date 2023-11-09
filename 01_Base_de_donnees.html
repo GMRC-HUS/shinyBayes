@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-09">
 
-<title>Shiba</title>
+<title>Shiba - 4&nbsp; Base de données</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./000_Accueil.html" rel="next">
+<link href="./02_Descriptif.html" rel="next">
+<link href="./00_intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">***SHIBA***</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Base_de_donnees.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Base de données</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -101,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><strong><em>SHIBA</em></strong></span></span></a>
   </div>
 </li>
@@ -119,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01_Base_de_donnees.html" class="sidebar-item-text sidebar-link">
+  <a href="./01_Base_de_donnees.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Base de données</span></span></a>
   </div>
 </li>
@@ -159,20 +159,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#shiba" id="toc-shiba" class="nav-link active" data-scroll-target="#shiba"><span class="header-section-number">1</span> <strong><em>SHIBA</em></strong></a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Shiba</h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Base de données</span></h1>
 </div>
 
 
@@ -180,12 +174,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 9, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -193,13 +181,43 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="shiba" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> <strong><em>SHIBA</em></strong></h1>
-<p>Un outil combinant R, Shiny et STAN</p>
-<p>pour faciliter la réalisation des analyses statistiques Bayésiennes</p>
+<p>Dans cet onglet vous pourrez procéder à l’import de votre base de données et vous obtiendrez une visualisation de son contenu.</p>
+<p>Vous pouvez importer les données de différentes manières : - en important un fichier de données enregistré dans l’un des formats suivants : .csv, .txt, .xls, .xlsx, .rds, .fst, .sas7bdat, .sav - en faisant un copier/coller, ce qui est plus intéressant pour de très petites bases de données - en important des données contenues dans une Googlesheets - en indiquant une URL pointant vers un fichier.</p>
+<p>Dans tous les cas, vos données devront respecter les techniques de base en matière d’enregistrement des données. Les outils d’importation des données permettent dans une certaine mesure de préciser les modalités d’importation mais il est plus simple que la base respectent d’emblée les régles usuelles de formattage des données.</p>
+<p>Pour l’importation, il faut spécifier&nbsp;:</p>
+<ul>
+<li>Le type de séparateur utilisé dans votre base&nbsp;: virgule, point-virgule ou tabulation</li>
+<li>Le code utilisé pour les manquants&nbsp;: une oblique (slash), un astérisque, ou les lettres NA (qui doivent être les seuls éléments contenus dans la case). Nous vous conseillons de mettre un “NA” (sans les guillemets) mais les deux autres choix sont valides. Il vous faudra aussi au préalable, veillez à ce que toutes les données manquantes de votre fichier soit codées de la même manière. Par exemple, SHIBA n’interprétera pas correctement des données manquantes qui seraient codées <em>NA</em> pour certaines et ND pour d’autres.</li>
+<li>Le symbole utilisé pour la décimale&nbsp;: Virgule (ou décimale française), point (ou décimale anglo-saxonne)</li>
+<li>Le logiciel ayant été utilisé pour enregistrer les données Excel pour Windows, ou Libre Office pour Linux</li>
+</ul>
+<p>Parcourez ensuite l’arborescence de vos fichiers pour sélectionner votre base de données.</p>
+<p>L’onglet central affichera une prévisualisation de votre base de données.</p>
+<p>L’onglet de droite vous permettra de modifier, variable par variable, le type de données si la détection automatique du type de la variable n’a pas donné le résultat escompté.</p>
+<!-- \* Un exemple de fichier au format .CSV adéquat est téléchargeable en cliquant sur : [ Télécharger Exemple de base de données](http://127.0.0.1:3450/session/01148853f4c46e5f2042e6bc11e735e3/download/Accueil_1-DLcsv?w=) -->
+<p><img src="images/tableau.png" class="img-fluid"></p>
+<p>Note</p>
+<p>Cette application n’enregistre ni votre activité, ni vos données. A la fermeture de l’application, vous ne pourrez pas revenir ou récupérer les analyses effectuées. Il vous faudra recharger la base et recommencer les manipulations.</p>
+<p><strong><em>Note</em></strong></p>
+<p>Vous êtes responsable de la conformité réglementaire et de la sécurité des données que vous exploitez au travers de l’application « SHIBA ». L’application doit donc être utilisée conformément aux règles de sécurité établies par votre structure. Pour toute mise en œuvre d’une base de données directement ou indirectement nominative, il convient de se mettre en conformité avec la loi « Informatique et Libertés ».</p>
+<p>Dans la partie «&nbsp;Visualisation de la base&nbsp;», SHIBA vous donne quelques informations sur la structure de votre base de données. Cette description est fournie dans trois sous-onglets&nbsp;:</p>
+<ol type="1">
+<li>Informations brutes</li>
+<li>Données manquantes cumulées par variable</li>
+<li>Données manquantes cumulées par sujet</li>
+</ol>
+<p>Dans les «&nbsp;Informations brutes&nbsp;», SHIBA vous indique&nbsp;:</p>
+<ul>
+<li>les dimensions de la base (nombre de lignes et de colonnes, nombre de données)</li>
+<li>Une description rapide des données manquantes&nbsp;: le nombre de lignes et de colonnes vides, le nombre et le pourcentage de données manquantes.</li>
+<li>Le type de variable&nbsp;: quantitative, qualitative, textuelle, ou d’une autre nature.</li>
+<li>Un graphique donne une cartographie des valeurs manquantes</li>
+</ul>
+<p>Dans les «&nbsp;Données manquantes cumulées par variable&nbsp;» vous obtenez une description graphique et numérique du nombre de valeurs manquantes de chaque variable de votre base de données.</p>
+<p>Dans les «&nbsp;Données manquantes cumulées par sujet&nbsp;» vous obtenez une description graphique et numérique du nombre de valeurs manquantes pour chaque ligne de votre base de données.</p>
+<p>En cliquant sur le bouton «&nbsp;instructions formatage&nbsp;» vous avez accès à un document décrivant les règles essentielles de constitution d’une base de données pour que celle-ci soit lisible avec un minimum d’erreur.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -437,10 +455,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./00_intro.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./000_Accueil.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02_Descriptif.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descriptif</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

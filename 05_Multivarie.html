@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-09">
 
-<title>Shiba</title>
+<title>Shiba - 8&nbsp; Multivarié</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./000_Accueil.html" rel="next">
+<link href="./annexe_saisie.html" rel="next">
+<link href="./04_Comparaisons.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">***SHIBA***</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05_Multivarie.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivarié</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -101,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><strong><em>SHIBA</em></strong></span></span></a>
   </div>
 </li>
@@ -143,7 +143,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05_Multivarie.html" class="sidebar-item-text sidebar-link">
+  <a href="./05_Multivarie.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivarié</span></span></a>
   </div>
 </li>
@@ -163,7 +163,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#shiba" id="toc-shiba" class="nav-link active" data-scroll-target="#shiba"><span class="header-section-number">1</span> <strong><em>SHIBA</em></strong></a></li>
+  <li><a href="#généralités" id="toc-généralités" class="nav-link active" data-scroll-target="#généralités"><span class="header-section-number">8.1</span> Généralités</a></li>
+  <li><a href="#régression-linéaire" id="toc-régression-linéaire" class="nav-link" data-scroll-target="#régression-linéaire"><span class="header-section-number">8.2</span> Régression linéaire</a></li>
+  <li><a href="#régression-logistique" id="toc-régression-logistique" class="nav-link" data-scroll-target="#régression-logistique"><span class="header-section-number">8.3</span> Régression logistique</a></li>
+  <li><a href="#régression-de-poisson" id="toc-régression-de-poisson" class="nav-link" data-scroll-target="#régression-de-poisson"><span class="header-section-number">8.4</span> Régression de Poisson</a></li>
+  <li><a href="#sélection-des-modalités-de-référence" id="toc-sélection-des-modalités-de-référence" class="nav-link" data-scroll-target="#sélection-des-modalités-de-référence"><span class="header-section-number">8.5</span> Sélection des modalités de référence</a></li>
+  <li><a href="#choix-des-lois-a-priori-priors" id="toc-choix-des-lois-a-priori-priors" class="nav-link" data-scroll-target="#choix-des-lois-a-priori-priors"><span class="header-section-number">8.6</span> Choix des lois a priori (“priors”)</a></li>
+  <li><a href="#seuils-et-test-à-2-intervalles" id="toc-seuils-et-test-à-2-intervalles" class="nav-link" data-scroll-target="#seuils-et-test-à-2-intervalles"><span class="header-section-number">8.7</span> Seuils et Test à 2 intervalles</a></li>
+  <li><a href="#résultats-affichés" id="toc-résultats-affichés" class="nav-link" data-scroll-target="#résultats-affichés"><span class="header-section-number">8.8</span> Résultats affichés</a></li>
   </ul>
 </nav>
     </div>
@@ -172,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Shiba</h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multivarié</span></h1>
 </div>
 
 
@@ -180,12 +187,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 9, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -193,10 +194,38 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="shiba" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> <strong><em>SHIBA</em></strong></h1>
-<p>Un outil combinant R, Shiny et STAN</p>
-<p>pour faciliter la réalisation des analyses statistiques Bayésiennes</p>
+<section id="généralités" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="généralités"><span class="header-section-number">8.1</span> Généralités</h2>
+<p>Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix entre une régression linéaire, une régression logistique et une régression de Poisson. Le fonctionnement de SHIBA est le même pour ces trois modèles. Après avoir préciser le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d’intérêt (à prédire, Y) puis l’ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu’à chacune des listes “variables quantitatives” et “variables qualitatives”. Vous pouvez spécifier plusieurs variables de chaque type.</p>
+</section>
+<section id="régression-linéaire" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="régression-linéaire"><span class="header-section-number">8.2</span> Régression linéaire</h2>
+</section>
+<section id="régression-logistique" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="régression-logistique"><span class="header-section-number">8.3</span> Régression logistique</h2>
+</section>
+<section id="régression-de-poisson" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="régression-de-poisson"><span class="header-section-number">8.4</span> Régression de Poisson</h2>
+</section>
+<section id="sélection-des-modalités-de-référence" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="sélection-des-modalités-de-référence"><span class="header-section-number">8.5</span> Sélection des modalités de référence</h2>
+</section>
+<section id="choix-des-lois-a-priori-priors" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="choix-des-lois-a-priori-priors"><span class="header-section-number">8.6</span> Choix des lois a priori (“priors”)</h2>
+</section>
+<section id="seuils-et-test-à-2-intervalles" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="seuils-et-test-à-2-intervalles"><span class="header-section-number">8.7</span> Seuils et Test à 2 intervalles</h2>
+</section>
+<section id="résultats-affichés" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="résultats-affichés"><span class="header-section-number">8.8</span> Résultats affichés</h2>
+<p>SHIBA fournit différents types de résultats.</p>
+<ul>
+<li>rappel du modèle</li>
+<li>liste des lois a priori</li>
+<li>une analyse de la convergence (faite systématiquement mais son affichage ne se fait qu’à la demande de l’utilisateur)</li>
+<li>les résultats</li>
+<li>youpi, en fait ça marche pas mal !!!</li>
+</ul>
 
 
 </section>
@@ -437,10 +466,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./04_Comparaisons.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">comparaison</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./000_Accueil.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><strong><em>Qu’est-ce que SHIBA ?</em></strong></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./annexe_saisie.html" class="pagination-link">
+        <span class="nav-page-text">Annexe : Saisie des données</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
