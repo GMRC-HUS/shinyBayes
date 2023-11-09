@@ -1,0 +1,29 @@
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapitre "
+qmd_files: 
+  html: ["index.qmd","000_Accueil.qmd","00_intro.qmd","01_Base_de_donnees.qmd","02_Descriptif.qmd",
+  "03_Inference_univariee.qmd","04_Comparaisons.qmd","05_Multivarie.qmd","annexe_saisie.qmd"]
+output_dir: "docs"
+
+project:
+  type: book
+  output-dir: docs
+  
+book:
+  title: "Shiba"
+  date: "2023-11-09"
+  chapters:
+    - index.qmd
+    - 000_Accueil.qmd
+    - 00_intro.qmd
+    - 01_Base_de_donnees.qmd
+    - 02_Descriptif.qmd
+    - 03_Inference_univariee.qmd
+    - 04_Comparaisons.qmd
+    - 05_Multivarie.qmd
+    - annexe_saisie.qmd"
+format:
+  html:
+    theme: cosmo
