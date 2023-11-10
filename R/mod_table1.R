@@ -39,16 +39,10 @@ fluidPage(
                   sliderInput(ns("nbDec"), "Nombre de decimales : ",
                     min = 0,
                     max = 5, value = 3, step = 1
-                  ),
-                  downloadButton(ns("downloadData"), "Télécharger la table")
-                ),
+                  )
+                      ),
                 mainPanel(
-                  #   fluidRow(
-                  #
-                  #                 downloadButton('PDFcroisements',label="AIDE et Détails",class = "butt")
-                  #
-                  #
-                  # ),#finFluidRow
+
 
                   # tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
                   h3("Tableau de comparaison de population"),

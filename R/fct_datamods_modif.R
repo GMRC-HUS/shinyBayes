@@ -7,6 +7,7 @@
 #' @noRd
 
 library(htmltools)
+library(rlang)
 
 import_server2<-function (id, validation_opts = NULL, allowed_status = c("OK", 
                                                          "Failed", "Error"), return_class = c("data.frame", 
