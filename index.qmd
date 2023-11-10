@@ -1,4 +1,4 @@
-# ***SHIBA***
+# **SHIBA**
 
 Un outil combinant R ![](images/logo.jpg){width="28" height="22"}, Shiny
 ![](images/shiny.png){width="19"} et STAN
