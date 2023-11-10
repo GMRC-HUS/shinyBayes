@@ -1,0 +1,29 @@
+{
+  "index.qmd": {
+    "index.html": "2fdf1391"
+  },
+  "000_Accueil.qmd": {
+    "000_Accueil.html": "22b72e10"
+  },
+  "00_intro.qmd": {
+    "00_intro.html": "dccc5bee"
+  },
+  "01_Base_de_donnees.qmd": {
+    "01_Base_de_donnees.html": "a7908d30"
+  },
+  "02_Descriptif.qmd": {
+    "02_Descriptif.html": "46c2a52a"
+  },
+  "03_Inference_univariee.qmd": {
+    "03_Inference_univariee.html": "07e4b86e"
+  },
+  "04_Comparaisons.qmd": {
+    "04_Comparaisons.html": "82d73a55"
+  },
+  "05_Multivarie.qmd": {
+    "05_Multivarie.html": "349762f7"
+  },
+  "annexe_saisie.qmd": {
+    "annexe_saisie.html": "088b4ab7"
+  }
+}
