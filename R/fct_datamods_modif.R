@@ -360,7 +360,8 @@ import_file_server2 <- function(id,
           parameters <- list(
             file = input$file$datapath,
             skip = input$skip_rows,
-            encoding = input$encoding
+            encoding = input$encoding,
+            na.strings = input$na_label
           )
         } else {
           parameters <- list(
