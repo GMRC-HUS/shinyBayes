@@ -60,12 +60,7 @@ mod_Concordance_server <- function(id, r) {
           ) # fin sidebar panel
           ,
           mainPanel(
-            fluidRow(
-              splitLayout(
-                cellWidths = c("30%", "70%"),
-                downloadButton(ns("PDFconcordance"), label = "AIDE et Détails", class = "butt")
-              )
-            ), # finFluidRow
+ # finFluidRow
 
             tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
             h3("Tableau croisé"),
@@ -102,12 +97,7 @@ mod_Concordance_server <- function(id, r) {
           ) # fin sidebar panel
           ,
           mainPanel(
-            fluidRow(
-              splitLayout(
-                cellWidths = c("30%", "70%"),
-                downloadButton(ns("PDFconcordance"), label = "AIDE et Détails", class = "butt")
-              )
-            ), # finFluidRow
+
 
             tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
             h3("Tableau croisé"),

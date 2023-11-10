@@ -47,12 +47,7 @@ mod_Survie_server <- function(id, r) {
           ) # fin sidebar panel
           ,
           mainPanel(
-            fluidRow(
-              splitLayout(
-                cellWidths = c("30%", "70%"),
-                downloadButton(ns("PDFsurvie"), label = "AIDE et Détails", class = "butt")
-              )
-            ), # finFluidRow
+
 
             tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
             h3("Courbe(s) de Kaplan-Meier"),

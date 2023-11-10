@@ -42,12 +42,7 @@ mod_Tests_server <- function(id, r) {
                   br()
                 ), # fin sidebar panel
                 mainPanel(
-                  fluidRow(
-                    splitLayout(
-                      cellWidths = c("30%", "70%"),
-                      downloadButton(ns("PDFdiag"), label = "AIDE et Détails", class = "butt")
-                    )
-                  ), # finFluidRow
+
 
                   tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
                   navbarPage(

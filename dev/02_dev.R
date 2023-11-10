@@ -47,6 +47,8 @@ golem::add_fct("prop_comp")
 
 golem::add_fct("infe_moy")
 
+golem::add_fct("datamods_modif")
+
 
 
 

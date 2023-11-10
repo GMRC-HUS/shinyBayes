@@ -9,6 +9,12 @@
 #' @importFrom shiny NS tagList
 #' @import shinyFiles
 #' @import datamods
+#' 
+#' 
+
+
+
+
 mod_chargement_ui <- function(id) {
   ns <- NS(id)
   set_i18n("fr")
@@ -19,7 +25,7 @@ mod_chargement_ui <- function(id) {
     # Try with different Bootstrap version
     # theme = bslib::bs_theme(version = 4),
   
-    import_ui(ns("import"),from =c( "file", "copypaste", "googlesheets", "url"))
+    import_ui2(ns("import"),id,from =c( "file", "copypaste", "googlesheets", "url"))
     
     
   )
@@ -32,9 +38,10 @@ mod_chargement_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
-    imported <- import_server("import",
-                              return_class = "data.frame")
+observe({print(input$label_nas)})
+    imported <- import_server2("import",
+                              return_class = "data.frame"
+                              )
     
     output$name <- renderPrint({
       req(imported$name())

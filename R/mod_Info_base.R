@@ -30,12 +30,6 @@ mod_Info_base_server <- function(id,r){
         "Menu",
         tabPanel(
           "Informations brutes",
-          fluidRow(
-            splitLayout(
-              cellWidths = c("30%", "70%"),
-              downloadButton(ns("PDFdescriptif1o1"), label = "AIDE et Détails", class = "butt")
-            )
-          ), # finFluidRow
           br(),
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
           uiOutput(ns("tableauBASE")),
@@ -44,12 +38,7 @@ mod_Info_base_server <- function(id,r){
         ),
         tabPanel(
           "Données manquantes cumulées par variable",
-          fluidRow(
-            splitLayout(
-              cellWidths = c("30%", "70%"),
-              downloadButton(ns("PDFdescriptif1o2"), label = "AIDE et Détails", class = "butt")
-            )
-          ), # finFluidRow
+
           
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),br(),
           box(title="Descriptif cumulé des données manquantes par variable",width =12 ,status = "primary", solidHeader = TRUE,
@@ -63,12 +52,7 @@ mod_Info_base_server <- function(id,r){
         ),
         tabPanel(
           "Données manquantes cumulées par Ligne",
-          fluidRow(
-            splitLayout(
-              cellWidths = c("30%", "70%"),
-              downloadButton(ns("PDFdescriptif1o3"), label = "AIDE et Détails", class = "butt")
-            )
-          ), # finFluidRow
+
           br(),
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
           h4("Descriptif cumulé des données manquantes par ligne", align = "center"),

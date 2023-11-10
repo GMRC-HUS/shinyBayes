@@ -107,12 +107,7 @@ striping:
                   )
                 ),
                 mainPanel(
-                  fluidRow(
-                    splitLayout(
-                      cellWidths = c("30%", "70%"),
-                      downloadButton(ns("PDFcroisements"), label = "AIDE et Détails", class = "butt")
-                    )
-                  ), # finFluidRow
+
 
                   tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
                   h3("Représentation graphique du lien entre les deux variables"),
