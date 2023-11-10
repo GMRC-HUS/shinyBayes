@@ -31,7 +31,7 @@ book:
   repo-url: https://github.com/GMRC-HUS/ShiBA
   repo-actions: [source,edit,issue]
   repo-branch: gh
-  cover-image: images/shiba_def.png
+  cover-image: images/hex.png
   favicon: images/shiba_def.png
 
   # navbar:

@@ -1,9 +1,10 @@
 # **SHIBA**
 
-Un outil combinant R ![](images/logo.jpg){width="28" height="22"}, Shiny
-![](images/shiny.png){width="19"} et STAN
-![](images/stan_logo.png){width="22"} pour faciliter la réalisation des
-analyses statistiques Bayésiennes.
+Un Package R ![](images/logo.jpg){width="28" height="22"} combinant
+Shiny ![](images/shiny.png){height="22"} et STAN
+![](images/stan_logo.png){height="22"} pour faciliter la réalisation des
+analyses statistiques Bayésiennes. Il est basé sur une architecture
+golem ![](images/golem.png){height="22"}.
 
 *SHIBA (Shiny Bayesian Analysis*) est une application créée par les
 membres du **Groupe Méthodes en Recherche Clinique** (GMRC) des Hôpitaux
@@ -47,12 +48,13 @@ distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous
 formats et sous toutes licences. Toutes les exploitations de l'œuvre ou
 des œuvres dérivées, **sauf à des fins commerciales**, sont possibles.
 
-      
 Les obligations liées à la licence sont de :
 
-• **créditer les créateurs de la paternité des œuvres originales**, d'en indiquer les sources et d'indiquer si des modifications ont été effectuées aux œuvres (obligation d'attribution) ;
+• **créditer les créateurs de la paternité des œuvres originales**, d'en
+indiquer les sources et d'indiquer si des modifications ont été
+effectuées aux œuvres (obligation d'attribution) ;
 
-• **ne pas tirer profit** (gain direct ou plus-value commerciale) de l'œuvre ou des œuvres dérivées.
-
+• **ne pas tirer profit** (gain direct ou plus-value commerciale) de
+l'œuvre ou des œuvres dérivées.
 
 ![](images/by-nc.eu.png){width="108"}
