@@ -1,4 +1,6 @@
-
+---
+repo-actions: true
+---
 
 # Qu'est-ce que SHIBA ?
 

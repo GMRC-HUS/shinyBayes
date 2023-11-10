@@ -1,3 +1,6 @@
+---
+repo-actions: true
+---
 
 # Inférence univariée
 
