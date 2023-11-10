@@ -29,7 +29,7 @@ book:
       This book was built with <a href="https://quarto.org/">Quarto</a>.
   site-url: gmrc-hus.github.io/ShiBA/
   repo-url: https://github.com/GMRC-HUS/ShiBA
-  repo-actions: [edit,issue]
+  repo-actions: [source,edit,issue]
   repo-branch: gh
   cover-image: images/hex.png
   favicon: images/hex.png
