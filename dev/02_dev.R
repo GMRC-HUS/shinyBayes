@@ -201,6 +201,9 @@ usethis::use_package("colourpicker" )
 usethis::use_package("ggridges" )
 usethis::use_package("plotly" )
 usethis::use_package("plyr" )
+usethis::use_package("htmltools" )
+usethis::use_package("rlang" )
+
 
 
 
