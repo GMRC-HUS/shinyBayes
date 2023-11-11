@@ -49,7 +49,10 @@ Imports:
     plyr,
     datamods,
     tidyr,
-    rlang
+    rlang,
+    readxl,
+    rio,
+    usethis
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

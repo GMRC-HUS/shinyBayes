@@ -100,13 +100,13 @@ ShiBA:::diag_convergence(fit2)
 library(ggplot2)
 
 
-print(ShiBA::ggfst_lst_label_bld(ggplot(mtcars, aes(x=cyl, y=mpg))+geom_point()))
+print(ShiBA:::ggfst_lst_label_bld(ggplot(mtcars, aes(x=cyl, y=mpg))+geom_point()))
 ```
 
 ```{r}
 
 
-moyenne_estime <-estim_moy_gibbs(rnorm(100,0,1),0,1,1,1)
+moyenne_estime <-ShiBA:::estim_moy_gibbs(rnorm(100,0,1),0,1,1,1)
 # moyenne_estime
 ```
 
@@ -115,11 +115,11 @@ moyenne_estime <-estim_moy_gibbs(rnorm(100,0,1),0,1,1,1)
 
 library(data.table)
 library(dplyr)
-compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,500), rep(0,500)),c(0,0),c(1,1),c(1,1),c(1,1),type="seuil",plusieurs =F,seuil_global = 0)
+# ShiBA:::compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,500), rep(0,500)),c(0,0),c(1,1),c(1,1),c(1,1),type="seuil",plusieurs =F,seuil_global = 0)
 ```
 
 ```{r}
-compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,1000)),c(0),c(1),c(1),c(1),type="seuil",plusieurs =F,seuil_global = 0)
+# ShiBA:::compare_moy_gibbs(rnorm(1000,0,1), c(rep(1,1000)),c(0),c(1),c(1),c(1),type="seuil",plusieurs =F,seuil_global = 0)
 ```
 
 
@@ -142,13 +142,13 @@ seuil_comp_moy = list(type= NULL, plusieurs = NULL, seuil_global = NULL)
 ```{r}
 
 
-compare_moy_gibbs(x,y,priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
+ShiBA:::compare_moy_gibbs(x,y,priors$mu_mu,priors$mu_sd,priors$sd_shape,priors$sd_rate,
                            seuil_comp_moy$type, plusieurs = seuil_comp_moy$plusieurs)
       
       
 ```
 ```{r}
-ShiBA::infe_prop2IT(c("oui","non")[rbinom(1000,1,0.5)+1],priors = c(0.5,0.5))
+# ShiBA:::infe_prop2IT(c("oui","non")[rbinom(1000,1,0.5)+1],priors = c(0.5,0.5))
 
 
 
