@@ -179,7 +179,7 @@ import_file_ui2 <- function(id,
       tags$div(
         tags$label(
           class = "control-label",
-          style = css(visibility = "hidden", width = "100%", marginBottom = "0.5rem"),
+          style = htmltools::css(visibility = "hidden", width = "100%", marginBottom = "0.5rem"),
           "Parameters",
           `for` = ns("settings")
         ),
