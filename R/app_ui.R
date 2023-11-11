@@ -135,7 +135,7 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     tags$head(
       # tags$link(rel = "stylesheet", type = "text/css", href = "dark_mode.css"),
-       tags$style(HTML(css)),
+       tags$style(HTML(css_perso)),
        tags$script(HTML(js))
     ),
   customTheme,
