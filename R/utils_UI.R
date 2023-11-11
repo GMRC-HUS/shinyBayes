@@ -27,7 +27,7 @@ choix_quali_quanti <- function(name_ui,x){
 }
 
 
-css <- "
+css_perso <- "
 .tooltip {
   pointer-events: none;
 }
