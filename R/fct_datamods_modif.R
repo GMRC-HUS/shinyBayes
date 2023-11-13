@@ -4,9 +4,9 @@
 #'
 #' @return The return value, if any, from executing the function.
 #'
-#' @noRd
 #' @import htmltools
 #' @import rlang
+#' @noRd
 
 import_server2<-function (id, validation_opts = NULL, allowed_status = c("OK", 
                                                          "Failed", "Error"), return_class = c("data.frame", 
@@ -108,8 +108,11 @@ import_server2<-function (id, validation_opts = NULL, allowed_status = c("OK",
                                             data = reactive({
                                               data_rv$data
                                             }), n_row = validation_opts$n_row, n_col = validation_opts$n_col, 
-                                            n_row_label = validation_opts$n_row_label %||% "Valid number of rows", 
-                                            n_col_label = validation_opts$n_col_label %||% "Valid number of columns", 
+                                            n_row_label = ifelse_perso(is.null(validation_opts$n_col_label), "Valid number of rows", validation_opts$n_row_label),
+                 
+                                            n_col_label = ifelse_perso(is.null(validation_opts$n_col_label), 
+                                                                       "Valid number of columns",validation_opts$n_col_label),
+    
                                             btn_label = validation_opts$btn_label, rules = validation_opts$rules)
     observeEvent(validation_results$status(), {
       status <- validation_results$status()
@@ -137,7 +140,7 @@ import_server2<-function (id, validation_opts = NULL, allowed_status = c("OK",
     observeEvent(input$confirm, {
       removeModal()
       imported_rv$data <- data_rv$data
-      imported_rv$name <- data_rv$name %||% "imported_data"
+      imported_rv$name <- ifelse_perso(is.null(data_rv$name), "imported_data",data_rv$name)
     })
     return(list(data = reactive(datamods:::as_out(imported_rv$data, 
                                        return_class)), name = reactive(imported_rv$name)))
