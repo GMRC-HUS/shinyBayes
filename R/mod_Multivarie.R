@@ -317,8 +317,11 @@ mod_Multivarie_server <- function(id, r) {
       }
 
 
-
-      res <- shibaGlmTable(model_2(),IC = isolate(input$IC), input$type_glm, seuilTwoIt = isolate(seuil_twoit()$ls))
+      print(     dput(seuil_twoit()$ls))
+      
+      res <- shibaGlmTable(model_2(),IC = isolate(input$IC), 
+                           input$type_glm, 
+                           seuilTwoIt = isolate(seuil_twoit()$ls))
       loo<-loo(model_2()) 
       loo$estimates[3,1] # Estimate
       loo$estimates[3,2] # SE
@@ -367,7 +370,7 @@ mod_Multivarie_server <- function(id, r) {
 
       
       data <- r$BDD %>% select(y, list_quanti, list_quali)
-      print("la")
+
       
       if( input$type_glm=="poiss"){
         
@@ -376,13 +379,13 @@ mod_Multivarie_server <- function(id, r) {
         data[,y]=as.factor(data[,y])
       }else{
         data[,y]=as.numeric(data[,y])}
-      print("ou la")
+    
       if (length(list_quanti) > 0) data <- data %>% mutate_at(list_quanti, ~ as.numeric(as.character(.)))
 
       if (length(list_quali) > 0) data <- data %>% mutate_at(list_quali, as.factor)
       formule <- formule_default(y, list_quanti, list_quali)
      
-    
+  
         
         fit <- glm_Shiba(formule,
         data = data,
@@ -443,7 +446,7 @@ mod_Multivarie_server <- function(id, r) {
       if (is.null(model_2())) {
         return()
       }
-     
+
       shibaGlmPlot(model_2(), type_glm = input$type_glm, pars = input$Variable_graph,
                    seuilTwoIt = isolate(seuil_twoit()$ls), prob = isolate(input$IC)/100,
                    hist = ifelse(input$hist_graph =="Histogramme",T,F),color_1 = input$col1,color_2= input$col2)

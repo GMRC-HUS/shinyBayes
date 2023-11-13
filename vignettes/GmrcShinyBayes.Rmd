@@ -81,9 +81,19 @@ ShiBA:::shibaGlmTable(fit,type_glm = "lin" , seuilTwoIt = seuilTwoIt)
 
 
 ```{r}
-fit2 <- ShiBA:::glm_Shiba(mtcars,formule =vs~1, type="binom",refresh = 0)
+mtcars$am<-as.factor(mtcars$am)
+fit2 <- ShiBA:::glm_Shiba(mtcars,formule =vs~+drat, type="binom",refresh = 0)
+
+
 ```
 
+
+```{r}
+seuilTwoIt <-
+  list(type = "2It", plusieur_seuils = NA, val = list(var = "am1", 
+    theta_P_min = 0.2, theta_P_max = 1, theta_A_min = 1L, theta_A_max = 4))
+ShiBA:::shibaGlmTable(fit2,type_glm = "binom",seuilTwoIt = seuilTwoIt)
+```
 
 
 ```{r}
@@ -91,7 +101,7 @@ fit2 <- ShiBA:::glm_Shiba(mtcars,formule =vs~1, type="binom",refresh = 0)
 
 
 
-ShiBA:::shibaGlmTable(fit2,type_glm = "binom")
+
 ShiBA:::diag_convergence(fit2)
 ```
 
