@@ -4,9 +4,9 @@
 #'
 #' @return The return value, if any, from executing the function.
 #'
-#' @noRd
 #' @import htmltools
 #' @import rlang
+#' @noRd
 
 import_server2<-function (id, validation_opts = NULL, allowed_status = c("OK", 
                                                          "Failed", "Error"), return_class = c("data.frame", 
