@@ -110,8 +110,8 @@ striping:
 
 
                   tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-                  h3("Représentation graphique du lien entre les deux variables"),
-                  plotOutput(ns("plotCROISE")),
+               
+                  box(title="Représentation graphique du lien entre les deux variables",width =6 ,status = "primary", solidHeader = TRUE,column(12,align="center", plotOutput(ns("plotCROISE")))),
                   # debut conditionnal panel QualiQuali
                   conditionalPanel(
                     condition = "input.qualiquantiCROISE1 == 'qual' && input.qualiquantiCROISE2 == 'qual'", ns = ns,
