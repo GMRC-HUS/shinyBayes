@@ -45,7 +45,7 @@ mod_comp_pour_server <- function(id,r){
                      actionButton(ns("ellicitation"), "Ellicitation"),
                      br(),
                      sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 80,max = 100,step = 1,animate = F,post = " %",value = 95),
-                     h3("Seuils/Two IT ?"), text_aide("Texte Aide Two IT multivarié "),
+                     h3("Seuils/Two IT ?"), #text_aide("Texte Aide Two IT multivarié "),
                      # shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
                      uiOutput(ns("twit_ui")),
                      br(),
@@ -281,7 +281,10 @@ mod_comp_pour_server <- function(id,r){
                         ))
     lapply(1:length(res), function(x) print(names(res)[x]))
     output$res_crois_prop<- renderUI({tagList(
-      lapply(1:length(res),function(x)  box(title = names(res)[x], DT::dataTableOutput(ns(make.names(names(res)[x]))))
+      lapply(1:length(res),function(x)  box(title = names(res)[x],width=12,
+                                            div( 
+                                            DT::dataTableOutput(ns(make.names(names(res)[x]))), style
+                                            = "overflow-y: auto;"))
              
              )
     )})

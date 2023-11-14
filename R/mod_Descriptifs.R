@@ -157,7 +157,7 @@ mod_Descriptifs_server <- function(id, r) {
           return(g)
         }
           if (quali_qaunti == "qual") {
-print(length(unique(variable)))
+
           if(length(unique(variable))>3) return()
          
           g <- ggplot(as.data.frame(table(variable)), aes(x = "", y = Freq, fill = variable)) +
