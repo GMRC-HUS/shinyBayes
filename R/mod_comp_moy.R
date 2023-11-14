@@ -44,7 +44,7 @@ mod_comp_moy_server <- function(id,r){
                    actionButton(ns("ellicitation"), "Ellicitation"),
                    br(),
                    sliderInput(ns("IC"),label = "Intervalle de Crédibilité en %",min = 80,max = 100,step = 1,animate = F,post = " %",value = 95),
-                   h3("Seuils/Two IT ?"), text_aide("Texte Aide Two IT multivarié "),
+                   h3("Seuils/Two IT ?"), #text_aide("Texte Aide Two IT multivarié "),
                    # shinyWidgets::materialSwitch(ns("twit"), "", value =FALSE, status = "success", right = T),
                    uiOutput(ns("twit_ui")),
                    br(),
