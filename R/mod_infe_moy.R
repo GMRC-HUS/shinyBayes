@@ -91,8 +91,8 @@ mod_infe_moy_server <- function(id,r){
               status = "primary",
               icon = icon("gear"), width = "300px",
               tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
-            ),br(),
-            plotOutput(ns("graph_inde_moy"))
+            ),br()#,
+            # plotOutput(ns("graph_inde_moy"))
             )
           ) # fin fluid row du main panel
         ) # fin MainPanel
