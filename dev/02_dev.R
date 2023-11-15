@@ -29,7 +29,7 @@ golem::add_module(name = "comp_pour", with_test = F)
 
 golem::add_module(name = "infe_moy", with_test = F)
 golem::add_module(name = "infe_pour", with_test = F)
-
+golem::add_module(name = "credit", with_test = F)
 
 golem::add_fct("ifelse_perso")
 golem::add_fct("glm_shiba")

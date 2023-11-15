@@ -111,7 +111,7 @@ striping:
 
                   tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
                
-                  box(title="Représentation graphique du lien entre les deux variables",width =6 ,status = "primary", solidHeader = TRUE,column(12,align="center", plotOutput(ns("plotCROISE")))),
+                  box(title="Représentation graphique du lien entre les deux variables",width =12 ,status = "primary", solidHeader = TRUE,column(12,align="center", plotOutput(ns("plotCROISE")))),
                   # debut conditionnal panel QualiQuali
                   conditionalPanel(
                     condition = "input.qualiquantiCROISE1 == 'qual' && input.qualiquantiCROISE2 == 'qual'", ns = ns,
@@ -124,7 +124,7 @@ striping:
                     tableOutput(ns("oddratioAUTO"))
                   ), # fin panelQualiQuali,
                   # debut conditionnal panel QuantiQuali
-                  conditionalPanel(
+                  column(12,conditionalPanel(
                     condition = "input.qualiquantiCROISE1 != input.qualiquantiCROISE2", ns = ns,
                     h3("Descriptif complet", align = "left", style = "color:#08088A"),
                     tableOutput(ns("descr3DESCRIPTIF")),
@@ -137,7 +137,7 @@ striping:
                     condition = "input.qualiquantiCROISE1 == 'quant' && input.qualiquantiCROISE2 == 'quant'", ns = ns,
                     h3("Corrélation entre deux variables quantitatives", align = "left", style = "color:#08088A"),
                     htmlOutput(ns("CorrelationCROISE"))
-                  ), # fin panelQuantiQuali,
+                  )), # fin panelQuantiQuali,
                   plotOutput(ns("plotCROISE2"))
                 ) # fin MainPanel
               ) # fin sidebarlayout
@@ -348,7 +348,7 @@ striping:
           }
           OR
         },
-        caption = "Rapport de cotes et IC",
+        caption = "Rapport de cotes",
         caption.placement = getOption("xtable.caption.placement", "bottom"),
         caption.width = getOption("xtable.caption.width", NULL),
         rownames = TRUE

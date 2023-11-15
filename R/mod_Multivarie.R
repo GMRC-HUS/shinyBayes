@@ -329,11 +329,21 @@ mod_Multivarie_server <- function(id, r) {
       
     
       opts <- options(knitr.kable.NA = "")
+      
+      if( input$type_glm == "lin"){
       res %>%
         kbl(digits = 3, caption = paste0("loo : ",round(loo$estimates[3,1],2),
                                          "; se: ",round(loo$estimates[3,2],2),"")) %>%
         kable_styling(full_width = F, bootstrap_options = c("hover"), fixed_thead = T) %>%
         row_spec((nrow(res) ), extra_css = "border-top: thick double #D8D8D8")
+      }else{
+        res %>%
+          kbl(digits = 3, caption = paste0("loo : ",round(loo$estimates[3,1],2),
+                                           "; se: ",round(loo$estimates[3,2],2),"")) %>%
+          kable_styling(full_width = F, bootstrap_options = c("hover"), fixed_thead = T) 
+        
+      }
+      
       # column_spec(4, extra_css = "border-right: thick double #D8D8D8;")
     }
 
@@ -358,8 +368,9 @@ mod_Multivarie_server <- function(id, r) {
       seuil_twoit_val(seuil_twoit())
       showModal(modalDialog(
         title = "Modèle en cours",
-
+        fluidRow(align="center",
         img(src="www/wait.gif", align = "center",height='300px',width='400px')
+        )
        
       ))
 
@@ -479,7 +490,7 @@ mod_Multivarie_server <- function(id, r) {
             
             h3(textOutput(ns("model_text")) %>% withSpinner())),
         
-          box(title = ("Prior :"),status = "primary", solidHeader = TRUE,
+          box(width = 12,title = ("Prior :"),status = "primary", solidHeader = TRUE,
               fluidRow(align = "center", tableOutput(ns("model_prior")) %>% withSpinner()))
           ),
          br(),

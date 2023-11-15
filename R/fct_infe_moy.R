@@ -147,12 +147,13 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     signe = 1-sel%%2
     data=twit$data
     print(diff[[lequel]]* ifelse_perso(signe==1, 1, -1))
-    print(data["minHa"])
-    data$`Pr Ha` = c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["minHa"]%>%unlist,data["maxHa"]%>%unlist)),arr))
+ 
+    data$`Pr Ha` = c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["min_effet_absent"]%>%unlist,data["max_effet_absent"]%>%unlist)),arr))
     
     
-    data$`Pr Hr` =  c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["minHr"]%>%unlist,data["maxHr"]%>%unlist)),arr))              
-    
+    data$`Pr Hr` =  c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["min_effet_present"]%>%unlist,data["max_effet_present"]%>%unlist)),arr))              
+    names(data)<-c("Type","min Abs","max Abs","min pres","max pres",
+                   "Pr(effet absent)","Pr(effet présent)")
     
     
     
@@ -284,27 +285,28 @@ Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL,
     
     
     data=twit$data
-    data$`Pr Ha` = round(mean(between(posterior_mu,data[,"minHa"],data[,"maxHa"])),arr)
+    data$`Pr Ha` = round(mean(between(posterior_mu,data[,"min_effet_absent"],data[,"max_effet_absent"])),arr)
     
     
-    data$`Pr Hr` =  round(mean(between(posterior_mu,data[,"minHr"],data[,"maxHr"])),arr)
+    data$`Pr Hr` =  round(mean(between(posterior_mu,data[,"min_effet_present"],data[,"max_effet_present"])),arr)
     
     
-    p[[1]]<-  p[[1]]+geom_rect( mapping= aes( xmin = data[,"minHa"],xmax = data[,"maxHa"], ymin = -Inf,
+    p[[1]]<-  p[[1]]+geom_rect( mapping= aes( xmin = data[,"min_effet_absent"],xmax = data[,"max_effet_absent"], ymin = -Inf,
                                               ymax = Inf, x=0, y=0,fill ="Acceptée" ), alpha = 0.2 )+
-      geom_rect(aes( xmin = data[,"minHr"],
-                     xmax = data[,"maxHr"], ymin = -Inf,
+      geom_rect(aes( xmin = data[,"min_effet_present"],
+                     xmax = data[,"max_effet_present"], ymin = -Inf,
                      ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
       scale_fill_manual(name = "Hypothèse",
                         labels =c("P : effet présent ","A : Effet absent"),
                         breaks = c("Acceptée", "Rejetée"),
                         values = c("Acceptée" = color_2, "Rejetée" = color_1))
     
-    
+    names(data)<-c("min Abs","max Abs","min pres","max pres",
+                   "Pr(effet absent)","Pr(effet présent)")
   }
   
-  prior<-  data.frame(Loi = "Beta", "Paramètre mu" =paste(priors[1],priors[2], sep = ";") ,
-                      "Paramètre beta" =paste(priors[3],priors[4], sep = ";"),row.names = ("Prior"), check.names = F)
+  prior<-  data.frame( "Moyenne (mu)" =priors[1], "Moyenne (sd)"=priors[2] ,
+                      "Sd (alpha)" =priors[3],"Sd (Beta)"=priors[4],row.names = ("Prior"), check.names = F)
   
   
   

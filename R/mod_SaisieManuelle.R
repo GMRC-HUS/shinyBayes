@@ -212,7 +212,7 @@ mod_SaisieManuelle_server <- function(id) {
         }
         OR
       },
-      caption = "Rapport de cotes et IC",
+      caption = "Rapport de cotes",
       caption.placement = getOption("xtable.caption.placement", "bottom"),
       caption.width = getOption("xtable.caption.width", NULL),
       rownames = TRUE

@@ -271,7 +271,9 @@ mod_infe_pour_server <-  function(id,r){
       res<-res_infe()
       
       output$res_infe_prop<- renderUI({tagList(
-        lapply(1:length(res$df),function(x)  box(title = names(res$df)[x], DT::dataTableOutput(ns(make.names(names(res$df)[x]))))
+        lapply(1:length(res$df),function(x)  box(title = names(res$df)[x],width=12,
+                                                 div(  DT::dataTableOutput(ns(make.names(names(res$df)[x]))),style
+                                                       = "overflow-y: auto;"))
                
         )
       )})
