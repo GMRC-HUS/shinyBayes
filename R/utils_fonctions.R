@@ -75,13 +75,7 @@ sd_quali <- function(list_var, BDD) {
 
 
 
-text_aide <- function(text) {
-  return(span(
-    `data-toggle` = "tooltip", `data-placement` = "right",
-    title = text,
-    icon("info-circle")
-  ))
-}
+
 formule <- function(x) {
   return(as.formula(paste("~", x)))
 }

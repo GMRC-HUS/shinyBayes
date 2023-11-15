@@ -6,8 +6,11 @@
 #'
 #' @import htmltools
 #' @import rlang
+#' @import datamods
 #' @noRd
 
+
+set_i18n("fr")
 import_server2<-function (id, validation_opts = NULL, allowed_status = c("OK", 
                                                          "Failed", "Error"), return_class = c("data.frame", 
                                                                                               "data.table", "tbl_df", "raw"), read_fns = list()) 

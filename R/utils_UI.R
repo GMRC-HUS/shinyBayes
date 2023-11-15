@@ -10,22 +10,38 @@
 
 
 choix_quali_quanti <- function(name_ui,x){
-  renderUI({
+
   
   choice <- ifelse_perso(sum(is.na(as.numeric(as.character(x)))) > sum(is.na(x)),
                          "qual",
                          "quant")
   if(length(unique(x))<5)   choice <-"qual"
-  radioButtons(
+  return(radioButtons(
     name_ui,
     "Nature de la variable",
     c(Quantitative = "quant", Qualitative = "qual"),
-    choice
+    selected=choice
   )
   
-})
+)
 }
 
+
+update_choix_quali_quanti <-function(session,name_ui,x){
+  renderUI({
+    
+    choice <- ifelse_perso(sum(is.na(as.numeric(as.character(x)))) > sum(is.na(x)),
+                           "qual",
+                           "quant")
+    if(length(unique(x))<5)   choice <-"qual"
+    updateRadioButtons(session,
+      name_ui,
+      "Nature de la variable mod",
+      selected =choice
+    )
+    
+  })
+}
 
 css_perso <- "
 .tooltip {

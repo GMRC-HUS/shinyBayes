@@ -35,6 +35,7 @@ golem::add_fct("ifelse_perso")
 golem::add_fct("glm_shiba")
 golem::add_fct( "fonctions" ) 
 golem::add_utils( "fonctions" )
+golem::add_utils( "debounce" )
 golem::add_utils("UI")
 golem::add_fct( "code_sans_dep" ) 
 

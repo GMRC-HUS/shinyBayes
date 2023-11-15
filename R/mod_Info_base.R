@@ -34,7 +34,8 @@ mod_Info_base_server <- function(id,r){
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
           uiOutput(ns("tableauBASE")),
           br(),
-          plotOutput(ns("plotNAbase1"))
+          box(title="Matrice des données manquantes",width =12,status = "primary", solidHeader = TRUE,
+          plotOutput(ns("plotNAbase1")))
         ),
         tabPanel(
           "Données manquantes cumulées par variable",
@@ -42,23 +43,27 @@ mod_Info_base_server <- function(id,r){
           
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),br(),
           box(title="Descriptif cumulé des données manquantes par variable",width =12 ,status = "primary", solidHeader = TRUE,
-       
+              column(12, align="center",
           p("On représente ci-dessous les données manquantes en proportions par variable étudiée."),
           
           plotOutput(ns("plotNAbase2")),
           br(),
           
           tableOutput(ns("tableNAbase2")))
+          )
         ),
         tabPanel(
           "Données manquantes cumulées par Ligne",
 
           br(),
           tags$head(tags$style(".butt{background-color:#E9967A;} .butt{color: black;}")),
-          h4("Descriptif cumulé des données manquantes par ligne", align = "center"),
+          box(title="Descriptif cumulé des données manquantes par ligne",width =12 ,status = "primary", solidHeader = TRUE,
+              column(12, align="center",
           p("On représente ci-dessous les données manquantes en proportions par ligne."),
           plotOutput(ns("plotNAbase3")),br(),
           tableOutput(ns("tableNAbase3"))
+              )
+          )
         )
       ) # fin navlistpanel
     )
