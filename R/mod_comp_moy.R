@@ -32,7 +32,7 @@ mod_comp_moy_server <- function(id,r){
     ###################################################
     
     
-    titlePanel("Comparaison de Moyenne"),
+    titlePanel("Comparaison de Moyennes"),
     sidebarLayout(
       sidebarPanel(width = 3,
                    h2("Variable de groupe :"),

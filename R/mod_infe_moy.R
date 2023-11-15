@@ -48,53 +48,53 @@ mod_infe_moy_server <- function(id,r){
           fluidPage(
             fluidRow( uiOutput(ns("res_infe_moy"))),
             br(),
-            fluidRow(dropdownButton(
-              
-              
-              fluidPage(
-                
-                awesomeRadio(
-                  inputId = ns("prior_plot"),
-                  label = "Afficher Prior :", 
-                  choices = c("Oui", "Non"),
-                  selected = "Oui",
-                  inline = TRUE
-                ),
-                
-                awesomeRadio(
-                  inputId = ns("Seuil_plot"),
-                  label = "Afficher Seuil ou Two It :", 
-                  choices = c("Oui", "Non"),
-                  selected = "Oui",
-                  inline = TRUE
-                ),
-                
-                
-                sliderInput(ns("line_size"), "Largeur des lignes",min = 0,max = 10,value = 1,step = 0.1),
-                
-                
-                colourInput(
-                  ns("col1"), "Couleur 1", "#DE3163",
-                  showColour = "background"),
-                
-                colourInput(
-                  ns("col2"),  "Couleur 2", "#40E0D0",
-                  showColour = "background"),
-                colourInput(
-                  ns("col3"),  "Couleur 3", "#EBC341",
-                  showColour = "background"),
-                colourInput(
-                  ns("col4"),  "Couleur 4", "#9242A6",
-                  showColour = "background")),
-              
-              
-              circle = TRUE,
-              status = "primary",
-              icon = icon("gear"), width = "300px",
-              tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
-            ),br()#,
+            # fluidRow(dropdownButton(
+            #   
+            #   
+            #   fluidPage(
+            #     
+            #     awesomeRadio(
+            #       inputId = ns("prior_plot"),
+            #       label = "Afficher Prior :", 
+            #       choices = c("Oui", "Non"),
+            #       selected = "Oui",
+            #       inline = TRUE
+            #     ),
+            #     
+            #     awesomeRadio(
+            #       inputId = ns("Seuil_plot"),
+            #       label = "Afficher Seuil ou Two It :", 
+            #       choices = c("Oui", "Non"),
+            #       selected = "Oui",
+            #       inline = TRUE
+            #     ),
+            #     
+            #     
+            #     sliderInput(ns("line_size"), "Largeur des lignes",min = 0,max = 10,value = 1,step = 0.1),
+            #     
+            #     
+            #     colourInput(
+            #       ns("col1"), "Couleur 1", "#DE3163",
+            #       showColour = "background"),
+            #     
+            #     colourInput(
+            #       ns("col2"),  "Couleur 2", "#40E0D0",
+            #       showColour = "background"),
+            #     colourInput(
+            #       ns("col3"),  "Couleur 3", "#EBC341",
+            #       showColour = "background"),
+            #     colourInput(
+            #       ns("col4"),  "Couleur 4", "#9242A6",
+            #       showColour = "background")),
+            #   
+            #   
+            #   circle = TRUE,
+            #   status = "primary",
+            #   icon = icon("gear"), width = "300px",
+            #   tooltip = tooltipOptions(title = "Modifier les pamètres graphiques")
+            # ),br()#,
             # plotOutput(ns("graph_inde_moy"))
-            )
+            # )
           ) # fin fluid row du main panel
         ) # fin MainPanel
       ) # fin sidebarlayout

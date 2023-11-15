@@ -187,6 +187,9 @@ if(is.null(type)){
                       round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_present"],data["OR","max_effet_present"])),arr) )                
 
                     
+    names(data)<-c("min Abs","max Abs","min pres","max pres",
+                   "Pr(effet absent)","Pr(effet présent)")
+    
     
     
   }
@@ -259,7 +262,7 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
                       values = c("prior" = color_3, "posterior" = color_4) )
   
   
-  xx<-rbeta(M,priors[1]+posteriors[1],priors[2]+posteriors[2])*100
+  xx<-rbeta(M,priors[1]+posteriors[1],priors[2]+posteriors[2])
   descrxx<-descriptif(xx)%>%round(arr)
   
   
@@ -277,6 +280,7 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   
   res<-data.frame(descrxx)%>%t%>%as.data.frame()
+  res<-res*100
   colnames(res)<-c("moy", paste0(c(pourcent_IC2,0.5, 1-pourcent_IC2 )*100, "%") )
   rownames(res)<-c("Proportion")
   
@@ -298,23 +302,27 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
     
     
     data=twit$data
+    print(data)
     data$`Pr Ha` = round(mean(between(xx,data[,"min_effet_absent"],data[,"max_effet_absent"])),arr)
     
     
     data$`Pr Hr` =  round(mean(between(xx,data[,"min_effet_present"],data[,"max_effet_present"])),arr)
+ 
+    print(xx)
+    names(data)<-c("min Abs","max Abs","min pres","max pres",
+                   "Pr(effet absent)","Pr(effet présent)")
     
-    
-    p<- p+ geom_rect( mapping= aes( xmin = data[,"min_effet_absent"],xmax = data[,"max_effet_absent"], ymin = -Inf,
+    p<- p+ geom_rect( mapping= aes( xmin = data[,"min pres"],xmax = data[,"max pres"], ymin = -Inf,
                                                                         ymax = Inf, x=0, y=0,fill ="Acceptée" ), alpha = 0.2 )+
-      geom_rect(aes( xmin = data[,"min_effet_present"],
-                                                                 xmax = data[,"max_effet_present"], ymin = -Inf,
+      geom_rect(aes( xmin = data[,"min Abs"],
+                                                                 xmax = data[,"max Abs"], ymin = -Inf,
                                                                  ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
       scale_fill_manual(name = "Hypothèse",
                         breaks = c("Acceptée", "Rejetée"),
                         labels =c("P : effet présent ","A : Effet absent"),
                         values = c("Acceptée" = color_2, "Rejetée" = color_1))
     
-    
+   
   }
   
   prior<-  data.frame(Loi = "Beta", "Paramètre alpha" =priors[1] , "Paramètre beta" = priors[2],row.names = ("Prior"), check.names = F)
@@ -326,6 +334,7 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
   if(is.null(type)){
     
   }else if(type =="twit" & !is.null(type)){
+
     res_twit= list(TwoIt = data)
     names(res_twit) = twit$var
     df<-append(df,res_twit)

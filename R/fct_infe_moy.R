@@ -147,12 +147,13 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     signe = 1-sel%%2
     data=twit$data
     print(diff[[lequel]]* ifelse_perso(signe==1, 1, -1))
-    print(data["min_effet_absent"])
+ 
     data$`Pr Ha` = c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["min_effet_absent"]%>%unlist,data["max_effet_absent"]%>%unlist)),arr))
     
     
     data$`Pr Hr` =  c(round(mean(between(diff[[lequel]]* ifelse_perso(signe==1, 1, -1),data["min_effet_present"]%>%unlist,data["max_effet_present"]%>%unlist)),arr))              
-    
+    names(data)<-c("Type","min Abs","max Abs","min pres","max pres",
+                   "Pr(effet absent)","Pr(effet présent)")
     
     
     
@@ -300,11 +301,12 @@ Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL,
                         breaks = c("Acceptée", "Rejetée"),
                         values = c("Acceptée" = color_2, "Rejetée" = color_1))
     
-    
+    names(data)<-c("min Abs","max Abs","min pres","max pres",
+                   "Pr(effet absent)","Pr(effet présent)")
   }
   
-  prior<-  data.frame(Loi = "Beta", "Paramètre mu" =paste(priors[1],priors[2], sep = ";") ,
-                      "Paramètre sd" =paste(priors[3],priors[4], sep = ";"),row.names = ("Prior"), check.names = F)
+  prior<-  data.frame( "Moyenne (mu)" =priors[1], "Moyenne (sd)"=priors[2] ,
+                      "Sd (alpha)" =priors[3],"Sd (Beta)"=priors[4],row.names = ("Prior"), check.names = F)
   
   
   
