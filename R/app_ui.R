@@ -198,7 +198,7 @@ app_ui <- function(request) {
                    tabName = "multivarie_Uni"  , icon = icon("fas fa-table",verify_fa = FALSE)
           ),
           menuItem("Crédits",
-                   tabName = "credit_Uni"  , icon = icon("fas fa-table",verify_fa = FALSE)
+                   tabName = "credit_Uni"  , icon = icon("fas fa-asterisk",verify_fa = FALSE)
           )
               # menuItem("Croisements/Inférence", tabName = "croisements", icon = icon("fa-light fa-dice", verify_fa = FALSE)),
               # menuItem("Analyse de survie", tabName = "survie", icon = icon("fa-light fa-skull-crossbones", verify_fa = FALSE)),
@@ -242,7 +242,7 @@ app_ui <- function(request) {
                 tabName = "multivarie_Uni",
                 mod_Multivarie_ui("multivarie_1")
               ),
-              tabitem(tabName = "credit_Uni",
+              tabItem(tabName = "credit_Uni",
                       mod_credit_ui("credit_1")),
               
               tabItem(

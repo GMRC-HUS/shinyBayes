@@ -294,7 +294,9 @@ mod_comp_moy_server <- function(id,r){
 
     lapply(1:length(res), function(x) print(names(res)[x]))
     output$res_crois_moy<- renderUI({tagList(
-      lapply(1:length(res),function(x)  box(title = names(res)[x], DT::dataTableOutput(ns(make.names(names(res)[x]))))
+      lapply(1:length(res),function(x)  box(title = names(res)[x],width=12,
+                                            div(  DT::dataTableOutput(ns(make.names(names(res)[x]))),style
+                                                  = "overflow-y: auto;"))
              
       )
     )})

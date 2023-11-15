@@ -277,10 +277,10 @@ twitServer_prop <- function(id, twit, seuil_unique,seuil_diff, seuil_OR, seuil_R
           if (!input$choix_seuil_2it) {
             twit$var <- input$var_sel 
           twit$data <-data.frame(Type= c("Diff", "RR","OR"), 
-                                             minHa = c(0,1,1), 
-                                             maxHa = c(0,1,1), 
-                                             minHr = c(0,1,1), 
-                                             maxHr = c(0,1,1), row.names = "Type"
+                                             min_effet_absent = c(0,1,1), 
+                                             max_effet_absent = c(0,1,1), 
+                                             min_effet_present = c(0,1,1), 
+                                             max_effet_present = c(0,1,1), row.names = "Type"
           )
           
           
@@ -461,18 +461,18 @@ twitServer_prop_infe <- function(id, twit, seuil_unique,seuil_comp_retour,prop=T
         if (!input$choix_seuil_2it) {
 if(prop){
           twit$data <-data.frame(
-                                 minHa = c(0), 
-                                 maxHa = c(0.5), 
-                                 minHr = c(0.5), 
-                                 maxHr = c(1), row.names = c("Seuil")
+                                 min_effet_absent = c(0), 
+                                 max_effet_absent = c(0.5), 
+                                 min_effet_present = c(0.5), 
+                                 max_effet_present = c(1), row.names = c("Seuil")
           )
           
 }else{
   twit$data <-data.frame(
-    minHa = c(0), 
-    maxHa = c(0), 
-    minHr = c(0), 
-    maxHr = c(0), row.names = c("Seuil")
+    min_effet_absent = c(0), 
+    max_effet_absent = c(0), 
+    min_effet_present = c(0), 
+    max_effet_present = c(0), row.names = c("Seuil")
   )
   
 }
@@ -595,10 +595,10 @@ twitServer_moy <- function(id, twit, seuil_unique,seuil_diff,group,seuil_comp_re
         if (!input$choix_seuil_2it) {
           twit$var <- input$var_sel 
           twit$data <-data.frame(Type= c("Diff"), 
-                                 minHa = c(0), 
-                                 maxHa = c(0), 
-                                 minHr = c(0), 
-                                 maxHr = c(0), row.names = "Type"
+                                 min_effet_absent = c(0), 
+                                 max_effet_absent = c(0), 
+                                 min_effet_present = c(0), 
+                                 max_effet_present = c(0), row.names = "Type"
           )
           
           

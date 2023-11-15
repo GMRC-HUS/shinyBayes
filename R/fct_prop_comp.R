@@ -177,14 +177,14 @@ if(is.null(type)){
     lequel <- ceiling(sel/2)
     signe = 1-sel%%2
     data=twit$data
-    data$`Pr Ha` = c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","minHa"],data["Diff","maxHa"])),arr),
-                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","minHa"],data["RR","maxHa"])),arr), 
-                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","minHa"],data["OR","maxHa"])),arr))
+    data$`Pr Ha` = c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","min_effet_absent"],data["Diff","max_effet_absent"])),arr),
+                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","min_effet_absent"],data["RR","max_effet_absent"])),arr), 
+                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_absent"],data["OR","max_effet_absent"])),arr))
                      
                      
-    data$`Pr Hr` =  c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","minHr"],data["Diff","maxHr"])),arr),
-                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","minHr"],data["RR","maxHr"])),arr),
-                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","minHr"],data["OR","maxHr"])),arr) )                
+    data$`Pr Hr` =  c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","min_effet_present"],data["Diff","max_effet_present"])),arr),
+                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","min_effet_present"],data["RR","max_effet_present"])),arr),
+                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_present"],data["OR","max_effet_present"])),arr) )                
 
                     
     
@@ -298,16 +298,16 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
     
     
     data=twit$data
-    data$`Pr Ha` = round(mean(between(xx,data[,"minHa"],data[,"maxHa"])),arr)
+    data$`Pr Ha` = round(mean(between(xx,data[,"min_effet_absent"],data[,"max_effet_absent"])),arr)
     
     
-    data$`Pr Hr` =  round(mean(between(xx,data[,"minHr"],data[,"maxHr"])),arr)
+    data$`Pr Hr` =  round(mean(between(xx,data[,"min_effet_present"],data[,"max_effet_present"])),arr)
     
     
-    p<- p+ geom_rect( mapping= aes( xmin = data[,"minHa"],xmax = data[,"maxHa"], ymin = -Inf,
+    p<- p+ geom_rect( mapping= aes( xmin = data[,"min_effet_absent"],xmax = data[,"max_effet_absent"], ymin = -Inf,
                                                                         ymax = Inf, x=0, y=0,fill ="Acceptée" ), alpha = 0.2 )+
-      geom_rect(aes( xmin = data[,"minHr"],
-                                                                 xmax = data[,"maxHr"], ymin = -Inf,
+      geom_rect(aes( xmin = data[,"min_effet_present"],
+                                                                 xmax = data[,"max_effet_present"], ymin = -Inf,
                                                                  ymax = Inf,x=0,y=0 ,fill ="Rejetée" ), alpha = 0.2 )+
       scale_fill_manual(name = "Hypothèse",
                         breaks = c("Acceptée", "Rejetée"),
