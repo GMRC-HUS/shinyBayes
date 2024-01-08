@@ -155,9 +155,11 @@ mod_Multivarie_server <- function(id, r) {
       liste_choix <- r$noms
       liste_choix <- liste_choix[-which(liste_choix == input$variable)]
       var_input$choix_base <- liste_choix
-      var_input$var_quali <- NULL
-      var_input$var_quanti <- NULL
     })
+    
+    observeEvent(input$type_glm,{
+      var_input$var_quali <- NULL
+      var_input$var_quanti <- NULL})
 
     observeEvent(c(input$choix_base, input$list_quali, input$list_quanti), {
       quantis <- isolate(input$list_quanti)
@@ -201,30 +203,6 @@ mod_Multivarie_server <- function(id, r) {
           var_input$var_quali <- qualis
         }
       }
-
-
-      output$propositions_multi <- renderUI({
-        bucket_list(
-          header = HTML("<h3>Variable explicatives :</h3>"),
-          group_name = "bucket_list_group",
-          orientation = "vertical",
-          add_rank_list(
-            text = "Noms des variables",
-            labels = var_input$choix_base,
-            input_id = ns("choix_base")
-          ),
-          add_rank_list(
-            text = HTML("<strong>Variables quantitatives</strong>"),
-            labels = (var_input$var_quanti),
-            input_id = ns("list_quanti")
-          ),
-          add_rank_list(
-            text = HTML("<strong>Variables qualitatives</strong>"),
-            labels = (var_input$var_quali),
-            input_id = ns("list_quali")
-          )
-        )
-      })
     })
 
     output$propositions_multi <- renderUI({

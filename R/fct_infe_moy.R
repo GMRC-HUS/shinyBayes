@@ -46,9 +46,9 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
   }else{
     if((!is.null(type)) &  "seuil" %in%type){
       
-      if(!plusieurs & !is.null(seuil_global)){
+      if(!is.null(plusieurs) & !is.null(seuil_global)){
         
-        seuild = rep(seuil_global["Diff","seuil"],long)
+        seuild = rep(seuil_global["seuil"],long)
         
       }else{
         
