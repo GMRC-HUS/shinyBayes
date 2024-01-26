@@ -151,24 +151,31 @@ mod_Multivarie_server <- function(id, r) {
     var_quali_sel <- reactiveValues(var = NULL)
 
     var_quanti_sel <- reactiveValues(var = NULL)
-    observeEvent(input$variable, {
+    
+    observeEvent(c(input$variable,input$list_quali,input$list_quanti), {
       liste_choix <- r$noms
-      liste_choix <- liste_choix[-which(liste_choix == input$variable)]
+      liste_choix <- liste_choix[-c(which(liste_choix == input$variable),which(liste_choix %in% input$list_quali),which(liste_choix %in% input$list_quanti))]# on met in car dans list_quali on peut avoir plus d'une variable
       var_input$choix_base <- liste_choix
-    })
+      var_input$var_quali<- var_input$var_quali[var_input$var_quali!= input$variable]
+      var_input$var_quanti<-var_input$var_quanti[var_input$var_quanti!= input$variable]  
+      
+      }
+      
+      )
     
     observeEvent(input$type_glm,{
       var_input$var_quali <- NULL
-      var_input$var_quanti <- NULL})
+      var_input$var_quanti <- NULL
+  })
 
-    observeEvent(c(input$choix_base, input$list_quali, input$list_quanti), {
-      quantis <- isolate(input$list_quanti)
-      qualis <- isolate(input$list_quali)
-      base_encours <- isolate(input$choix_base)
+    observeEvent(c(input$choix_base,input$list_quant, input$list_quali), {
+      quantis <- input$list_quanti
+      qualis <- input$list_quali
+      base_encours <- input$choix_base
 
-      base_avant <- isolate(var_input$choix_base)
-      quali_avant <- isolate(var_input$var_quali)
-      quanti_avant <- isolate(var_input$var_quanti)
+      base_avant <- var_input$choix_base
+      quali_avant <- var_input$var_quali
+      quanti_avant <- var_input$var_quanti
 
       nvx_quantis <- length(quantis) > length(quanti_avant)
       nvx_base <- length(base_encours) > length(base_avant)
@@ -204,8 +211,9 @@ mod_Multivarie_server <- function(id, r) {
         }
       }
     })
+    
 
-    output$propositions_multi <- renderUI({
+      output$propositions_multi <- renderUI({
       bucket_list(
         header = HTML("<h3>Variable explicatives :</h3>"),
         group_name = "bucket_list_group",
@@ -230,7 +238,7 @@ mod_Multivarie_server <- function(id, r) {
 
     #
 
-
+    
     output$refactorisation <- renderUI({
       if (length(input$list_quali) == 0) {
         return()
