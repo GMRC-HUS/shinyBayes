@@ -10,7 +10,7 @@ Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix en
 Après avoir préciser le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d'intérêt (à prédire, Y) puis l'ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu'à chacune des listes "variables quantitatives" et "variables qualitatives". Vous pouvez spécifier plusieurs variables de chaque type. 
 
 ## Régression linéaire
-
+test.....
 ## Régression logistique
 
 ## Régression de Poisson
