@@ -180,7 +180,18 @@
     "href": "05_Multivarie.html#régression-linéaire",
     "title": "7  Multivarié",
     "section": "7.2 Régression linéaire",
-    "text": "7.2 Régression linéaire\ntest….. ## Régression logistique",
+    "text": "7.2 Régression linéaire\ntest…..",
+    "crumbs": [
+      "Aide sur l'application",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
+    ]
+  },
+  {
+    "objectID": "05_Multivarie.html#régression-logistique",
+    "href": "05_Multivarie.html#régression-logistique",
+    "title": "7  Multivarié",
+    "section": "7.3 Régression logistique",
+    "text": "7.3 Régression logistique",
     "crumbs": [
       "Aide sur l'application",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
@@ -190,8 +201,8 @@
     "objectID": "05_Multivarie.html#régression-de-poisson",
     "href": "05_Multivarie.html#régression-de-poisson",
     "title": "7  Multivarié",
-    "section": "7.3 Régression de Poisson",
-    "text": "7.3 Régression de Poisson",
+    "section": "7.4 Régression de Poisson",
+    "text": "7.4 Régression de Poisson",
     "crumbs": [
       "Aide sur l'application",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
@@ -201,8 +212,8 @@
     "objectID": "05_Multivarie.html#sélection-des-modalités-de-référence",
     "href": "05_Multivarie.html#sélection-des-modalités-de-référence",
     "title": "7  Multivarié",
-    "section": "7.4 Sélection des modalités de référence",
-    "text": "7.4 Sélection des modalités de référence",
+    "section": "7.5 Sélection des modalités de référence",
+    "text": "7.5 Sélection des modalités de référence",
     "crumbs": [
       "Aide sur l'application",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
@@ -212,8 +223,8 @@
     "objectID": "05_Multivarie.html#choix-des-lois-a-priori-priors",
     "href": "05_Multivarie.html#choix-des-lois-a-priori-priors",
     "title": "7  Multivarié",
-    "section": "7.5 Choix des lois a priori (“priors”)",
-    "text": "7.5 Choix des lois a priori (“priors”)",
+    "section": "7.6 Choix des lois a priori (“priors”)",
+    "text": "7.6 Choix des lois a priori (“priors”)",
     "crumbs": [
       "Aide sur l'application",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
@@ -223,8 +234,8 @@
     "objectID": "05_Multivarie.html#seuils-et-test-à-2-intervalles",
     "href": "05_Multivarie.html#seuils-et-test-à-2-intervalles",
     "title": "7  Multivarié",
-    "section": "7.6 Seuils et Test à 2 intervalles",
-    "text": "7.6 Seuils et Test à 2 intervalles",
+    "section": "7.7 Seuils et Test à 2 intervalles",
+    "text": "7.7 Seuils et Test à 2 intervalles",
     "crumbs": [
       "Aide sur l'application",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
@@ -234,8 +245,8 @@
     "objectID": "05_Multivarie.html#résultats-affichés",
     "href": "05_Multivarie.html#résultats-affichés",
     "title": "7  Multivarié",
-    "section": "7.7 Résultats affichés",
-    "text": "7.7 Résultats affichés\nSHIBA fournit différents types de résultats.\n\nrappel du modèle\nliste des lois a priori\nune analyse de la convergence (faite systématiquement mais son affichage ne se fait qu’à la demande de l’utilisateur)\nles résultats\nyoupi, en fait ça marche pas mal !!!",
+    "section": "7.8 Résultats affichés",
+    "text": "7.8 Résultats affichés\nSHIBA fournit différents types de résultats.\n\nrappel du modèle\nliste des lois a priori\nune analyse de la convergence (faite systématiquement mais son affichage ne se fait qu’à la demande de l’utilisateur)\nles résultats\nyoupi, en fait ça marche pas mal !!!",
     "crumbs": [
       "Aide sur l'application",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Multivarié</span>"
