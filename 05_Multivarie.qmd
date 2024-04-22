@@ -11,6 +11,7 @@ Après avoir préciser le niveau de risque consenti pour les intervalles de cré
 
 ## Régression linéaire
 test.....
+
 ## Régression logistique
 
 ## Régression de Poisson
