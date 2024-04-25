@@ -71,6 +71,7 @@ observe({print(input$label_nas)})
       # r$BASEchargee<-tryCatch(dim(r$BDD)[1]>0,warning= function(e) F,error= function(e) F)
       r$BASEchargee <- !is.null( r$BDD )
     })
+    
 
    
     # })
@@ -98,6 +99,10 @@ observe({print(input$label_nas)})
     })
 
   })
+  
+  
+  observeEvent(r$BDD,{
+    showNotification(HTML("<font color='grey' > <center> Données importées avec succès </center> </font>"))})
 }
 
 ## To be copied in the UI
