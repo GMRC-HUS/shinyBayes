@@ -30,7 +30,7 @@ mod_infe_moy_server <- function(id,r){
       sidebarLayout(
         sidebarPanel(
           width = 4,
-          h2("Variable moyenne d'interêt :"),
+          h2("Variable :"),
           uiOutput(ns("vbl_moy")), 
           h3("Choix des priors"),
           uiOutput(ns("apriori")),
