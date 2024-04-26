@@ -70,6 +70,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -231,27 +260,30 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>L’onglet «&nbsp;Inférence univariée&nbsp;» contient deux sous-onglets. Le premier est consacré à l’estimation d’une moyenne et le second à l’estimation d’une proportion.</p>
+<p>L’onglet «&nbsp;Inférence univariée&nbsp;» contient deux sous-onglets. Le premier est consacré à l’estimation d’une moyenne et le second à l’estimation d’une proportion. Cette estimation se fait avec des méthodes bayésiennes. Il vous faudra donc spécifier à chaque fois une loi a priori pour le paramètre d’intérêt : une moyenne ou une proportion.</p>
 <section id="pour-lestimation-dune-moyenne" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="pour-lestimation-dune-moyenne"><span class="header-section-number">5.1</span> <strong>Pour l’estimation d’une moyenne&nbsp;:</strong></h2>
-<p>Une boite à menu déroulant «&nbsp;Variable&nbsp;» vous permet de choisir la variable pour laquelle vous voulez estimer la moyenne. Précisez ensuite les paramètres des lois a priori sur la moyenne et sur l’écart-type du paramètre.</p>
+<p>L’estimation bayésienne de la moyenne <span class="math inline">\(\mu\)</span> d’une variable quantitative se fait avec le modèle suivant :</p>
 <ul>
-<li>Pour l’a priori sur la moyenne, dans la case mu0, indiquez la moyenne a priori. Une valeur par défaut vous est proposée mais il est pertinent de la modifié chaque fois que nécessaire. Dans la case Pseudo-échantillon, indiquez la taille du pseudo-échantillon, c’est-à-dire la taille de l’échantillon virtuel sur lequel cette connaissance sur mu0 serait obtenue. Un graphique affiché en temps réel vous permet de visualiser la loi a priori que vous avez ainsi définie.</li>
-<li>Pour l’a priori sur l’écart-type&nbsp;: la loi a priori est une loi gamma, ayant deux paramètres. Le paramètre alpha est un paramètre de position et le paramètre Beta est un paramètre de précision.</li>
+<li><p>La moyenne <span class="math inline">\(\mu\)</span> de la distribution est distribuée suivant une loi normale de moyenne <span class="math inline">\(\mu\)</span> et d’écart-type <span class="math inline">\(\sigma\)</span></p></li>
+<li><p>L’écart-type de la distribution suit une loi <span class="math inline">\(\gamma(\alpha,\beta)\)</span></p></li>
 </ul>
-<p>Dans les 4 boites des paramètres, vous pouvez soit choisir une valeur en utilisant les flèches situées au bout de la boite soit en tapant directement la valeur choisie dans la boite. Les valeurs non-entières sont possibles pour les 4 paramètres.</p>
-<p>Un bouton «&nbsp;Aide à l’élicitation&nbsp;» ouvre un menu pop-up.</p>
-<p>Un bouton «&nbsp;Two-It&nbsp;» ouvre un menu pop-up permettant de spécifier les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
+<p>Il faut donc exprimer la loi a priori sur chacun de ces deux paramètres pour obtenir l’estimation a posteriori de la moyenne de la distribution.</p>
+<p>Une boite à menu déroulant « Variable » vous permet de choisir la variable dont vous voulez estimer la moyenne. Le choix une fois réalisé, SHIBA va proposer automatiquement une loi a priori pour la moyenne de la variable sélectionnée. Cette loi a elle-même une moyenne (noté « a priori mu ») et un écart-type (noté « a priori sd ») mais il est possible de modifier leur valeur en utilisant les flèches des boites correspondantes ou en tapant directement une valeur. Vous verrez que les choix par défaut ne sont pas forcément pertinents notamment parce qu’ils peuvent englober des valeurs négatives souvent impossibles pour des paramètres biologiques. Il faut alors modifier la loi a priori pour qu’elle exprime votre connaissance a priori sur la valeur de la moyenne. La courbe située au-dessus des deux boites de dialogues permet une visualisation immédiate de la loi a priori spécifiée par les deux paramètres. Le paramètre d’écart-type permet de donner une plus ou moins grande précision sur la position de la moyenne.</p>
+<p>Dans le cas d’une moyenne, il faut également spécifier une loi a priori sur l’écart-type de la variable. La loi a priori est une loi gamma, ayant deux paramètres, alpha et beta. Le paramètre alpha est un paramètre de position et le paramètre Beta est un paramètre de précision.</p>
+<p>Un bouton « Définition seuil / Two-It » ouvre un menu pop-up permettant de spécifier un seuil à tester ainsi que les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
 <p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
+<p>SHIBA fournit un rappel des paramètres utilisés dans la loi a priori, puis un descriptif de la connaissance a priori sur la moyenne et l’écart-type exprimée par ces deux lois a priori. Il fournit ensuite l’estimation a posteriori de la moyenne et de l’écart-type de la distribution.</p>
 </section>
 <section id="pour-lestimation-dune-proportion" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="pour-lestimation-dune-proportion"><span class="header-section-number">5.2</span> <strong>Pour l’estimation d’une proportion&nbsp;:</strong></h2>
-<p>Spécifier la variable à utiliser pour estimer une proportion en indiquant son nom dans la liste déroulante «&nbsp;Variable proportion d’intérêt&nbsp;».</p>
-<p>La spécification de la loi a priori se fait en indiquant la valeur des paramètres alpha et beta de la loi a priori Beta dans les boites correspondantes&nbsp;: «&nbsp;A priori paramètre alpha&nbsp;» et «&nbsp;A priori paramètre alpha&nbsp;». Un graphique s’adapte en temps réel pour vous permettre de visualiser la loi a priori que vous aurez spécifiée.</p>
-<p>Vous pouvez ensuite choisir la largeur de l’intervalle de crédibilité a posteriori à présenter dans les résultats.</p>
-<p>Un menu pop-up vous permets de spécifier les bornes des deux intervalles pour le 2IT ainsi qu’une valeur seuil pour réaliser un test si besoin.</p>
-<p>(rajouter ensuite la description des résultats)</p>
-<p>En appuyant sur le bouton «&nbsp;Go&nbsp;» vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
+<p>L’estimation bayésienne d’une proportion <span class="math inline">\(\pi\)</span> ou taux de succès d’une variable binaire, se fait avec le modèle suivant : - Le taux de succès <span class="math inline">\(\pi\)</span> est distribué suivant une loi <span class="math inline">\(Beta(\alpha,\beta)\)</span></p>
+<p>Il faut donc exprimer la loi a priori de <span class="math inline">\(\pi\)</span> en spécifiant la valeur de <span class="math inline">\(\alpha\)</span> et de <span class="math inline">\(\beta\)</span>. Ces deux paramètres peuvent s’interpréter respectivement comme un nombre de succès (<span class="math inline">\(\alpha\)</span>) et un nombre d’échecs (<span class="math inline">\(\beta\)</span>) sur N essais.</p>
+<p>Une boite à menu déroulant « Variable » vous permet de choisir la variable dont vous voulez estimer le taux de succès. Par défaut, SHIBA propose une loi Beta de Jeffreys Beta(0,5, 0,5) mais il est possible de modifier la valeur des deux paramètres en utilisant les flèches des boites correspondantes ou en tapant directement une valeur. La courbe située au-dessus des deux boites de dialogues permet une visualisation immédiate de la loi a priori spécifiée par les deux paramètres.</p>
+<p>Un bouton « Définition seuil / Two-It » ouvre un menu pop-up permettant de spécifier un seuil à tester ainsi que les bornes des deux intervalles H<sub>A</sub> et H<sub>P</sub>.</p>
+<p>En appuyant sur le bouton « Go » vous obtiendrez les résultats des analyses dans la partie droite de l’écran.</p>
+<p>SHIBA fournit un rappel des paramètres utilisés dans la loi a priori, puis un descriptif de la connaissance a priori sur la proportion exprimée par cette loi a priori. Il fournit ensuite l’estimation a posteriori de la proportion.</p>
+<p>Un graphique combinant la loi a priori et la loi a posteriori est automatiquement fournit. Lorsqu’un seuil et/ou qu’un 2IT est spécifié, le graphique contient une visualisation de chaque intervalle. Les probabilités associées sont données dans le tableau de résultats.</p>
 
 
 </section>
