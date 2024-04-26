@@ -5,8 +5,10 @@ repo-actions: true
 
 # Descriptif
 
-L’onglet « Descriptif » fournit une description des variables. Une boite avec un menu déroulant vous permet de choisir la variable pour laquelle vous voulez une description. Vous pouvez ensuite préciser s’il s’agit d’une variable qualitative ou quantitative. 
+L’onglet « Descriptif » fournit une description brute des variables. Une boite avec un menu déroulant vous permet de choisir la variable pour laquelle vous voulez une description. Vous pouvez ensuite préciser s’il s’agit d’une variable qualitative ou quantitative. 
 
 La description est à la fois numérique et graphique, pour les deux types de variables possibles. 
 
 Dans cette première version de SHIBA, il n’est pas possible de choisir le type de graphique dans cet onglet. 
+
+Les graphiques peuvent être copiés. 

@@ -5,35 +5,36 @@ repo-actions: true
 # comparaison
 
 ## Comparaisons de moyennes
-Indiquez à l'aide des listes déroulantes la variable de groupe et la variable quantitative dont il faut comparer les moyennes entre les groupes. 
 
-Indiquez ensuite la loi a priori pour la moyenne et l'écart-type de la variable quantitative dans chaque groupe à l'aide des zones de saisie de valeur ou à l'aide des flèches situées sur la droite de ces zones de saisie. 
+Indiquez à l’aide des listes déroulantes la variable de groupe (deux groupes exactement) et la variable quantitative dont il faut comparer les moyennes entre les groupes.
 
-Cliquez sur OK pour valider ces choix. 
+Le bouton « élicitation » vous donne accès à boites de dialogues vous permettant de spécifier les lois a priori dans chaque groupe, sur le même principe que pour l’estimation d’une moyenne (voir chapitre 5). 
 
-Préciser le niveau de risque pour l'intervalle de crédibilité à l'aide du curseur. 
+Indiquez ensuite la loi a priori pour la moyenne et l’écart-type de la variable quantitative dans chaque groupe à l’aide des zones de saisie de valeurs ou à l’aide des flèches situées sur la droite de ces zones de saisie.
 
-Si vous le souhaitez, SHIBA vous permets de réaliser un test sur la comparaison de moyennes. Si vous voulez faire un test par rapport à un seuil, précisez la valeur de ce seuil. Si vous souhaitez réaliser un test à deux intervalles, spécifier les bornes hautes et basses de chaque intervalle du test (A : effet absent et P : effet présent).  
+Préciser le niveau de risque pour l’intervalle de crédibilité à l’aide du curseur.
+
+Si vous le souhaitez, SHIBA vous permets de réaliser un test sur la comparaison de moyennes. Si vous voulez faire un test par rapport à un seuil, précisez la valeur de ce seuil. Si vous souhaitez réaliser un test à deux intervalles, spécifier les bornes hautes et basses de chaque intervalle du test (A : effet absent et P : effet présent). Le choix entre le test sur un seuil et un 2IT se fait à l’aide du bouton bleu/blanc situé en haut de la boite de dialogue. 
+
+Une fois l’ensemble de ces éléments spécifiés, vous pouvez cliquer sur le bouton “Go :” et les résultats s’afficheront dans la fenêtre de droite. 
+
+Les résultats fournissent une description des connaissances a priori spécifiées par l’utilisateur puis l’estimation a posteriori de la moyenne dans chaque groupe ainsi que de la différence entre les deux groupes. Le cas échéant, le résultat de la comparaison à un seuil ou le résultat du 2IT sont affichés. 
 
 
-Une fois l'ensemble des ces éléments spécifiés, vous pouvez cliquer sur le bouton "Go :" et les résultats s'afficheront dans la fenêtre de droite. 
-
-## Description des résultats. 
 
 ## Comparaisons de pourcentages
 
-Indiquez à l'aide des listes déroulantes la variable de groupe et la variable qualitative dont il faut comparer les proportions entre les groupes. 
+Indiquez à l’aide des listes déroulantes la variable de groupe (deux groupes exactement) et la variable qualitative dont il faut comparer les proportions entre les groupes.
 
-Indiquez ensuite la loi a priori de la variable qualitative dans chaque groupe à l'aide des zones de saisie de valeur ou à l'aide des flèches situées sur la droite de ces zones de saisie. Une loi a priori de Jeffreys par défaut est proposée mais il est pertinent d'adapter ces valeurs à chaque analyse. 
+Le bouton « élicitation » vous donne accès à boites de dialogues vous permettant de spécifier les lois a priori dans chaque groupe, sur le même principe que pour l’estimation d’une proportion (voir chapitre 5). 
 
-Cliquez sur OK pour valider ces choix. 
+Préciser le niveau de risque pour l’intervalle de crédibilité à l’aide du curseur.
 
-Préciser le niveau de risque pour l'intervalle de crédibilité à l'aide du curseur. 
+Si vous le souhaitez, SHIBA vous permets de réaliser un test sur la comparaison de deux proportions. Si vous voulez faire un test par rapport à un seuil, précisez la valeur de ce seuil. Si vous souhaitez réaliser un test à deux intervalles, spécifier les bornes hautes et basses de chaque intervalle du test (A : effet absent et P : effet présent). Le choix entre le test sur un seuil et un 2IT se fait à l’aide du bouton bleu/blanc situé en haut de la boite de dialogue. 
 
-Si vous le souhaitez, SHIBA vous permets de réaliser un test sur la comparaison de proportions. Si vous voulez faire un test par rapport à un seuil, précisez la valeur de ce seuil. Si vous souhaitez réaliser un test à deux intervalles, spécifier les bornes hautes et basses de chaque intervalle du test (A : effet absent et P : effet présent).  
+Une fois l’ensemble de ces éléments spécifiés, vous pouvez cliquer sur le bouton “Go :” et les résultats s’afficheront dans la fenêtre de droite. 
 
-
-Une fois l'ensemble des ces éléments spécifiés, vous pouvez cliquer sur le bouton "Go :" et les résultats s'afficheront dans la fenêtre de droite. 
+Les résultats fournissent une description des connaissances a priori spécifiées par l’utilisateur puis l’estimation a posteriori de la proportion dans chaque groupe ainsi que de la différence de proportions entre les deux groupes. Le cas échéant, le résultat de la comparaison à un seuil ou le résultat du 2IT sont affichés. 
 
 
 
