@@ -225,7 +225,7 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   Y=as.factor(Y)
   
   levels_Y= levels(Y)
-  posteriors<-c(length(Y)-sum(Y==levels_Y[1]), sum(Y==levels_Y[1]))
+  posteriors<-c(length(Y[!is.na(Y)])-sum(Y==levels_Y[1],na.rm = T), sum(Y==levels_Y[1],na.rm = T))
   
   
   
