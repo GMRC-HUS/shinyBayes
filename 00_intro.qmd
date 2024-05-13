@@ -21,6 +21,19 @@ Le premier onglet est consacré à l'importation et à la lecture de la base de 
 
 Dans chaque onglet, en cliquant sur le bouton « AIDE et détails » vous accéderez à une aide spécifique de l'onglet.
 
+## Installation 
+
+``` r
+remotes::install_github("https://github.com/GMRC-HUS/ShiBA")
+``` 
+
+## Démarrage de l'application
+
+``` r
+ShiBA::run_app(options = list(launch.browser = TRUE))
+``` 
+
+
 #### Note {-}
 
 Cette application n'enregistre ni votre activité, ni vos données. A la fermeture de l'application, vous ne pourrez pas revenir ou récupérer les analyses effectuées. Il vous faudra recharger la base et recommencer les manipulations.
