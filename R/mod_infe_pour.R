@@ -33,7 +33,7 @@ mod_infe_pour_server <-  function(id,r){
       sidebarLayout(
         sidebarPanel(
           width = 4,
-          h2("Variable proportion d'interêt :"),
+          h2("Variable :"),
           uiOutput(ns("vbl_prop")), 
           h3("Choix des priors"),
           uiOutput(ns("apriori")),
