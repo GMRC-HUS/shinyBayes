@@ -27,6 +27,18 @@ mésusages. Afin de se conformer à la règlementation nationale et
 européenne sur la protection des données à caractère personnel, nous
 vous demandons de n'utiliser que des données anonymisées.
 
+## Installation 
+
+``` r
+remotes::install_github("https://github.com/GMRC-HUS/ShiBA")
+``` 
+
+## Démarrage de l'application
+
+``` r
+ShiBA::run_app(options = list(launch.browser = TRUE))
+``` 
+
 ## ***Fonctionnement général de SHIBA***
 
 SHIBA dispose de plusieurs onglets. Une fois la base de données importée
@@ -34,6 +46,7 @@ et ouverte dans SHIBA, vous pourrez choisir l'onglet correspondant aux
 analyses à réaliser : description des données puis inférence, uni- ou
 multivariée. Dans chaque onglet, en cliquant sur le bouton « AIDE et
 détails » vous accéderez à une aide spécifique de l'onglet.
+
 
 ## License
 
