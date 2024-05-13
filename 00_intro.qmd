@@ -39,7 +39,7 @@ La réalisation d'analyse statistique dans SHIBA suppose de connaître quelques 
 
 ### Notion d'hypothèse scientifique et d'hypothèse statistique.
 
-Une théorie sur un phénomène permet de formuler une hypothèse scientifique sur un paramètre d'intérêt q. Cette hypothèse scientifique sur le phénomène va être traduite en une hypothèse statistique sur la valeur du paramètre exprimant le phénomène. Cette valeur sera soumise à un test qui vise à valider ou invalider l'hypothèse scientifique. L'hypothèse scientifique est vraie ou fausse mais l'hypothèse statistique, elle, est associée à une probabilité d'être vraie. Le test statistique suppose le recueil de données (les « évènements » de la théorie des probabilités) qui permettront en retour d'estimer la probabilité que cette hypothèse statistique soit vraie. Lorsque cette probabilité est suffisamment élevée (basse) on pourra considérer que l'hypothèse scientifique est validée (invalidée).
+Une théorie sur un phénomène permet de formuler une hypothèse scientifique sur un paramètre d'intérêt $\theta$. Cette hypothèse scientifique sur le phénomène va être traduite en une hypothèse statistique sur la valeur du paramètre exprimant le phénomène. Cette valeur sera soumise à un test qui vise à valider ou invalider l'hypothèse scientifique. L'hypothèse scientifique est vraie ou fausse mais l'hypothèse statistique, elle, est associée à une probabilité d'être vraie. Le test statistique suppose le recueil de données (les « évènements » de la théorie des probabilités) qui permettront en retour d'estimer la probabilité que cette hypothèse statistique soit vraie. Lorsque cette probabilité est suffisamment élevée (basse) on pourra considérer que l'hypothèse scientifique est validée (invalidée).
 
 ### Notion de probabilité.
 
@@ -49,13 +49,13 @@ Cette définition ne permet cependant pas de connaitre la probabilité qu'une hy
 
 Le théorème de Bayes peut s'énoncer de la manière suivante : après l'expérimentation, la connaissance *a posteriori* sur le paramètre $\theta$ est proportionnelle à la connaissance *a priori* sur $\theta$ multipliée par la probabilité des données D :
 
-$\Pr(\theta|D) \propto Pr(\theta) \times \\Pr(D| \theta)$
+$$\Pr(\theta|D) \propto Pr(\theta) \times \\Pr(D| \theta)$$
 
 En synthèse, la statistique bayésienne permet la mise à jour d'une connaissance probabiliste sur un paramètre à l'aide d'observations.
 
 ### Les trois éléments d'une analyse bayésiennes sont donc :
 
-1.  ***La loi a priori*** : c'est une loi de probabilité (par exemple une loi normale) qui exprime toute la connaissance dont on dispose sur le paramètre ***avant*** la collecte des données à pour chaque analyse, il faut spécifier les caractéristiques de la loi a priori (par exemple sa moyenne et sa variance dans le cas de la loi normale) exprimant la connaissance disponible sur $\theta$. C'est une étape très importante dans l'inférence bayésienne et SHIBA vous permettra de la passer assez facilement.
+1.  ***La loi a priori*** : c'est une loi de probabilité (par exemple une loi normale) qui exprime toute la connaissance dont on dispose sur le paramètre ***avant*** la collecte des données  pour chaque analyse, il faut spécifier les caractéristiques de la loi a priori (par exemple sa moyenne et sa variance dans le cas de la loi normale) exprimant la connaissance disponible sur $\theta$. C'est une étape très importante dans l'inférence bayésienne et SHIBA vous permettra de la passer assez facilement.
 
 2.  ***La vraisemblance*** : c'est la probabilité des données observées conditionnellement aux valeurs a priori du paramètre. Vous n'avez pas à vous souciez de la vraisemblance et elle n'apparait pas dans les résultats.
 
@@ -67,7 +67,7 @@ Dans le graphique suivant, la loi a priori est en bleu, la vraisemblance est en 
 
 Le paramètre d'intérêt est parfois le paramètre d'une loi de probabilité. Par exemple, la moyenne est le paramètre de moyenne d'une loi normale. Mais il est parfois le résultat d'une transformation d'un autre paramètre. Lors de la comparaison de deux proportions, l'OR ne dispose pas d'une loi a priori propre : il n'est pas le paramètre d'une loi a priori. Sa loi a posteriori est en fait recalculée à partir de la loi a posteriori des proportions dans chaque groupe ou du paramètre d'une régression logistique. Dans tous les cas, la loi a priori du paramètre est mise à jour par les données pour fournir une loi a posteriori.
 
-Dans les différents onglets de SHIBA, la démarche statistique globale est à chaque fois la même. Pour un modèle donné (une proportion, une régression logistique, etc.), il faudra spécifier une loi a priori pour chacun des paramètres d'intérêt ou des éléments composant le paramètre d'intérêt (pour un risque relatif ou un odds-ratio par exemple). Dans les modèles multivariés, il faudra spécifier une loi a priori pour le paramètre de chaque variable incluse dans le modèle. SHIBA effectue le calcul de la loi a posteriori du ou des paramètres et permet de réaliser les tests que vous aurez éventuellement spécifié.
+Dans les différents onglets de SHIBA, la démarche statistique globale est à chaque fois la même. Pour un modèle donné (une proportion, une régression logistique, etc.), il faudra spécifier une loi a priori pour chacun des paramètres d'intérêt ou des éléments composant le paramètre d'intérêt (pour un risque relatif ou un odds-ratio par exemple). Dans les modèles multivariés, il faudra spécifier une loi a priori pour le paramètre de chaque variable incluse dans le modèle. SHIBA effectue le calcul de la loi a posteriori du ou des paramètres et permet de réaliser les tests que vous aurez éventuellement spécifiés.
 
 ### Notion de test sur le paramètre : test par rapport à un seuil et test à deux intervalles (2IT).
 

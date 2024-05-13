@@ -7,28 +7,38 @@ repo-actions: true
 
 ## Généralités
 Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix entre une régression linéaire, une régression logistique et une régression de Poisson. Le fonctionnement de SHIBA est le même pour ces trois modèles. 
-Après avoir préciser le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d'intérêt (à prédire, Y) puis l'ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu'à chacune des listes "variables quantitatives" et "variables qualitatives". Vous pouvez spécifier plusieurs variables de chaque type. 
+Après avoir précisé le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d’intérêt à prédire, Y. Pour chaque type de régression, une liste de Y potentiels vous est proposée à partir des types de variables (quantitative, binaire, comptage) et du modèle choisi (régression linéaire, logistique, de Poisson). Choisissez ensuite l’ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu'à chacune des listes "variables quantitatives" et "variables qualitatives". Vous pouvez spécifier plusieurs variables de chaque type. 
 
 ## Régression linéaire
+Pour ce type de régression spécifiez la variable à prédire ainsi que les variables explicatives, quantitatives ou qualitatives. Pour les variables qualitatives, vous pouvez sélectionner la modalité de référence. 
+Vous pouvez également réaliser un test pour l’une des variables explicatives, soit par rapport à un seuil soit en réalisant un 2IT. 
+
 
 ## Régression logistique
+Pour ce type de régression spécifiez la variable à prédire ainsi que les variables explicatives, quantitatives ou qualitatives. 
 
 ## Régression de Poisson
+Pour ce type de régression spécifiez la variable à prédire ainsi que les variables explicatives, quantitatives ou qualitatives. 
 
 ## Sélection des modalités de référence
+Dans tous les modèles, lorsque vous incluez une variable explicative qualitative, vous pouvez choisir la modalité de référence. 
 
 ## Choix des lois a priori ("priors")
+Quel que soit le type de modèle, il est fortement conseillé de spécifier les lois a priori pour tous les paramètres d’intérêts (coefficient de chaque variable explicative) en cliquant sur le bouton « Elicitation », plutôt que d’utiliser les lois a priori par défaut.
+
 
 ## Seuils et Test à 2 intervalles
+Quel que soit le type de modèle, vous pouvez également réaliser un test sur la valeur du paramètre d’intérêt. Ce test peut se faire soit par rapport à un seuil soit en réalisant un 2IT. Ce test ne peut être réalisé que pour une seule variable à la fois. 
 
 
 ## Résultats affichés
 SHIBA fournit différents types de résultats.
 
-- rappel du modèle
-- liste des lois a priori
-- une analyse de la convergence (faite systématiquement mais son affichage ne se fait qu'à la demande de l'utilisateur)
-- les résultats 
-- youpi, en fait ça marche pas mal !!!
+-	rappel du modèle choisi 
+-	liste des lois a priori 
+-	une analyse de la convergence (faite systématiquement mais son affichage ne se fait qu’à la demande de l’utilisateur)
+-	les résultats y compris les résultats des tests par rapport à un seuil ou avec le 2IT. Le test par rapport à une valeur de référence et le 2IT ne peuvent être spécifié que pour une seule variable à la fois. 
+
+
 
 

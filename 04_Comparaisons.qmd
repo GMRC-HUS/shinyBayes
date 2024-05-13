@@ -2,7 +2,7 @@
 repo-actions: true
 ---
 
-# comparaison
+# Comparaison
 
 ## Comparaisons de moyennes
 

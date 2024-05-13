@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -159,7 +193,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04_Comparaisons.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">comparaison</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Comparaison</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -199,8 +233,10 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#shiba" id="toc-shiba" class="nav-link active" data-scroll-target="#shiba"><span class="header-section-number">1</span> <strong>SHIBA</strong></a>
   <ul class="collapse">
-  <li><a href="#fonctionnement-général-de-shiba" id="toc-fonctionnement-général-de-shiba" class="nav-link" data-scroll-target="#fonctionnement-général-de-shiba"><span class="header-section-number">1.1</span> <strong><em>Fonctionnement général de SHIBA</em></strong></a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><span class="header-section-number">1.2</span> License</a></li>
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation"><span class="header-section-number">1.1</span> Installation</a></li>
+  <li><a href="#démarrage-de-lapplication" id="toc-démarrage-de-lapplication" class="nav-link" data-scroll-target="#démarrage-de-lapplication"><span class="header-section-number">1.2</span> Démarrage de l’application</a></li>
+  <li><a href="#fonctionnement-général-de-shiba" id="toc-fonctionnement-général-de-shiba" class="nav-link" data-scroll-target="#fonctionnement-général-de-shiba"><span class="header-section-number">1.3</span> <strong><em>Fonctionnement général de SHIBA</em></strong></a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><span class="header-section-number">1.4</span> License</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GMRC-HUS/ShiBA/blob/gh/index.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/GMRC-HUS/ShiBA/edit/gh/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/GMRC-HUS/ShiBA/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -239,12 +275,22 @@ ul.task-list li input[type="checkbox"] {
 <p>SHIBA est une interface graphique permettant de réaliser des analyses bayésiennes via le logiciel de statistiques R et les packages associés sans avoir à coder les instructions nécessaires pour obtenir ces analyses.</p>
 <p>Cet outil est proposé <strong>sans aucune garantie de validité sur les résultats.</strong></p>
 <p>Ce logiciel est mis à votre disposition gracieusement par les Hôpitaux Universitaires de Strasbourg (HUS) et l’Université de Strasbourg (Unistra). Ni les HUS ni l’Unistra ne pourront pas être tenus pour responsables des résultats produits par l’outil ainsi que de ses mésusages. Afin de se conformer à la règlementation nationale et européenne sur la protection des données à caractère personnel, nous vous demandons de n’utiliser que des données anonymisées.</p>
-<section id="fonctionnement-général-de-shiba" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="fonctionnement-général-de-shiba"><span class="header-section-number">1.1</span> <strong><em>Fonctionnement général de SHIBA</em></strong></h2>
+<section id="installation" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="installation"><span class="header-section-number">1.1</span> Installation</h2>
+<p>Pour installer l’application, il suffit de taper les instructions suivantes, en utilisant la dernière version en date de R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"https://github.com/GMRC-HUS/ShiBA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="démarrage-de-lapplication" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="démarrage-de-lapplication"><span class="header-section-number">1.2</span> Démarrage de l’application</h2>
+<p>Pour lancer l’application, exécuter l’instruction suivante :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ShiBA<span class="sc">::</span><span class="fu">run_app</span>(<span class="at">options =</span> <span class="fu">list</span>(<span class="at">launch.browser =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="fonctionnement-général-de-shiba" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="fonctionnement-général-de-shiba"><span class="header-section-number">1.3</span> <strong><em>Fonctionnement général de SHIBA</em></strong></h2>
 <p>SHIBA dispose de plusieurs onglets. Une fois la base de données importée et ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser : description des données puis inférence, uni- ou multivariée. Dans chaque onglet, en cliquant sur le bouton « AIDE et détails » vous accéderez à une aide spécifique de l’onglet.</p>
 </section>
-<section id="license" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="license"><span class="header-section-number">1.2</span> License</h2>
+<section id="license" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="license"><span class="header-section-number">1.4</span> License</h2>
 <p>L’ensemble du contenu de la documentation est mis à disposition sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC-by-nc 4.0</a>.</p>
 <p>La licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC-by-nc 4.0</a> permet <strong>toute exploitation de l’œuvre</strong> (partager, copier, reproduire, distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous formats et sous toutes licences. Toutes les exploitations de l’œuvre ou des œuvres dérivées, <strong>sauf à des fins commerciales</strong>, sont possibles.</p>
 <p>Les obligations liées à la licence sont de :</p>

@@ -10,19 +10,20 @@ repo-actions: true
 Dans cet onglet vous pourrez procéder à l’import de votre base de données et vous obtiendrez une visualisation de son contenu. 
 
 Vous pouvez importer les données de différentes manières : 
-- en important un fichier de données enregistré dans l'un des formats suivants : .csv, .txt, .xls, .xlsx, .rds, .fst, .sas7bdat, .sav 
+
+- en important un fichier de données enregistré dans l'un des formats suivants : .csv, .txt, .xls, .xlsx, .rds, .ods
 - en faisant un copier/coller, ce qui est plus intéressant pour de très petites bases de données
 - en important des données contenues dans une Googlesheets
 - en indiquant une URL pointant vers un fichier. 
 
-Dans tous les cas, vos données devront respecter les techniques de base en matière d'enregistrement des données. Les outils d'importation des données permettent dans une certaine mesure de préciser les modalités d'importation mais il est plus simple que la base respectent d'emblée les régles usuelles de formattage des données.   
+Dans tous les cas, vos données devront respecter les techniques de base en matière d'enregistrement des données. Les outils d'importation des données permettent dans une certaine mesure de préciser les modalités d'importation mais il est plus simple que la base respecte d'emblée les régles usuelles de formattage des données.   
 
 Pour l’importation, il faut spécifier : 
 
 - Le type de séparateur utilisé dans votre base : virgule, point-virgule ou tabulation
 - Le code utilisé pour les manquants : une oblique (slash), un astérisque, ou les lettres NA (qui doivent être les seuls éléments contenus dans la case). Nous vous conseillons de mettre un "NA" (sans les guillemets) mais les deux autres choix sont valides.  Il vous faudra aussi au préalable, veillez à ce que toutes les données manquantes de votre fichier soit codées de la même manière. Par exemple, SHIBA n’interprétera pas correctement des données manquantes qui seraient codées *NA* pour certaines et ND pour d’autres.
 - Le symbole utilisé pour la décimale : Virgule (ou décimale française), point (ou décimale anglo-saxonne)
-- Le logiciel ayant été utilisé pour enregistrer les données Excel pour Windows, ou Libre Office pour Linux 
+ 
 
 Parcourez ensuite l’arborescence de vos fichiers pour sélectionner votre base de données. 
 

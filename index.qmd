@@ -16,8 +16,7 @@ bayésiennes via le logiciel de statistiques R et les packages associés
 sans avoir à coder les instructions nécessaires pour obtenir ces
 analyses.
 
-Cet outil est proposé **sans aucune garantie de validité sur les
-résultats.**
+Cet outil est proposé **sans aucune garantie de validité sur les résultats.**
 
 Ce logiciel est mis à votre disposition gracieusement par les Hôpitaux
 Universitaires de Strasbourg (HUS) et l'Université de Strasbourg
@@ -29,11 +28,14 @@ vous demandons de n'utiliser que des données anonymisées.
 
 ## Installation 
 
+Pour installer l’application, il suffit de taper les instructions suivantes, en utilisant la dernière version en date de R. 
+
 ``` r
 remotes::install_github("https://github.com/GMRC-HUS/ShiBA")
 ``` 
 
 ## Démarrage de l'application
+Pour lancer l’application, exécuter l’instruction suivante : 
 
 ``` r
 ShiBA::run_app(options = list(launch.browser = TRUE))

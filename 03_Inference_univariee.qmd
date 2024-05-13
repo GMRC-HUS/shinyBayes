@@ -34,7 +34,8 @@ SHIBA fournit un rappel des paramètres utilisés dans la loi a priori, puis un 
 ## **Pour l’estimation d’une proportion :** 
 
 L’estimation bayésienne d’une proportion $\pi$ ou taux de succès d’une variable binaire, se fait avec le modèle suivant : 
--	Le taux de succès $\pi$ est distribué suivant une loi $Beta(\alpha,\beta)$
+
+-	Le taux de succès $\pi$ est distribué suivant une loi $beta(\alpha,\beta)$
 
 Il faut donc exprimer la loi a priori de $\pi$ en spécifiant la valeur de $\alpha$ et de $\beta$. Ces deux paramètres peuvent s’interpréter respectivement comme un nombre de succès ($\alpha$) et un nombre d’échecs ($\beta$) sur N essais.
 
