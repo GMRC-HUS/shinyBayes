@@ -166,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04_Comparaisons.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">comparaison</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Comparaison</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -239,35 +239,40 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="généralités" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="généralités"><span class="header-section-number">7.1</span> Généralités</h2>
-<p>Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix entre une régression linéaire, une régression logistique et une régression de Poisson. Le fonctionnement de SHIBA est le même pour ces trois modèles. Après avoir préciser le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d’intérêt (à prédire, Y) puis l’ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu’à chacune des listes “variables quantitatives” et “variables qualitatives”. Vous pouvez spécifier plusieurs variables de chaque type.</p>
+<p>Préciser le type de modèle que vous souhaitez réaliser. Vous avez le choix entre une régression linéaire, une régression logistique et une régression de Poisson. Le fonctionnement de SHIBA est le même pour ces trois modèles. Après avoir précisé le niveau de risque consenti pour les intervalles de crédibilité, choisissez la variable d’intérêt à prédire, Y. Pour chaque type de régression, une liste de Y potentiels vous est proposée à partir des types de variables (quantitative, binaire, comptage) et du modèle choisi (régression linéaire, logistique, de Poisson). Choisissez ensuite l’ensemble des variables explicatives. La sélection des variables à inclure se fait par glisser-déposer à partir de la liste des variables jusqu’à chacune des listes “variables quantitatives” et “variables qualitatives”. Vous pouvez spécifier plusieurs variables de chaque type.</p>
 </section>
 <section id="régression-linéaire" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="régression-linéaire"><span class="header-section-number">7.2</span> Régression linéaire</h2>
+<p>Pour ce type de régression spécifiez la variable à prédire ainsi que les variables explicatives, quantitatives ou qualitatives. Pour les variables qualitatives, vous pouvez sélectionner la modalité de référence. Vous pouvez également réaliser un test pour l’une des variables explicatives, soit par rapport à un seuil soit en réalisant un 2IT.</p>
 </section>
 <section id="régression-logistique" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="régression-logistique"><span class="header-section-number">7.3</span> Régression logistique</h2>
+<p>Pour ce type de régression spécifiez la variable à prédire ainsi que les variables explicatives, quantitatives ou qualitatives.</p>
 </section>
 <section id="régression-de-poisson" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="régression-de-poisson"><span class="header-section-number">7.4</span> Régression de Poisson</h2>
+<p>Pour ce type de régression spécifiez la variable à prédire ainsi que les variables explicatives, quantitatives ou qualitatives.</p>
 </section>
 <section id="sélection-des-modalités-de-référence" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="sélection-des-modalités-de-référence"><span class="header-section-number">7.5</span> Sélection des modalités de référence</h2>
+<p>Dans tous les modèles, lorsque vous incluez une variable explicative qualitative, vous pouvez choisir la modalité de référence.</p>
 </section>
 <section id="choix-des-lois-a-priori-priors" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="choix-des-lois-a-priori-priors"><span class="header-section-number">7.6</span> Choix des lois a priori (“priors”)</h2>
+<p>Quel que soit le type de modèle, il est fortement conseillé de spécifier les lois a priori pour tous les paramètres d’intérêts (coefficient de chaque variable explicative) en cliquant sur le bouton « Elicitation », plutôt que d’utiliser les lois a priori par défaut.</p>
 </section>
 <section id="seuils-et-test-à-2-intervalles" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="seuils-et-test-à-2-intervalles"><span class="header-section-number">7.7</span> Seuils et Test à 2 intervalles</h2>
+<p>Quel que soit le type de modèle, vous pouvez également réaliser un test sur la valeur du paramètre d’intérêt. Ce test peut se faire soit par rapport à un seuil soit en réalisant un 2IT. Ce test ne peut être réalisé que pour une seule variable à la fois.</p>
 </section>
 <section id="résultats-affichés" class="level2" data-number="7.8">
 <h2 data-number="7.8" class="anchored" data-anchor-id="résultats-affichés"><span class="header-section-number">7.8</span> Résultats affichés</h2>
 <p>SHIBA fournit différents types de résultats.</p>
 <ul>
-<li>rappel du modèle</li>
+<li>rappel du modèle choisi</li>
 <li>liste des lois a priori</li>
 <li>une analyse de la convergence (faite systématiquement mais son affichage ne se fait qu’à la demande de l’utilisateur)</li>
-<li>les résultats</li>
-<li>youpi, en fait ça marche pas mal !!!</li>
+<li>les résultats y compris les résultats des tests par rapport à un seuil ou avec le 2IT. Le test par rapport à une valeur de référence et le 2IT ne peuvent être spécifié que pour une seule variable à la fois.</li>
 </ul>
 
 
@@ -685,8 +690,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04_Comparaisons.html" class="pagination-link" aria-label="comparaison">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">comparaison</span></span>
+      <a href="./04_Comparaisons.html" class="pagination-link" aria-label="Comparaison">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Comparaison</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
