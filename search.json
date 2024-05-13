@@ -11,11 +11,33 @@
     ]
   },
   {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "Aide application SHIBA",
+    "section": "1.1 Installation",
+    "text": "1.1 Installation\nremotes::install_github(\"https://github.com/GMRC-HUS/ShiBA\")",
+    "crumbs": [
+      "Intoduction",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>**SHIBA**</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#démarrage-de-lapplication",
+    "href": "index.html#démarrage-de-lapplication",
+    "title": "Aide application SHIBA",
+    "section": "1.2 Démarrage de l’application",
+    "text": "1.2 Démarrage de l’application\nShiBA::run_app(options = list(launch.browser = TRUE))",
+    "crumbs": [
+      "Intoduction",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>**SHIBA**</span>"
+    ]
+  },
+  {
     "objectID": "index.html#fonctionnement-général-de-shiba",
     "href": "index.html#fonctionnement-général-de-shiba",
     "title": "Aide application SHIBA",
-    "section": "1.1 Fonctionnement général de SHIBA",
-    "text": "1.1 Fonctionnement général de SHIBA\nSHIBA dispose de plusieurs onglets. Une fois la base de données importée et ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser : description des données puis inférence, uni- ou multivariée. Dans chaque onglet, en cliquant sur le bouton « AIDE et détails » vous accéderez à une aide spécifique de l’onglet.",
+    "section": "1.3 Fonctionnement général de SHIBA",
+    "text": "1.3 Fonctionnement général de SHIBA\nSHIBA dispose de plusieurs onglets. Une fois la base de données importée et ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser : description des données puis inférence, uni- ou multivariée. Dans chaque onglet, en cliquant sur le bouton « AIDE et détails » vous accéderez à une aide spécifique de l’onglet.",
     "crumbs": [
       "Intoduction",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>**SHIBA**</span>"
@@ -25,8 +47,8 @@
     "objectID": "index.html#license",
     "href": "index.html#license",
     "title": "Aide application SHIBA",
-    "section": "1.2 License",
-    "text": "1.2 License\nL’ensemble du contenu de la documentation est mis à disposition sous licence CC-by-nc 4.0.\nLa licence CC-by-nc 4.0 permet toute exploitation de l’œuvre (partager, copier, reproduire, distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous formats et sous toutes licences. Toutes les exploitations de l’œuvre ou des œuvres dérivées, sauf à des fins commerciales, sont possibles.\nLes obligations liées à la licence sont de :\n• créditer les créateurs de la paternité des œuvres originales, d’en indiquer les sources et d’indiquer si des modifications ont été effectuées aux œuvres (obligation d’attribution) ;\n• ne pas tirer profit (gain direct ou plus-value commerciale) de l’œuvre ou des œuvres dérivées.",
+    "section": "1.4 License",
+    "text": "1.4 License\nL’ensemble du contenu de la documentation est mis à disposition sous licence CC-by-nc 4.0.\nLa licence CC-by-nc 4.0 permet toute exploitation de l’œuvre (partager, copier, reproduire, distribuer, communiquer, réutiliser, adapter) par tous moyens, sous tous formats et sous toutes licences. Toutes les exploitations de l’œuvre ou des œuvres dérivées, sauf à des fins commerciales, sont possibles.\nLes obligations liées à la licence sont de :\n• créditer les créateurs de la paternité des œuvres originales, d’en indiquer les sources et d’indiquer si des modifications ont été effectuées aux œuvres (obligation d’attribution) ;\n• ne pas tirer profit (gain direct ou plus-value commerciale) de l’œuvre ou des œuvres dérivées.",
     "crumbs": [
       "Intoduction",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>**SHIBA**</span>"
