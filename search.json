@@ -59,7 +59,7 @@
     "href": "00_intro.html",
     "title": "2  Qu’est-ce que SHIBA ?",
     "section": "",
-    "text": "2.1 Fonctionnement général de SHIBA\nSHIBA dispose de plusieurs onglets. Les onglets se répartissent en deux grandes catégories : ceux consacrés à la description des données et ceux consacrés à l’inférence bayésienne, univariée et multivariée.\nLe premier onglet est consacré à l’importation et à la lecture de la base de données. Une base de données saisie dans un tableau sous la forme d’un tableur avec comme extension : .xlsx, .ods, .txt ou .csv devra être chargée à l’aide de ce premier onglet. Une fois la base de données ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser : descriptif puis inférence, uni- ou multivariée. Il est egalement possible de copier-coller sa base de données.",
+    "text": "2.1 Fonctionnement général de SHIBA\nSHIBA dispose de plusieurs onglets. Les onglets se répartissent en deux grandes catégories : ceux consacrés à la description des données et ceux consacrés à l’inférence bayésienne, univariée et multivariée.\nLe premier onglet est consacré à l’importation et à la lecture de la base de données. Une base de données saisie dans un tableau sous la forme d’un tableur avec comme extension : .xlsx, .ods, .txt, .rds ou .csv devra être chargée à l’aide de ce premier onglet. Une fois la base de données ouverte dans SHIBA, vous pourrez choisir l’onglet correspondant aux analyses à réaliser : descriptif puis inférence, uni- ou multivariée. Il est egalement possible de copier-coller sa base de données.",
     "crumbs": [
       "Intoduction",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Qu'est-ce que SHIBA ?</span>"
