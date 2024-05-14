@@ -35,6 +35,7 @@ app_server <- function(input, output, session, BDD = NULL) {
     ret <- rep(NA, ncol(D))
     ret[which(variableNum)] <- as.logical(lapply(as.data.frame(D[, which(variableNum)]), desctable::is.normal))
     r$variableNormale <- ret
+ 
   }
   mod_Croisements_server("Croisements_1",r)
   # mod_Survie_server("Survie_1",r)

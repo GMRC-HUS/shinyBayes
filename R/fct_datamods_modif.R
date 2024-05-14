@@ -375,7 +375,7 @@ import_file_server2 <- function(id,
             skip = input$skip_rows,
             dec = input$dec,
             encoding = input$encoding,
-            na.strings = c("NA", "")
+            na.strings = c("NA", "*")
           )
         }
         imported <- try(rlang::exec(rio::import, !!!parameters), silent = TRUE)
@@ -462,8 +462,7 @@ is_sas <- function(path) {
 }
 
 
-import_ui2<-function (id, from = c("env", "file", "copypaste", 
-                       "googlesheets", "url"), file_extensions = c(".csv", 
+import_ui2<-function (id, from = c("env", "file", "copypaste"), file_extensions = c(".csv", 
                                                                    ".txt", ".xls", ".xlsx", ".rds", 
                                                                    ".fst", ".sas7bdat", ".sav")) 
 {
