@@ -289,14 +289,14 @@ mod_infe_moy_server <- function(id,r){
       res<-res_infe()
       
       output$res_infe_moy<- renderUI({tagList(
-        lapply(1:length(res$df),function(x)  box(title = names(res$df)[x],width=12,
+        lapply(c(1,3:length(res$df)),function(x)  box(title = names(res$df)[x],width=12,
                                                  div(  DT::dataTableOutput(ns(make.names(names(res$df)[x]))), style
                                                        = "overflow-y: auto;"))
                
         )
       )})
       
-      lapply(1:length(res$df), function(i) {
+      lapply(c(1,3:length(res$df)), function(i) {
         output[[make.names(names(res$df)[i]) ]] <- DT::renderDataTable({
           DT::datatable(res$df[[i]],options = list(dom="t",ordering=F))
         })
