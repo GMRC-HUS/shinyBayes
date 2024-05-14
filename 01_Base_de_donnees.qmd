@@ -13,8 +13,7 @@ Vous pouvez importer les données de différentes manières :
 
 - en important un fichier de données enregistré dans l'un des formats suivants : .csv, .txt, .xls, .xlsx, .rds, .ods
 - en faisant un copier/coller, ce qui est plus intéressant pour de très petites bases de données
-- en important des données contenues dans une Googlesheets
-- en indiquant une URL pointant vers un fichier. 
+
 
 Dans tous les cas, vos données devront respecter les techniques de base en matière d'enregistrement des données. Les outils d'importation des données permettent dans une certaine mesure de préciser les modalités d'importation mais il est plus simple que la base respecte d'emblée les régles usuelles de formattage des données.   
 
