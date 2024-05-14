@@ -217,7 +217,7 @@ if(is.null(type)){
 
 
 Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL, 
-                       arr=3,M=100000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
+                       arr=4,M=100000, IC=0.95, type =  NULL, color_1 ="#DE3163" , color_2="#40E0D0",color_3 = "#EBC341" ,color_4="#9242A6"){
   pourcent_IC2 = (1-IC)/2
   
   
@@ -271,7 +271,7 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   
   
-  resprior<-descrxxprior%>%round(arr)
+  resprior<-descrxxprior%>%round(arr/2)
   
   
   resprior<-data.frame(resprior)%>%t%>%as.data.frame()

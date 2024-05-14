@@ -64,7 +64,8 @@ observe({print(input$label_nas)})
       r$BDD <- DD%>%as.data.frame()
       print(str(DD))
       r$contentInput <- DD
-    })
+      showNotification(HTML("<font color='grey' > <center> Données importées avec succès </center> </font>"))
+})
 
 
     observe({
@@ -101,9 +102,8 @@ observe({print(input$label_nas)})
   })
   
   
-  observeEvent(r$BDD,{
-    showNotification(HTML("<font color='grey' > <center> Données importées avec succès </center> </font>"))})
 }
+ 
 
 ## To be copied in the UI
 # mod_chargement_ui("chargement_1")
