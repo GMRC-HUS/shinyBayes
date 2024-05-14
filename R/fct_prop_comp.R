@@ -15,7 +15,7 @@ Cpmultprop2IT<-function(Y,Gr,priors,seuil_global = NULL,
   Y= as.factor(Y)
   levels_y = levels(Y)
   Ngroup<-nlevels(as.factor(Gr))
-  print(Ngroup)
+
   noms<-levels(as.factor(Gr))
   long<-factorial(Ngroup)/(factorial(Ngroup-2)*2)
 
@@ -171,20 +171,19 @@ if(is.null(type)){
   }else{
     
     sel<-which(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() ==twit$var )
-    print(twit$var)
-    print(sel)
-    print(apply(utils::combn(noms, 2),2, function(x) c(paste(x, collapse = "vs"),paste(rev(x), collapse = "vs")))%>%as.vector() )
+ 
     lequel <- ceiling(sel/2)
     signe = 1-sel%%2
     data=twit$data
-    data$`Pr Ha` = c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","min_effet_absent"],data["Diff","max_effet_absent"])),arr),
-                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","min_effet_absent"],data["RR","max_effet_absent"])),arr), 
-                     round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_absent"],data["OR","max_effet_absent"])),arr))
+
+    data$`Pr Ha` = c(round(mean(between(TEST[[1+(lequel-1)*3]]* ifelse_perso(signe==1, 1, -1),data["Diff","min_effet_absent"],data["Diff","max_effet_absent"])),arr),
+                     round(mean(between(TEST[[2+(lequel-1)*3]]^ifelse_perso(signe==1, 1, -1),data["RR","min_effet_absent"],data["RR","max_effet_absent"])),arr), 
+                     round(mean(between(TEST[[3+(lequel-1)*3]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_absent"],data["OR","max_effet_absent"])),arr))
                      
                      
-    data$`Pr Hr` =  c(round(mean(between(TEST[[lequel]]* ifelse_perso(signe==1, 1, -1),data["Diff","min_effet_present"],data["Diff","max_effet_present"])),arr),
-                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["RR","min_effet_present"],data["RR","max_effet_present"])),arr),
-                      round(mean(between(TEST[[lequel]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_present"],data["OR","max_effet_present"])),arr) )                
+    data$`Pr Hr` =  c(round(mean(between(TEST[[1+(lequel-1)*3]]* ifelse_perso(signe==1, 1, -1),data["Diff","min_effet_present"],data["Diff","max_effet_present"])),arr),
+                      round(mean(between(TEST[[2+(lequel-1)*3]]^ifelse_perso(signe==1, 1, -1),data["RR","min_effet_present"],data["RR","max_effet_present"])),arr),
+                      round(mean(between(TEST[[3+(lequel-1)*3]]^ifelse_perso(signe==1, 1, -1),data["OR","min_effet_present"],data["OR","max_effet_present"])),arr) )                
 
                     
     names(data)<-c("min Abs","max Abs","min pres","max pres",
@@ -240,7 +239,7 @@ Infe_prop2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   xxprior<-rbeta(M,priors[1],priors[2])*100
   descrxxprior<-descriptif(xxprior, probs = c(pourcent_IC2,0.5, 1-pourcent_IC2 ))
   
-  print(paste("posterior: " ,posteriors ))
+
  p<- ggplot(data.frame(x=c(0,1)),aes(x=x))+ 
    
     stat_function(fun = dbeta,args=list(shape1 = priors[1],
@@ -302,13 +301,12 @@ p<- p+ geom_segment( aes(x=seuil, xend = seuil,y=-Inf,yend=Inf))
     
     
     data=twit$data
-    print(data)
+ 
     data$`Pr Ha` = round(mean(between(xx,data[,"min_effet_absent"],data[,"max_effet_absent"])),arr)
     
     
     data$`Pr Hr` =  round(mean(between(xx,data[,"min_effet_present"],data[,"max_effet_present"])),arr)
- 
-    print(xx)
+
     names(data)<-c("min Abs","max Abs","min pres","max pres",
                    "Pr(effet absent)","Pr(effet présent)")
     

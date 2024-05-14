@@ -530,13 +530,14 @@ descd <- function(D) {
       if (nature.variable == 2) {
         n.quali <- n.quali + 1
       }
+      if (nature.variable == 0) {
+        n.txt <- n.txt + 1
+      }
+      if (nature.variable == -1 | nature.variable == 3) {
+        n.autres <- n.autres + 1
+      }
     }
-    if (nature.variable == 0) {
-      n.txt <- n.txt + 1
-    }
-    if (nature.variable == -1 | nature.variable == 3) {
-      n.autres <- n.autres + 1
-    }
+
   }
 
   #----------------------------------------------------

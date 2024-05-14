@@ -169,7 +169,7 @@ compare_moy_gibbs <- function(X, Y,mu0=NULL,s_m0 =NULL, s0=NULL, n_s0=NULL,
     # prior
     resprior,res)
   names(laliste) <- c(#"prior",
-    "Valeurs a priori","Valeurs a posteriori" )
+    "Valeurs a priori","Estimations a posteriori" )
   if(is.null(type)){
     
   }else if(type =="twit" & !is.null(type)){
@@ -311,7 +311,7 @@ Infe_moy2IT<-function(Y,priors,seuil = NULL, twit=NULL,
   
   
   df<-list(prior,resprior,respost)
-  names(df) <- c("prior","Valeurs a priori","Valeurs a posteriori" )
+  names(df) <- c("prior","Valeurs a priori","Estimations a posteriori" )
   if(is.null(type)){
     
   }else if(type =="twit" & !is.null(type)){
