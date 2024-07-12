@@ -71,7 +71,7 @@ mod_Multivarie_server <- function(id, r) {
       
       if( input$type_glm=="poiss"){
       
-      choix_possible = apply(r$BDD%>%select_if(is.numeric),2, function(x) ifelse_perso(sum(!x%%1==0, na.rm=T)==0 & min(x,na.rm = T)>0, return(T), return()))%>%unlist%>%names
+      choix_possible = apply(r$BDD%>%select_if(is.numeric),2, function(x) ifelse_perso(sum(!x%%1==0, na.rm=T)==0 & min(x,na.rm = T)>=0, return(T), return()))%>%unlist%>%names
       }else if( input$type_glm=="binom"){
         choix_possible = apply(r$BDD,2, function(x) ifelse_perso(nlevels(as.factor(unique(x)))==2, return(T), return()))%>%unlist%>%names
       }else{

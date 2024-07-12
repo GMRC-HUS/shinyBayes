@@ -64,13 +64,15 @@ observe({print(input$label_nas)})
       r$BDD <- DD%>%as.data.frame()
       print(str(DD))
       r$contentInput <- DD
-    })
+      showNotification(HTML("<font color='grey' > <center> Données importées avec succès </center> </font>"))
+})
 
 
     observe({
       # r$BASEchargee<-tryCatch(dim(r$BDD)[1]>0,warning= function(e) F,error= function(e) F)
       r$BASEchargee <- !is.null( r$BDD )
     })
+    
 
    
     # })
@@ -98,7 +100,10 @@ observe({print(input$label_nas)})
     })
 
   })
+  
+  
 }
+ 
 
 ## To be copied in the UI
 # mod_chargement_ui("chargement_1")
